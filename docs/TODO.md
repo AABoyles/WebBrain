@@ -186,7 +186,7 @@
 - [x] **Hogwarts Sorting** (`<hogwarts>`) — deterministic house assignment from name hash; pure fun
 - [x] **Elf name generator** (`<elfname>`) — first pet name + childhood street → classic generator formula
 - [x] **Phonetic similarity** (`<soundslike>`) — Soundex or Metaphone algorithm; does "Smith" sound like "Smyth"?
-- [x] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
+- [ ] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
 - [x] **Acronym builder** (`<acronym>`) — given a word, generate a plausible backronym for each letter
 
 ### Minimal external API (free, no key required)
@@ -202,67 +202,77 @@
 
 ### Libraries
 
-- [ ] [bionode-seq](https://www.npmjs.com/package/bionode-seq)
-- [ ] [bionode-fasta](https://www.npmjs.com/package/bionode-fasta)
-- [ ] [vin-decode](https://www.npmjs.com/package/vin-decode)
-- [ ] [vin-validator](https://www.npmjs.com/package/vin-validator)
-- [ ] [@cardog/corgi](https://www.npmjs.com/package/%40cardog/corgi)
-- [ ] [@huggingface/transformers](https://www.npmjs.com/package/@huggingface/transformers)
-- [ ] [suspicious link removed]
-- [ ] [compromise](https://www.npmjs.com/package/compromise)
-- [ ] [franc](https://www.npmjs.com/package/franc)
-- [ ] [he](https://www.npmjs.com/package/he)
-- [ ] [ini](https://www.google.com/search?q=https://www.npmjs.com/package/ini)
-- [ ] [js-yaml](https://www.google.com/search?q=https://www.npmjs.com/package/js-yaml)
-- [ ] [xml-js](https://www.npmjs.com/package/xml-js)
-- [ ] [text-encoding](https://www.npmjs.com/package/text-encoding)
-- [ ] [voca](https://www.google.com/search?q=https://www.npmjs.com/package/voca)
-- [ ] [change-case](https://www.google.com/search?q=https://www.npmjs.com/package/change-case)
-- [ ] [slugify](https://www.google.com/search?q=https://www.npmjs.com/package/slugify)
-- [ ] [strfi](https://www.google.com/search?q=https://www.npmjs.com/package/strfi)
-- [ ] [crypto-js](https://www.npmjs.com/package/crypto-js)
-- [ ] [js-base64](https://www.npmjs.com/package/js-base64)
-- [ ] [hashids](https://www.npmjs.com/package/hashids)
-- [ ] [bignumber.js](https://www.google.com/search?q=https://www.npmjs.com/package/bignumber.js)
-- [ ] [roman-numerals](https://www.google.com/search?q=https://www.npmjs.com/package/roman-numerals)
-- [ ] [words-to-numbers](https://www.npmjs.com/package/words-to-numbers)
-- [ ] [number-to-words](https://www.npmjs.com/package/number-to-words)
-- [ ] [marked](https://www.google.com/search?q=https://www.npmjs.com/package/marked)
-- [ ] [turndown](https://www.google.com/search?q=https://www.npmjs.com/package/turndown)
-- [ ] [mustache](https://www.google.com/search?q=https://www.npmjs.com/package/mustache)
-- [ ] [diff-match-patch](https://www.google.com/search?q=https://www.npmjs.com/package/diff-match-patch)
-- [ ] [string-similarity](https://www.npmjs.com/package/string-similarity)
-- [ ] [fast-levenshtein](https://www.npmjs.com/package/fast-levenshtein)
-- [ ] [google-libphonenumber](https://www.npmjs.com/package/google-libphonenumber)
-- [ ] [iban](https://www.npmjs.com/package/iban)
-- [ ] [zipcodes](https://www.google.com/search?q=https://www.npmjs.com/package/zipcodes)
-- [ ] [morse-decoder](https://www.google.com/search?q=https://www.npmjs.com/package/morse-decoder)
-- [ ] [magic-string](https://www.google.com/search?q=https://www.npmjs.com/package/magic-string)
-- [ ] [acorn](https://www.npmjs.com/package/acorn)
-- [ ] [escodegen](https://www.npmjs.com/package/escodegen)
-- [ ] [cron-parser](https://www.google.com/search?q=https://www.npmjs.com/package/cron-parser)
-- [ ] [cronstrue](https://www.google.com/search?q=https://www.npmjs.com/package/cronstrue)
-- [ ] [date-fns](https://www.npmjs.com/package/date-fns)
-- [ ] [papaparse](https://www.npmjs.com/package/papaparse)
-- [ ] [xlsx](https://www.npmjs.com/package/xlsx)
-- [ ] [currency.js](https://www.google.com/search?q=https://www.npmjs.com/package/currency.js)
-- [ ] [mathjs](https://www.npmjs.com/package/mathjs)
-- [ ] [query-string](https://www.npmjs.com/package/query-string)
-- [ ] [ip-address](https://www.npmjs.com/package/ip-address)
-- [ ] [emoji-js](https://www.google.com/search?q=https://www.npmjs.com/package/emoji-js)
-- [ ] [strip-tags](https://www.npmjs.com/package/strip-tags)
-- [ ] [strip-ansi](https://www.npmjs.com/package/strip-ansi)
-- [ ] [@stdlib/string](https://www.npmjs.com/package/@stdlib/string)
-- [ ] [punycode](https://www.google.com/search?q=https://www.npmjs.com/package/punycode)
-- [ ] [@turf/distance](https://www.google.com/search?q=https://www.npmjs.com/package/%40turf/distance)
-- [ ] [geodesy](https://www.google.com/search?q=https://www.npmjs.com/package/geodesy)
-- [ ] [proj4](https://www.npmjs.com/package/proj4)
-- [ ] [node-geohash](https://www.google.com/search?q=https://www.npmjs.com/package/node-geohash)
-- [ ] [country-code-lookup](https://www.npmjs.com/package/country-code-lookup)
-- [ ] [country-codes-list](https://www.npmjs.com/package/country-codes-list)
-- [ ] [i18n-iso-countries](https://www.npmjs.com/package/i18n-iso-countries)
-- [ ] [color-convert](https://www.npmjs.com/package/color-convert)
-- [ ] [chroma-js](https://www.npmjs.com/package/chroma-js)
-- [ ] [chemical-formula-parser](https://www.npmjs.com/package/chemical-formula-parser)
-- [ ] [ip-utils](https://www.npmjs.com/package/ip-utils)
-- [ ] [bwip-js](https://www.npmjs.com/package/bwip-js)
+<!-- Key: [x]=fully covered by existing skill, nothing to do | [ ]=new skill or augmentation needed | skip=not user-facing -->
+<!-- "augments <tag>" = extend existing skill | "new <tag>" = implies a new skill file -->
+
+#### New skills implied
+
+- [ ] [bionode-seq](https://www.npmjs.com/package/bionode-seq) — **new `<dna>`**: DNA/RNA complement, transcription, amino acid translation; pure lookup tables, no library needed
+- [ ] [bionode-fasta](https://www.npmjs.com/package/bionode-fasta) — pairs with `<dna>`; FASTA format is trivial to parse inline (`>id\nACGT...` blocks)
+- [ ] [compromise](https://www.npmjs.com/package/compromise) — **new `<pos>`**: part-of-speech tagging, named entity extraction; ~200KB bundle — CDN ESM import: `https://cdn.jsdelivr.net/npm/compromise/builds/compromise.esm.js`
+- [ ] [franc](https://www.npmjs.com/package/franc) — **new `<langdetect>`**: identify language of text (returns ISO 639-3 code + name); trigram scoring algorithm implementable inline for top ~20 languages without the library
+- [ ] [ini](https://www.npmjs.com/package/ini) — **new `<ini>`**: parse/format INI config files; trivially implementable inline (split lines, `[section]` headers, `key=value` or `key: value` pairs)
+- [ ] [js-yaml](https://www.npmjs.com/package/js-yaml) — **new `<yaml>`**: parse/format YAML and JSON↔YAML conversion; YAML spec is complex — use CDN ESM: `https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.mjs`
+- [ ] [xml-js](https://www.npmjs.com/package/xml-js) — **new `<xml>`**: parse/format XML and XML↔JSON conversion; use native `DOMParser`/`XMLSerializer` — no library needed
+- [ ] [change-case](https://www.npmjs.com/package/change-case) — **new `<case>`**: convert between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, Title Case, dot.case; also fold in slug (lowercase + strip non-alphanum + hyphenate) from slugify below; implementable without library
+- [ ] [hashids](https://www.npmjs.com/package/hashids) — **new `<hashid>`**: encode integer arrays → short YouTube-style IDs and decode back; Knuth-shuffle + alphabet-encoding algorithm, implementable inline (~60 lines)
+- [ ] [marked](https://www.npmjs.com/package/marked) — **new `<md>`**: render Markdown to HTML and inject into DOM via `handle()`; CDN ESM: `https://cdn.jsdelivr.net/npm/marked/src/marked.esm.js`
+- [ ] [turndown](https://www.npmjs.com/package/turndown) — **new `<html2md>`**: convert HTML to Markdown; `DOMParser` + recursive tree-walk implementable inline; pairs naturally with `<md>`
+- [ ] [mustache](https://www.npmjs.com/package/mustache) — **new `<mustache>`**: fill `{{var}}` templates with JSON data; basic `{{var}}`, `{{#section}}`, `{{^inverted}}` implementable inline with regex (~40 lines)
+- [ ] [google-libphonenumber](https://www.npmjs.com/package/google-libphonenumber) — **new `<phone>`**: parse, validate, format phone numbers (E.164, national, international formats); large library (~1MB) — use CDN or implement E.164 formatter for common regions inline
+- [ ] [papaparse](https://www.npmjs.com/package/papaparse) — **new `<csv>`**: parse and format CSV/TSV; handles quoted fields, escaped commas; core parser ~50 lines inline; call() returns structured summary, handle() could display as table
+- [ ] [emoji-js](https://www.npmjs.com/package/emoji-js) — **new `<emoji>`**: look up emoji by name or codepoint, get category/description; Unicode CLDR emoji list is static — embed top ~2000 as a table
+- [ ] [punycode](https://www.npmjs.com/package/punycode) — **new `<punycode>`**: encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de); `URL` API decodes but not encodes — Bootstring algorithm needed, ~60 lines inline
+- [ ] [@turf/distance](https://www.npmjs.com/package/%40turf/distance) — **new `<geodist>`**: haversine distance between two lat/lng pairs + bearing + midpoint; formula is ~15 lines inline, no library needed
+- [ ] [node-geohash](https://www.npmjs.com/package/node-geohash) — **new `<geohash>`**: encode lat/lng → Geohash string and decode back; bit-interleaving algorithm, ~30 lines inline
+- [ ] [proj4](https://www.npmjs.com/package/proj4) — **new `<proj>`**: convert WGS84 lat/lng ↔ UTM coordinates; complex math — use CDN ESM import or implement WGS84↔UTM subset only
+- [ ] [chemical-formula-parser](https://www.npmjs.com/package/chemical-formula-parser) — **new `<formula>`**: parse chemical formulas (H₂O, C₆H₁₂O₆), compute molecular weight, list constituent elements; pairs with `<element>`; implementable inline with recursive parser
+- [ ] [bwip-js](https://www.npmjs.com/package/bwip-js) — **new `<barcode>`**: generate barcodes (Code128, QR, EAN-13, etc.) rendered to canvas; `handle()` can inject canvas into DOM; CDN ESM: `https://cdn.jsdelivr.net/npm/bwip-js/dist/bwip-js-min.js`
+- [ ] [acorn](https://www.npmjs.com/package/acorn) — **new `<jsparse>`**: parse JS and display AST, or pair with escodegen for `<jsbeautify>`; CDN ESM: `https://cdn.jsdelivr.net/npm/acorn/dist/acorn.mjs`
+- [ ] [escodegen](https://www.npmjs.com/package/escodegen) — pairs with acorn for `<jsbeautify>`: acorn→AST→escodegen→formatted/minified JS
+
+#### Augments existing skills
+
+- [x] [crypto-js](https://www.npmjs.com/package/crypto-js) — **augments `<hash>`**: adds MD5 (not in Web Crypto API); alternatively **new `<encrypt>`** for AES-256 symmetric encryption; `crypto.subtle` already handles SHA natively so only MD5/encryption is new
+- [x] [words-to-numbers](https://www.npmjs.com/package/words-to-numbers) — **augments `<n2w>`**: add reverse direction ("forty-two" → 42); implementable inline
+- [x] [diff-match-patch](https://www.npmjs.com/package/diff-match-patch) — **augments `<diff>`**: add character-level and word-level diff modes; current `<diff>` is line-level LCS only
+- [x] [fast-levenshtein](https://www.npmjs.com/package/fast-levenshtein) — **augments `<diff>`**: add Levenshtein edit distance output; standard DP algorithm, ~15 lines inline
+- [x] [string-similarity](https://www.npmjs.com/package/string-similarity) — **augments `<soundslike>`**: add Dice coefficient / Jaro-Winkler similarity (textual); `<soundslike>` is Soundex (phonetic only); Dice is ~10 lines inline
+- [x] [cron-parser](https://www.npmjs.com/package/cron-parser) — **augments `<cron>`**: add "next N run times" feature; current `<cron>` only explains field syntax; implement with plain date arithmetic
+- [x] [cronstrue](https://www.npmjs.com/package/cronstrue) — **augments `<cron>`**: human-readable cron descriptions ("Every weekday at 9am"); fold into augmented `<cron>` — implement inline for common field patterns
+- [x] [bignumber.js](https://www.npmjs.com/package/bignumber.js) — **augments `<calc>`**: arbitrary-precision decimal arithmetic; `BigInt` covers integers already — this adds decimal precision (0.1 + 0.2 = 0.3 exactly); CDN ESM: `https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.mjs`
+- [ ] [mathjs](https://www.npmjs.com/package/mathjs) — **augments `<calc>` / new `<matrix>`**: matrices, complex numbers, symbolic simplification, units; CDN ESM: `https://cdn.jsdelivr.net/npm/mathjs/+esm`
+- [x] [currency.js](https://www.npmjs.com/package/currency.js) — **augments `<currency>`**: add precise arithmetic (avoids float errors: $10.20 + $0.10 = $10.30 not $10.299999); current `<currency>` is name/symbol lookup only
+- [x] [ip-address](https://www.npmjs.com/package/ip-address) — **augments `<ip>`**: add IPv6 parsing, expansion, and CIDR range checks; current `<ip>` handles IPv4/CIDR fully but has no IPv6 support
+- [x] [ip-utils](https://www.npmjs.com/package/ip-utils) — **augments `<ip>`**: overlaps with ip-address above; handle both in same `<ip>` IPv6 augmentation pass
+- [ ] [geodesy](https://www.npmjs.com/package/geodesy) — **augments `<geodist>`**: add Vincenty formula (more accurate than haversine over long distances) and rhumb-line bearing; implement alongside `<geodist>`
+- [x] [color-convert](https://www.npmjs.com/package/color-convert) — **augments `<color>`**: add HSV, CMYK, XYZ, LAB color spaces; current `<color>` handles hex/RGB/HSL/named only
+- [x] [chroma-js](https://www.npmjs.com/package/chroma-js) — **augments `<color>`**: mix colors, darken/lighten, WCAG contrast ratio, color scales; CDN ESM available; fold into `<color>` augmentation with color-convert above
+- [ ] [slugify](https://www.npmjs.com/package/slugify) — fold into `<case>` skill above (slug is ~5 lines: lowercase, NFKD normalize, strip non-alphanum, hyphenate)
+- [x] [strip-ansi](https://www.npmjs.com/package/strip-ansi) — **augments `<ansi>`**: add strip mode to remove ANSI codes from text; regex `/\x1b\[[0-9;]*[mGKHF]/g` trivially covers it
+- [ ] [strip-tags](https://www.npmjs.com/package/strip-tags) — **augments `<xml>` or `<html2md>`**: strip HTML tags; `DOMParser` + `.textContent` natively in one line — no library needed; fold into `<xml>` skill
+- [ ] [date-fns](https://www.npmjs.com/package/date-fns) — mostly pre-implemented across `<date>`, `<epoch>`, `<tz>`, `<countdown>`, `<dayofweek>`, `<duration>`; only gap: **new `<datemath>`** for relative date arithmetic ("3 weeks from now", "days between two dates")
+
+#### Pre-implemented (covered by existing skills)
+
+- [x] [text-encoding](https://www.npmjs.com/package/text-encoding) — `TextEncoder`/`TextDecoder` are native browser APIs; covered by `<encode>` + browser built-ins
+- [x] [he](https://www.npmjs.com/package/he) — HTML entity encode/decode already in `<encode>` (modes: `html`, `decode:html`)
+- [x] [js-base64](https://www.npmjs.com/package/js-base64) — covered by `<encode>` (modes: `base64`, `decode:base64`)
+- [x] [roman-numerals](https://www.npmjs.com/package/roman-numerals) — covered by `<roman>`
+- [x] [number-to-words](https://www.npmjs.com/package/number-to-words) — covered by `<n2w>`
+- [x] [iban](https://www.npmjs.com/package/iban) — covered by `<iban>`
+- [x] [zipcodes](https://www.npmjs.com/package/zipcodes) — covered by `<zip>`
+- [x] [morse-decoder](https://www.npmjs.com/package/morse-decoder) — covered by `<morse>` and `<morse-audio>`
+- [x] [query-string](https://www.npmjs.com/package/query-string) — `<url>` already parses full URLs including query strings
+- [x] [country-code-lookup](https://www.npmjs.com/package/country-code-lookup) — covered by `<country>`
+- [x] [country-codes-list](https://www.npmjs.com/package/country-codes-list) — covered by `<country>`
+- [x] [i18n-iso-countries](https://www.npmjs.com/package/i18n-iso-countries) — covered by `<country>`
+- [x] [voca](https://www.npmjs.com/package/voca) — capabilities scattered across `<rot13>`, `<caesar>`, `<stats>`, `<pangram>`, `<palindrome>`, etc.; only gap is `<case>` (listed above)
+- [x] [@stdlib/string](https://www.npmjs.com/package/@stdlib/string) — broad library; all functionality covered by existing string skills
+
+#### Skip (not user-facing)
+
+- [ ] ~~[magic-string](https://www.npmjs.com/package/magic-string)~~ — source-map-aware string manipulation for bundlers; not a user-facing skill
+- [ ] ~~[strfi](https://www.npmjs.com/package/strfi)~~ — printf-style string formatting; superseded by JS template literals
+- [ ] ~~[@cardog/corgi](https://www.npmjs.com/package/%40cardog/corgi)~~ — unclear purpose; not evidently user-facing
+- [ ] ~~[xlsx](https://www.npmjs.com/package/xlsx)~~ — Excel file parsing; ~800KB library; impractical in a text/chat context where users can't attach files
