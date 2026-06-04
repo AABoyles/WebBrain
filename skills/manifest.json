@@ -814,5 +814,59 @@
     "label": "Dad Joke",
     "description": "Fetches a random dad joke from icanhazdadjoke.com. They're terrible. That's the point.",
     "default": false
+  },
+  {
+    "tag": "diff",
+    "label": "Diff",
+    "description": "Shows a line-level diff between two texts using LCS.",
+    "default": false
+  },
+  {
+    "tag": "cf",
+    "label": "Continued Fraction",
+    "description": "Expands a number as a continued fraction; supports decimals, fractions, and named constants (pi, e, phi).",
+    "default": false
+  },
+  {
+    "tag": "sternbrocot",
+    "label": "Stern-Brocot Tree",
+    "description": "Finds the left/right path to any proper fraction in the Stern-Brocot tree.",
+    "default": false
+  },
+  {
+    "tag": "ipa",
+    "label": "IPA Decoder",
+    "description": "Describes the articulation of an International Phonetic Alphabet symbol.",
+    "default": false
+  },
+  {
+    "tag": "root",
+    "label": "Word Roots",
+    "description": "Looks up the meaning and examples of common Latin and Greek word roots.",
+    "default": false
+  },
+  {
+    "tag": "rhymescheme",
+    "label": "Rhyme Scheme",
+    "description": "Labels the rhyme scheme (ABAB, AABB, etc.) of a poem's lines.",
+    "default": false
+  },
+  {
+    "tag": "affix",
+    "label": "Prefix/Suffix Meanings",
+    "description": "Looks up the meaning and examples of common prefixes and suffixes.",
+    "default": false
+  },
+  {
+    "tag": "tarot-lookup",
+    "label": "Tarot Major Arcana",
+    "description": "Shows upright and reversed meanings for any of the 22 Major Arcana tarot cards.",
+    "default": false
+  },
+  {
+    "tag": "nameday",
+    "label": "Name Day",
+    "description": "Finds the European feast day (name day) for a given first name.",
+    "default": false
   }
 ]

@@ -61,7 +61,7 @@
 
 - [x] **Regex tester** (`<regex>`) — test a pattern against a string; `crypto.getRandomValues`-safe, pure JS
 - [x] **JSON formatter** (`<json>`) — pretty-print or minify JSON; `JSON.parse`/`JSON.stringify`, catches malformed input
-- [ ] **Diff** (`<diff>`) — character- or line-level diff of two strings; pure JS longest-common-subsequence
+- [x] **Diff** (`<diff>`) — character- or line-level diff of two strings; pure JS longest-common-subsequence
 - [x] **UUID generator** (`<uuid>`) — `crypto.randomUUID()`; one-liner but genuinely handy
 
 ### Extended memory & journaling (IndexedDB)
@@ -154,20 +154,20 @@
 - [x] **Digital root** (`<digitalroot>`) — iteratively sum digits until single digit; explains casting out nines
 - [x] **Number properties** (`<numprop>`) — is it prime, perfect, abundant, deficient, happy, Armstrong, palindrome?
 - [x] **Zeckendorf representation** (`<zeckendorf>`) — any positive integer as a unique sum of non-consecutive Fibonacci numbers
-- [ ] **Continued fraction** (`<cf>`) — expand any rational or famous irrational (π, e, φ) as `[a₀; a₁, a₂, …]`
+- [x] **Continued fraction** (`<cf>`) — expand any rational or famous irrational (π, e, φ) as `[a₀; a₁, a₂, …]`
 - [x] **Kaprekar routine** (`<kaprekar>`) — apply to any 4-digit number; always reaches 6174 in ≤7 steps
-- [ ] **Stern-Brocot tree** (`<sternbrocot>`) — find path to any fraction in the Stern-Brocot tree
+- [x] **Stern-Brocot tree** (`<sternbrocot>`) — find path to any fraction in the Stern-Brocot tree
 
 ### Language & linguistics
 
-- [ ] **IPA decoder** (`<ipa>`) — International Phonetic Alphabet symbol → description of articulation ("voiced bilabial stop")
-- [ ] **Word roots** (`<root>`) — `photograph` → `photo` (Greek: light) + `graph` (Greek: write); built-in Latin/Greek root table
+- [x] **IPA decoder** (`<ipa>`) — International Phonetic Alphabet symbol → description of articulation ("voiced bilabial stop")
+- [x] **Word roots** (`<root>`) — `photograph` → `photo` (Greek: light) + `graph` (Greek: write); built-in Latin/Greek root table
 - [x] **Pangram checker** (`<pangram>`) — does the text use all 26 letters? Shows missing ones
 - [x] **Palindrome checker** (`<palindrome>`) — word or phrase, ignoring spaces and punctuation
-- [ ] **Rhyme scheme** (`<rhymescheme>`) — label line-ending rhymes as ABAB, AABB, etc.
+- [x] **Rhyme scheme** (`<rhymescheme>`) — label line-ending rhymes as ABAB, AABB, etc.
 - [ ] **Meter checker** (`<meter>`) — mark syllable stress, identify iambic/trochaic/anapestic/dactylic feet
 - [x] **Homophone lookup** (`<homophone>`) — `there/their/they're`, `to/too/two`; built-in table of common pairs
-- [ ] **Prefix/suffix meanings** (`<affix>`) — `un-`, `re-`, `-tion`, `-ology`; built-in morpheme table
+- [x] **Prefix/suffix meanings** (`<affix>`) — `un-`, `re-`, `-tion`, `-ology`; built-in morpheme table
 - [x] **Spoonerism generator** (`<spoonerism>`) — swap initial consonants of adjacent words; pure string fun
 - [x] **Portmanteau builder** (`<portmanteau>`) — blend two words; suggests splice points based on phoneme overlap
 
@@ -182,11 +182,11 @@
 
 - [x] **Chinese zodiac** (`<zodiac-cn>`) — birth year → animal, element, yin/yang, traits
 - [x] **Enneagram** (`<enneagram>`) — type number → name, core fear, core desire, wings
-- [ ] **Tarot major arcana** (`<tarot-lookup>`) — card name or number → upright and reversed meanings (extends the draw skill)
+- [x] **Tarot major arcana** (`<tarot-lookup>`) — card name or number → upright and reversed meanings (extends the draw skill)
 - [x] **Hogwarts Sorting** (`<hogwarts>`) — deterministic house assignment from name hash; pure fun
 - [x] **Elf name generator** (`<elfname>`) — first pet name + childhood street → classic generator formula
 - [x] **Phonetic similarity** (`<soundslike>`) — Soundex or Metaphone algorithm; does "Smith" sound like "Smyth"?
-- [ ] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
+- [x] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
 - [x] **Acronym builder** (`<acronym>`) — given a word, generate a plausible backronym for each letter
 
 ### Minimal external API (free, no key required)
@@ -199,3 +199,5 @@
 - [x] **Pokédex** (`<pokemon>`) — PokéAPI (free, no auth); any Pokémon name → type, abilities, base stats, flavor text
 - [x] **ISS position** (`<iss>`) — Open Notify API; current latitude/longitude of the International Space Station
 - [x] **Dad joke** (`<dadjoke>`) — icanhazdadjoke.com; `Accept: application/json`; no key; the jokes are bad and that's the point
+
+#
