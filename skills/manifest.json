@@ -196,5 +196,11 @@
     "label": "Readability Score",
     "description": "Computes the Flesch Reading Ease score and estimated grade level for any text.",
     "default": false
+  },
+  {
+    "tag": "stats",
+    "label": "Statistics",
+    "description": "Computes mean, median, mode, std dev, min, max, and more for a list of numbers.",
+    "default": false
   }
 ]

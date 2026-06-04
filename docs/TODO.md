@@ -38,7 +38,7 @@
 
 ### Math & science
 
-- [ ] **Statistics** (`<stats>`) — mean, median, mode, std dev, min/max for a comma-separated list of numbers; genuinely useful
+- [x] **Statistics** (`<stats>`) — mean, median, mode, std dev, min/max for a comma-separated list of numbers; genuinely useful
 - [ ] **Compound interest** (`<compound>`) — `<compound>1000 at 7% for 20 years</compound>`; pure math
 - [ ] **Sleep cycles** (`<sleep>`) — given a bedtime or wake-up target, suggest optimal times based on 90-minute REM cycles
 - [ ] **Fibonacci / sequences** (`<seq>`) — generate terms of Fibonacci, primes, triangular numbers, etc.
