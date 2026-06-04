@@ -124,5 +124,11 @@
     "label": "Morse Audio",
     "description": "Plays text as Morse code beeps via Web Audio API.",
     "default": false
+  },
+  {
+    "tag": "dtmf",
+    "label": "DTMF Tones",
+    "description": "Plays telephone keypad dual-tone multi-frequency (DTMF) tones via Web Audio.",
+    "default": false
   }
 ]
