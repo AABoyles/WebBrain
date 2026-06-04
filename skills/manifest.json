@@ -976,5 +976,11 @@
     "label": "Part-of-Speech",
     "description": "Tag words with grammatical roles and extract named entities using compromise.js (loads via CDN)",
     "default": false
+  },
+  {
+    "tag": "emoji",
+    "label": "Emoji Lookup",
+    "description": "Find emoji by name, keyword, or Unicode codepoint",
+    "default": false
   }
 ]
