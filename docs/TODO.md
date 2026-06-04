@@ -59,7 +59,7 @@
 
 ### Developer tools
 
-- [ ] **Regex tester** (`<regex>`) — test a pattern against a string; `crypto.getRandomValues`-safe, pure JS
+- [x] **Regex tester** (`<regex>`) — test a pattern against a string; `crypto.getRandomValues`-safe, pure JS
 - [ ] **JSON formatter** (`<json>`) — pretty-print or minify JSON; `JSON.parse`/`JSON.stringify`, catches malformed input
 - [ ] **Diff** (`<diff>`) — character- or line-level diff of two strings; pure JS longest-common-subsequence
 - [ ] **UUID generator** (`<uuid>`) — `crypto.randomUUID()`; one-liner but genuinely handy

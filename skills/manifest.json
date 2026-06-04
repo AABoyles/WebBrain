@@ -268,5 +268,11 @@
     "label": "Day Progress",
     "description": "Shows percentage of the day, week, and year elapsed with ASCII progress bars.",
     "default": false
+  },
+  {
+    "tag": "regex",
+    "label": "Regex Tester",
+    "description": "Tests a regular expression pattern against a string and shows all matches and groups.",
+    "default": false
   }
 ]
