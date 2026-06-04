@@ -207,29 +207,29 @@
 
 #### New skills implied
 
-- [ ] [bionode-seq](https://www.npmjs.com/package/bionode-seq) — **new `<dna>`**: DNA/RNA complement, transcription, amino acid translation; pure lookup tables, no library needed
-- [ ] [bionode-fasta](https://www.npmjs.com/package/bionode-fasta) — pairs with `<dna>`; FASTA format is trivial to parse inline (`>id\nACGT...` blocks)
-- [ ] [compromise](https://www.npmjs.com/package/compromise) — **new `<pos>`**: part-of-speech tagging, named entity extraction; ~200KB bundle — CDN ESM import: `https://cdn.jsdelivr.net/npm/compromise/builds/compromise.esm.js`
-- [ ] [franc](https://www.npmjs.com/package/franc) — **new `<langdetect>`**: identify language of text (returns ISO 639-3 code + name); trigram scoring algorithm implementable inline for top ~20 languages without the library
-- [ ] [ini](https://www.npmjs.com/package/ini) — **new `<ini>`**: parse/format INI config files; trivially implementable inline (split lines, `[section]` headers, `key=value` or `key: value` pairs)
-- [ ] [js-yaml](https://www.npmjs.com/package/js-yaml) — **new `<yaml>`**: parse/format YAML and JSON↔YAML conversion; YAML spec is complex — use CDN ESM: `https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.mjs`
-- [ ] [xml-js](https://www.npmjs.com/package/xml-js) — **new `<xml>`**: parse/format XML and XML↔JSON conversion; use native `DOMParser`/`XMLSerializer` — no library needed
-- [ ] [change-case](https://www.npmjs.com/package/change-case) — **new `<case>`**: convert between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, Title Case, dot.case; also fold in slug (lowercase + strip non-alphanum + hyphenate) from slugify below; implementable without library
-- [ ] [hashids](https://www.npmjs.com/package/hashids) — **new `<hashid>`**: encode integer arrays → short YouTube-style IDs and decode back; Knuth-shuffle + alphabet-encoding algorithm, implementable inline (~60 lines)
-- [ ] [marked](https://www.npmjs.com/package/marked) — **new `<md>`**: render Markdown to HTML and inject into DOM via `handle()`; CDN ESM: `https://cdn.jsdelivr.net/npm/marked/src/marked.esm.js`
-- [ ] [turndown](https://www.npmjs.com/package/turndown) — **new `<html2md>`**: convert HTML to Markdown; `DOMParser` + recursive tree-walk implementable inline; pairs naturally with `<md>`
-- [ ] [mustache](https://www.npmjs.com/package/mustache) — **new `<mustache>`**: fill `{{var}}` templates with JSON data; basic `{{var}}`, `{{#section}}`, `{{^inverted}}` implementable inline with regex (~40 lines)
-- [ ] [google-libphonenumber](https://www.npmjs.com/package/google-libphonenumber) — **new `<phone>`**: parse, validate, format phone numbers (E.164, national, international formats); large library (~1MB) — use CDN or implement E.164 formatter for common regions inline
-- [ ] [papaparse](https://www.npmjs.com/package/papaparse) — **new `<csv>`**: parse and format CSV/TSV; handles quoted fields, escaped commas; core parser ~50 lines inline; call() returns structured summary, handle() could display as table
-- [ ] [emoji-js](https://www.npmjs.com/package/emoji-js) — **new `<emoji>`**: look up emoji by name or codepoint, get category/description; Unicode CLDR emoji list is static — embed top ~2000 as a table
-- [ ] [punycode](https://www.npmjs.com/package/punycode) — **new `<punycode>`**: encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de); `URL` API decodes but not encodes — Bootstring algorithm needed, ~60 lines inline
-- [ ] [@turf/distance](https://www.npmjs.com/package/%40turf/distance) — **new `<geodist>`**: haversine distance between two lat/lng pairs + bearing + midpoint; formula is ~15 lines inline, no library needed
-- [ ] [node-geohash](https://www.npmjs.com/package/node-geohash) — **new `<geohash>`**: encode lat/lng → Geohash string and decode back; bit-interleaving algorithm, ~30 lines inline
-- [ ] [proj4](https://www.npmjs.com/package/proj4) — **new `<proj>`**: convert WGS84 lat/lng ↔ UTM coordinates; complex math — use CDN ESM import or implement WGS84↔UTM subset only
-- [ ] [chemical-formula-parser](https://www.npmjs.com/package/chemical-formula-parser) — **new `<formula>`**: parse chemical formulas (H₂O, C₆H₁₂O₆), compute molecular weight, list constituent elements; pairs with `<element>`; implementable inline with recursive parser
-- [ ] [bwip-js](https://www.npmjs.com/package/bwip-js) — **new `<barcode>`**: generate barcodes (Code128, QR, EAN-13, etc.) rendered to canvas; `handle()` can inject canvas into DOM; CDN ESM: `https://cdn.jsdelivr.net/npm/bwip-js/dist/bwip-js-min.js`
-- [ ] [acorn](https://www.npmjs.com/package/acorn) — **new `<jsparse>`**: parse JS and display AST, or pair with escodegen for `<jsbeautify>`; CDN ESM: `https://cdn.jsdelivr.net/npm/acorn/dist/acorn.mjs`
-- [ ] [escodegen](https://www.npmjs.com/package/escodegen) — pairs with acorn for `<jsbeautify>`: acorn→AST→escodegen→formatted/minified JS
+- [x] [bionode-seq](https://www.npmjs.com/package/bionode-seq) — **new `<dna>`**: DNA/RNA complement, transcription, amino acid translation; pure lookup tables, no library needed
+- [x] [bionode-fasta](https://www.npmjs.com/package/bionode-fasta) — pairs with `<dna>`; FASTA format is trivial to parse inline (`>id\nACGT...` blocks)
+- [x] [compromise](https://www.npmjs.com/package/compromise) — **new `<pos>`**: part-of-speech tagging, named entity extraction; ~200KB bundle — CDN ESM import: `https://cdn.jsdelivr.net/npm/compromise/builds/compromise.esm.js`
+- [x] [franc](https://www.npmjs.com/package/franc) — **new `<langdetect>`**: identify language of text (returns ISO 639-3 code + name); trigram scoring algorithm implementable inline for top ~20 languages without the library
+- [x] [ini](https://www.npmjs.com/package/ini) — **new `<ini>`**: parse/format INI config files; trivially implementable inline (split lines, `[section]` headers, `key=value` or `key: value` pairs)
+- [x] [js-yaml](https://www.npmjs.com/package/js-yaml) — **new `<yaml>`**: parse/format YAML and JSON↔YAML conversion; YAML spec is complex — use CDN ESM: `https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.mjs`
+- [x] [xml-js](https://www.npmjs.com/package/xml-js) — **new `<xml>`**: parse/format XML and XML↔JSON conversion; use native `DOMParser`/`XMLSerializer` — no library needed
+- [x] [change-case](https://www.npmjs.com/package/change-case) — **new `<case>`**: convert between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, Title Case, dot.case; also fold in slug (lowercase + strip non-alphanum + hyphenate) from slugify below; implementable without library
+- [x] [hashids](https://www.npmjs.com/package/hashids) — **new `<hashid>`**: encode integer arrays → short YouTube-style IDs and decode back; Knuth-shuffle + alphabet-encoding algorithm, implementable inline (~60 lines)
+- [x] [marked](https://www.npmjs.com/package/marked) — **new `<md>`**: render Markdown to HTML and inject into DOM via `handle()`; CDN ESM: `https://cdn.jsdelivr.net/npm/marked/src/marked.esm.js`
+- [x] [turndown](https://www.npmjs.com/package/turndown) — **new `<html2md>`**: convert HTML to Markdown; `DOMParser` + recursive tree-walk implementable inline; pairs naturally with `<md>`
+- [x] [mustache](https://www.npmjs.com/package/mustache) — **new `<mustache>`**: fill `{{var}}` templates with JSON data; basic `{{var}}`, `{{#section}}`, `{{^inverted}}` implementable inline with regex (~40 lines)
+- [x] [google-libphonenumber](https://www.npmjs.com/package/google-libphonenumber) — **new `<phone>`**: parse, validate, format phone numbers (E.164, national, international formats); large library (~1MB) — use CDN or implement E.164 formatter for common regions inline
+- [x] [papaparse](https://www.npmjs.com/package/papaparse) — **new `<csv>`**: parse and format CSV/TSV; handles quoted fields, escaped commas; core parser ~50 lines inline; call() returns structured summary, handle() could display as table
+- [x] [emoji-js](https://www.npmjs.com/package/emoji-js) — **new `<emoji>`**: look up emoji by name or codepoint, get category/description; Unicode CLDR emoji list is static — embed top ~2000 as a table
+- [x] [punycode](https://www.npmjs.com/package/punycode) — **new `<punycode>`**: encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de); `URL` API decodes but not encodes — Bootstring algorithm needed, ~60 lines inline
+- [x] [@turf/distance](https://www.npmjs.com/package/%40turf/distance) — **new `<geodist>`**: haversine distance between two lat/lng pairs + bearing + midpoint; formula is ~15 lines inline, no library needed
+- [x] [node-geohash](https://www.npmjs.com/package/node-geohash) — **new `<geohash>`**: encode lat/lng → Geohash string and decode back; bit-interleaving algorithm, ~30 lines inline
+- [x] [proj4](https://www.npmjs.com/package/proj4) — **new `<proj>`**: convert WGS84 lat/lng ↔ UTM coordinates; complex math — use CDN ESM import or implement WGS84↔UTM subset only
+- [x] [chemical-formula-parser](https://www.npmjs.com/package/chemical-formula-parser) — **new `<formula>`**: parse chemical formulas (H₂O, C₆H₁₂O₆), compute molecular weight, list constituent elements; pairs with `<element>`; implementable inline with recursive parser
+- [x] [bwip-js](https://www.npmjs.com/package/bwip-js) — **new `<barcode>`**: generate barcodes (Code128, QR, EAN-13, etc.) rendered to canvas; `handle()` can inject canvas into DOM; CDN ESM: `https://cdn.jsdelivr.net/npm/bwip-js/dist/bwip-js-min.js`
+- [x] [acorn](https://www.npmjs.com/package/acorn) — **new `<jsparse>`**: parse JS and display AST, or pair with escodegen for `<jsbeautify>`; CDN ESM: `https://cdn.jsdelivr.net/npm/acorn/dist/acorn.mjs`
+- [x] [escodegen](https://www.npmjs.com/package/escodegen) — pairs with acorn for `<jsbeautify>`: acorn→AST→escodegen→formatted/minified JS
 
 #### Augments existing skills
 
