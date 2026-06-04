@@ -19,7 +19,7 @@
 
 - [x] **Tone generator** (`<tone>`) — play a pure sine wave at a given Hz or musical note; useful for tuning instruments, hearing tests, tinnitus masking
 - [x] **Metronome** (`<metronome>`) — click track at a given BPM; start/stop via tag
-- [ ] **Morse audio** (`<morse-audio>`) — encode text and play it as actual beeps via Web Audio; pairs with the Morse Code text skill
+- [x] **Morse audio** (`<morse-audio>`) — encode text and play it as actual beeps via Web Audio; pairs with the Morse Code text skill
 - [ ] **DTMF tones** (`<dtmf>`) — generate phone keypad tones; playful and surprisingly nostalgic
 
 ### Text transformation & codes
