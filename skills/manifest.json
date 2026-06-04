@@ -412,5 +412,11 @@
     "label": "HTTP Status",
     "description": "Looks up any HTTP status code including WebDAV, nginx, and Cloudflare extensions.",
     "default": false
+  },
+  {
+    "tag": "port",
+    "label": "TCP Port",
+    "description": "Looks up well-known TCP/UDP port numbers and identifies the service.",
+    "default": false
   }
 ]
