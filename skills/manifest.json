@@ -406,5 +406,11 @@
     "label": "MIME Type",
     "description": "Looks up MIME type by file extension or finds extensions for a given MIME type.",
     "default": false
+  },
+  {
+    "tag": "http",
+    "label": "HTTP Status",
+    "description": "Looks up any HTTP status code including WebDAV, nginx, and Cloudflare extensions.",
+    "default": false
   }
 ]
