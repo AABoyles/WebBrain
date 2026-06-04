@@ -214,5 +214,11 @@
     "label": "Sleep Cycles",
     "description": "Suggests optimal bedtimes or wake times based on 90-minute REM cycle math.",
     "default": false
+  },
+  {
+    "tag": "seq",
+    "label": "Sequences",
+    "description": "Generates terms of Fibonacci, primes, triangular, square, cube, factorial, or powers-of-2 sequences.",
+    "default": false
   }
 ]
