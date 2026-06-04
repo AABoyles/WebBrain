@@ -74,7 +74,7 @@
 
 - [x] **VIN decoder** (`<vin>`) — World Manufacturer Identifier, model year encoding, plant code, check digit validation (NHTSA formula)
 - [x] **Credit card decoder** (`<cc>`) — Luhn algorithm validation, IIN prefix → issuer (Visa/MC/Amex/Discover/JCB/UnionPay), length check; never stores the number
-- [ ] **SSN decoder** (`<ssn>`) — pre-2011 area-number → issuing state lookup, group/serial structure; flags obviously invalid numbers
+- [x] **SSN decoder** (`<ssn>`) — pre-2011 area-number → issuing state lookup, group/serial structure; flags obviously invalid numbers
 - [ ] **ISBN decoder** (`<isbn>`) — check digit validation, publisher prefix group, ISBN-10 ↔ ISBN-13 conversion
 - [ ] **IBAN decoder** (`<iban>`) — country code, check digit (MOD-97), BBAN structure; validates and explains each field
 - [ ] **SWIFT / BIC decoder** (`<swift>`) — bank code, country, location, branch; pure lookup

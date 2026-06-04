@@ -316,5 +316,11 @@
     "label": "Credit Card Decoder",
     "description": "Validates Luhn checksum and identifies card issuer (Visa/MC/Amex/etc); never stores the number.",
     "default": false
+  },
+  {
+    "tag": "ssn",
+    "label": "SSN Decoder",
+    "description": "Decodes US SSN structure: pre-2011 state by area number, group/serial validity; masks the number.",
+    "default": false
   }
 ]
