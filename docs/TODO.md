@@ -162,14 +162,14 @@
 
 - [ ] **IPA decoder** (`<ipa>`) — International Phonetic Alphabet symbol → description of articulation ("voiced bilabial stop")
 - [ ] **Word roots** (`<root>`) — `photograph` → `photo` (Greek: light) + `graph` (Greek: write); built-in Latin/Greek root table
-- [ ] **Pangram checker** (`<pangram>`) — does the text use all 26 letters? Shows missing ones
-- [ ] **Palindrome checker** (`<palindrome>`) — word or phrase, ignoring spaces and punctuation
+- [x] **Pangram checker** (`<pangram>`) — does the text use all 26 letters? Shows missing ones
+- [x] **Palindrome checker** (`<palindrome>`) — word or phrase, ignoring spaces and punctuation
 - [ ] **Rhyme scheme** (`<rhymescheme>`) — label line-ending rhymes as ABAB, AABB, etc.
 - [ ] **Meter checker** (`<meter>`) — mark syllable stress, identify iambic/trochaic/anapestic/dactylic feet
-- [ ] **Homophone lookup** (`<homophone>`) — `there/their/they're`, `to/too/two`; built-in table of common pairs
+- [x] **Homophone lookup** (`<homophone>`) — `there/their/they're`, `to/too/two`; built-in table of common pairs
 - [ ] **Prefix/suffix meanings** (`<affix>`) — `un-`, `re-`, `-tion`, `-ology`; built-in morpheme table
-- [ ] **Spoonerism generator** (`<spoonerism>`) — swap initial consonants of adjacent words; pure string fun
-- [ ] **Portmanteau builder** (`<portmanteau>`) — blend two words; suggests splice points based on phoneme overlap
+- [x] **Spoonerism generator** (`<spoonerism>`) — swap initial consonants of adjacent words; pure string fun
+- [x] **Portmanteau builder** (`<portmanteau>`) — blend two words; suggests splice points based on phoneme overlap
 
 ### Hardware & retro computing
 

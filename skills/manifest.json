@@ -676,5 +676,35 @@
     "label": "Kaprekar Routine",
     "description": "Applies the Kaprekar routine to a 4-digit number (always reaches 6174).",
     "default": false
+  },
+  {
+    "tag": "pangram",
+    "label": "Pangram Checker",
+    "description": "Checks if text uses all 26 letters; shows missing letters if not.",
+    "default": false
+  },
+  {
+    "tag": "palindrome",
+    "label": "Palindrome Checker",
+    "description": "Checks if a word or phrase is a palindrome (ignoring spaces and punctuation).",
+    "default": false
+  },
+  {
+    "tag": "homophone",
+    "label": "Homophone Lookup",
+    "description": "Finds homophones of common English words (there/their/they're, etc.).",
+    "default": false
+  },
+  {
+    "tag": "spoonerism",
+    "label": "Spoonerism",
+    "description": "Swaps the initial consonant clusters of adjacent word pairs.",
+    "default": false
+  },
+  {
+    "tag": "portmanteau",
+    "label": "Portmanteau Builder",
+    "description": "Blends two words into portmanteau suggestions.",
+    "default": false
   }
 ]
