@@ -436,5 +436,23 @@
     "label": "Exit Code",
     "description": "Explains shell and program exit codes; decodes signal-based codes (128 + signal).",
     "default": false
+  },
+  {
+    "tag": "vigenere",
+    "label": "Vigenère Cipher",
+    "description": "Encodes and decodes text with the Vigenère polyalphabetic substitution cipher.",
+    "default": false
+  },
+  {
+    "tag": "atbash",
+    "label": "Atbash Cipher",
+    "description": "Applies the Atbash mirror cipher (A↔Z, B↔Y); self-inverse.",
+    "default": false
+  },
+  {
+    "tag": "railfence",
+    "label": "Rail Fence Cipher",
+    "description": "Encodes and decodes text with the rail fence (zigzag) transposition cipher.",
+    "default": false
   }
 ]

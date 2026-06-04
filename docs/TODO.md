@@ -103,9 +103,9 @@
 
 ### More ciphers & encodings
 
-- [ ] **Vigenère cipher** (`<vigenere>`) — polyalphabetic substitution; encode/decode with keyword
-- [ ] **Atbash cipher** (`<atbash>`) — Hebrew mirror cipher; A↔Z, B↔Y; works on any alphabet
-- [ ] **Rail fence cipher** (`<railfence>`) — zigzag transposition; encode/decode with rail count
+- [x] **Vigenère cipher** (`<vigenere>`) — polyalphabetic substitution; encode/decode with keyword
+- [x] **Atbash cipher** (`<atbash>`) — Hebrew mirror cipher; A↔Z, B↔Y; works on any alphabet
+- [x] **Rail fence cipher** (`<railfence>`) — zigzag transposition; encode/decode with rail count
 - [ ] **Pigpen cipher** (`<pigpen>`) — Masonic cipher; encode to Unicode block characters approximating the grid symbols
 - [ ] **Tap code** (`<tap>`) — prison wall-tapping code (5×5 Polybius square); encode/decode
 - [ ] **Polybius square** (`<polybius>`) — 5×5 grid encoding; coordinates for each letter
