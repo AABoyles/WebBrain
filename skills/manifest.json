@@ -376,5 +376,11 @@
     "label": "IPv4/CIDR",
     "description": "Analyzes IPv4 addresses and CIDR blocks: subnet mask, network, broadcast, host range, address type.",
     "default": false
+  },
+  {
+    "tag": "mac",
+    "label": "MAC Address",
+    "description": "Decodes a MAC address: OUI vendor lookup, unicast/multicast flag, global/local bit.",
+    "default": false
   }
 ]
