@@ -868,5 +868,11 @@
     "label": "Name Day",
     "description": "Finds the European feast day (name day) for a given first name.",
     "default": false
+  },
+  {
+    "tag": "meter",
+    "label": "Meter Checker",
+    "description": "Marks stressed and unstressed syllables in a line of poetry and identifies the dominant foot.",
+    "default": false
   }
 ]

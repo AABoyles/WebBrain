@@ -165,7 +165,7 @@
 - [x] **Pangram checker** (`<pangram>`) — does the text use all 26 letters? Shows missing ones
 - [x] **Palindrome checker** (`<palindrome>`) — word or phrase, ignoring spaces and punctuation
 - [x] **Rhyme scheme** (`<rhymescheme>`) — label line-ending rhymes as ABAB, AABB, etc.
-- [ ] **Meter checker** (`<meter>`) — mark syllable stress, identify iambic/trochaic/anapestic/dactylic feet
+- [x] **Meter checker** (`<meter>`) — mark syllable stress, identify iambic/trochaic/anapestic/dactylic feet
 - [x] **Homophone lookup** (`<homophone>`) — `there/their/they're`, `to/too/two`; built-in table of common pairs
 - [x] **Prefix/suffix meanings** (`<affix>`) — `un-`, `re-`, `-tion`, `-ology`; built-in morpheme table
 - [x] **Spoonerism generator** (`<spoonerism>`) — swap initial consonants of adjacent words; pure string fun
@@ -186,7 +186,7 @@
 - [x] **Hogwarts Sorting** (`<hogwarts>`) — deterministic house assignment from name hash; pure fun
 - [x] **Elf name generator** (`<elfname>`) — first pet name + childhood street → classic generator formula
 - [x] **Phonetic similarity** (`<soundslike>`) — Soundex or Metaphone algorithm; does "Smith" sound like "Smyth"?
-- [x] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
+- [ ] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
 - [x] **Acronym builder** (`<acronym>`) — given a word, generate a plausible backronym for each letter
 
 ### Minimal external API (free, no key required)
@@ -200,4 +200,69 @@
 - [x] **ISS position** (`<iss>`) — Open Notify API; current latitude/longitude of the International Space Station
 - [x] **Dad joke** (`<dadjoke>`) — icanhazdadjoke.com; `Accept: application/json`; no key; the jokes are bad and that's the point
 
-#
+### Libraries
+
+- [ ] [bionode-seq](https://www.npmjs.com/package/bionode-seq)
+- [ ] [bionode-fasta](https://www.npmjs.com/package/bionode-fasta)
+- [ ] [vin-decode](https://www.npmjs.com/package/vin-decode)
+- [ ] [vin-validator](https://www.npmjs.com/package/vin-validator)
+- [ ] [@cardog/corgi](https://www.google.com/search?q=https://www.npmjs.com/package/%40cardog/corgi)
+- [ ] [@huggingface/transformers](https://www.npmjs.com/package/@huggingface/transformers)
+- [ ] [suspicious link removed]
+- [ ] [compromise](https://www.google.com/search?q=https://www.npmjs.com/package/compromise)
+- [ ] [franc](https://www.npmjs.com/package/franc)
+- [ ] [he](https://www.npmjs.com/package/he)
+- [ ] [ini](https://www.google.com/search?q=https://www.npmjs.com/package/ini)
+- [ ] [js-yaml](https://www.google.com/search?q=https://www.npmjs.com/package/js-yaml)
+- [ ] [xml-js](https://www.npmjs.com/package/xml-js)
+- [ ] [text-encoding](https://www.npmjs.com/package/text-encoding)
+- [ ] [voca](https://www.google.com/search?q=https://www.npmjs.com/package/voca)
+- [ ] [change-case](https://www.google.com/search?q=https://www.npmjs.com/package/change-case)
+- [ ] [slugify](https://www.google.com/search?q=https://www.npmjs.com/package/slugify)
+- [ ] [strfi](https://www.google.com/search?q=https://www.npmjs.com/package/strfi)
+- [ ] [crypto-js](https://www.npmjs.com/package/crypto-js)
+- [ ] [js-base64](https://www.npmjs.com/package/js-base64)
+- [ ] [hashids](https://www.npmjs.com/package/hashids)
+- [ ] [bignumber.js](https://www.google.com/search?q=https://www.npmjs.com/package/bignumber.js)
+- [ ] [roman-numerals](https://www.google.com/search?q=https://www.npmjs.com/package/roman-numerals)
+- [ ] [words-to-numbers](https://www.npmjs.com/package/words-to-numbers)
+- [ ] [number-to-words](https://www.npmjs.com/package/number-to-words)
+- [ ] [marked](https://www.google.com/search?q=https://www.npmjs.com/package/marked)
+- [ ] [turndown](https://www.google.com/search?q=https://www.npmjs.com/package/turndown)
+- [ ] [mustache](https://www.google.com/search?q=https://www.npmjs.com/package/mustache)
+- [ ] [diff-match-patch](https://www.google.com/search?q=https://www.npmjs.com/package/diff-match-patch)
+- [ ] [string-similarity](https://www.npmjs.com/package/string-similarity)
+- [ ] [fast-levenshtein](https://www.npmjs.com/package/fast-levenshtein)
+- [ ] [google-libphonenumber](https://www.npmjs.com/package/google-libphonenumber)
+- [ ] [iban](https://www.npmjs.com/package/iban)
+- [ ] [zipcodes](https://www.google.com/search?q=https://www.npmjs.com/package/zipcodes)
+- [ ] [morse-decoder](https://www.google.com/search?q=https://www.npmjs.com/package/morse-decoder)
+- [ ] [magic-string](https://www.google.com/search?q=https://www.npmjs.com/package/magic-string)
+- [ ] [acorn](https://www.npmjs.com/package/acorn)
+- [ ] [escodegen](https://www.npmjs.com/package/escodegen)
+- [ ] [cron-parser](https://www.google.com/search?q=https://www.npmjs.com/package/cron-parser)
+- [ ] [cronstrue](https://www.google.com/search?q=https://www.npmjs.com/package/cronstrue)
+- [ ] [date-fns](https://www.npmjs.com/package/date-fns)
+- [ ] [papaparse](https://www.npmjs.com/package/papaparse)
+- [ ] [xlsx](https://www.npmjs.com/package/xlsx)
+- [ ] [currency.js](https://www.google.com/search?q=https://www.npmjs.com/package/currency.js)
+- [ ] [mathjs](https://www.npmjs.com/package/mathjs)
+- [ ] [query-string](https://www.npmjs.com/package/query-string)
+- [ ] [ip-address](https://www.npmjs.com/package/ip-address)
+- [ ] [emoji-js](https://www.google.com/search?q=https://www.npmjs.com/package/emoji-js)
+- [ ] [strip-tags](https://www.npmjs.com/package/strip-tags)
+- [ ] [strip-ansi](https://www.npmjs.com/package/strip-ansi)
+- [ ] [@stdlib/string](https://www.npmjs.com/package/@stdlib/string)
+- [ ] [punycode](https://www.google.com/search?q=https://www.npmjs.com/package/punycode)
+- [ ] [@turf/distance](https://www.google.com/search?q=https://www.npmjs.com/package/%40turf/distance)
+- [ ] [geodesy](https://www.google.com/search?q=https://www.npmjs.com/package/geodesy)
+- [ ] [proj4](https://www.npmjs.com/package/proj4)
+- [ ] [node-geohash](https://www.google.com/search?q=https://www.npmjs.com/package/node-geohash)
+- [ ] [country-code-lookup](https://www.google.com/search?q=https://www.npmjs.com/package/country-code-lookup)
+- [ ] [country-codes-list](https://www.npmjs.com/package/country-codes-list)
+- [ ] [i18n-iso-countries](https://www.google.com/search?q=https://www.npmjs.com/package/i18n-iso-countries)
+- [ ] [color-convert](https://www.npmjs.com/package/color-convert)
+- [ ] [chroma-js](https://www.npmjs.com/package/chroma-js)
+- [ ] [chemical-formula-parser](https://www.google.com/search?q=https://www.npmjs.com/package/chemical-formula-parser)
+- [ ] [ip-utils](https://www.npmjs.com/package/ip-utils)
+- [ ] [bwip-js](https://www.npmjs.com/package/bwip-js)
