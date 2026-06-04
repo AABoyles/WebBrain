@@ -52,5 +52,11 @@
     "label": "Dice Roller",
     "description": "Rolls dice (d4–d100, NdX+M notation) or flips a coin using crypto-random values.",
     "default": false
+  },
+  {
+    "tag": "speak",
+    "label": "Text-to-Speech",
+    "description": "Narrates model responses aloud using the Web Speech API.",
+    "default": false
   }
 ]
