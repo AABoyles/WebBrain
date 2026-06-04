@@ -910,5 +910,11 @@
     "label": "CSV Tool",
     "description": "Parse, summarize, and convert CSV/TSV data to/from JSON",
     "default": false
+  },
+  {
+    "tag": "mustache",
+    "label": "Mustache Templates",
+    "description": "Fill Mustache templates ({{var}}, sections, loops) with JSON data",
+    "default": false
   }
 ]
