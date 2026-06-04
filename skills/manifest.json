@@ -352,5 +352,11 @@
     "label": "IMEI Decoder",
     "description": "Validates Luhn check digit and decodes TAC, reporting body, and serial number from an IMEI.",
     "default": false
+  },
+  {
+    "tag": "semver",
+    "label": "Semver Parser",
+    "description": "Parses semantic versions and compares two versions with correct pre-release ordering.",
+    "default": false
   }
 ]

@@ -86,7 +86,7 @@
 
 ### Format & protocol parsers
 
-- [ ] **Semver parser** (`<semver>`) — `1.2.3-beta.4+build.5` → major, minor, patch, pre-release, build metadata; range comparison
+- [x] **Semver parser** (`<semver>`) — `1.2.3-beta.4+build.5` → major, minor, patch, pre-release, build metadata; range comparison
 - [ ] **Cron expression** (`<cron>`) — `0 9 * * 1` → "Every Monday at 9:00 AM"; pure parser
 - [ ] **JWT decoder** (`<jwt>`) — base64url-decode header and payload, display claims; no signature verification (by design)
 - [ ] **IPv4 / CIDR** (`<ip>`) — subnet mask, network/broadcast address, host range, number of hosts; pure bit math
