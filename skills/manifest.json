@@ -178,5 +178,11 @@
     "label": "Pirate Speak",
     "description": "Translates text into pirate dialect (ahoy, matey, arrr).",
     "default": false
+  },
+  {
+    "tag": "scrabble",
+    "label": "Scrabble Score",
+    "description": "Calculates the Scrabble tile point value for any word.",
+    "default": false
   }
 ]
