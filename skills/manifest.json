@@ -322,5 +322,11 @@
     "label": "SSN Decoder",
     "description": "Decodes US SSN structure: pre-2011 state by area number, group/serial validity; masks the number.",
     "default": false
+  },
+  {
+    "tag": "isbn",
+    "label": "ISBN Decoder",
+    "description": "Validates ISBN-10 and ISBN-13 check digits; converts between formats.",
+    "default": false
   }
 ]
