@@ -964,5 +964,11 @@
     "label": "Phone Number",
     "description": "Parse, validate, and format international phone numbers (E.164)",
     "default": false
+  },
+  {
+    "tag": "langdetect",
+    "label": "Language Detect",
+    "description": "Detect the language of a text using trigram frequency scoring",
+    "default": false
   }
 ]
