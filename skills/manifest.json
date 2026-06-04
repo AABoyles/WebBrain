@@ -892,5 +892,11 @@
     "label": "INI Parser",
     "description": "Parse and format INI configuration files",
     "default": false
+  },
+  {
+    "tag": "xml",
+    "label": "XML Tool",
+    "description": "Parse, pretty-print, strip tags, and convert XML↔JSON",
+    "default": false
   }
 ]
