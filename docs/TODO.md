@@ -180,14 +180,14 @@
 
 ### Pop culture & personality
 
-- [ ] **Chinese zodiac** (`<zodiac-cn>`) — birth year → animal, element, yin/yang, traits
-- [ ] **Enneagram** (`<enneagram>`) — type number → name, core fear, core desire, wings
+- [x] **Chinese zodiac** (`<zodiac-cn>`) — birth year → animal, element, yin/yang, traits
+- [x] **Enneagram** (`<enneagram>`) — type number → name, core fear, core desire, wings
 - [ ] **Tarot major arcana** (`<tarot-lookup>`) — card name or number → upright and reversed meanings (extends the draw skill)
-- [ ] **Hogwarts Sorting** (`<hogwarts>`) — deterministic house assignment from name hash; pure fun
-- [ ] **Elf name generator** (`<elfname>`) — first pet name + childhood street → classic generator formula
-- [ ] **Phonetic similarity** (`<soundslike>`) — Soundex or Metaphone algorithm; does "Smith" sound like "Smyth"?
+- [x] **Hogwarts Sorting** (`<hogwarts>`) — deterministic house assignment from name hash; pure fun
+- [x] **Elf name generator** (`<elfname>`) — first pet name + childhood street → classic generator formula
+- [x] **Phonetic similarity** (`<soundslike>`) — Soundex or Metaphone algorithm; does "Smith" sound like "Smyth"?
 - [ ] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
-- [ ] **Acronym builder** (`<acronym>`) — given a word, generate a plausible backronym for each letter
+- [x] **Acronym builder** (`<acronym>`) — given a word, generate a plausible backronym for each letter
 
 ### Minimal external API (free, no key required)
 

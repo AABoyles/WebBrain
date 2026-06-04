@@ -730,5 +730,41 @@
     "label": "HTTP Cats",
     "description": "Gives a whimsical cat-themed description for any HTTP status code.",
     "default": false
+  },
+  {
+    "tag": "zodiac-cn",
+    "label": "Chinese Zodiac",
+    "description": "Finds the Chinese zodiac animal, element, and traits for any birth year.",
+    "default": false
+  },
+  {
+    "tag": "enneagram",
+    "label": "Enneagram",
+    "description": "Looks up Enneagram personality types 1–9: name, core fear, core desire, and wings.",
+    "default": false
+  },
+  {
+    "tag": "hogwarts",
+    "label": "Hogwarts Sorting",
+    "description": "Sorts a name into a Hogwarts house deterministically via name hash.",
+    "default": false
+  },
+  {
+    "tag": "elfname",
+    "label": "Elf Name Generator",
+    "description": "Generates a whimsical holiday elf name from any real name.",
+    "default": false
+  },
+  {
+    "tag": "soundslike",
+    "label": "Phonetic Similarity",
+    "description": "Checks if two words sound alike using the Soundex algorithm.",
+    "default": false
+  },
+  {
+    "tag": "acronym",
+    "label": "Acronym Builder",
+    "description": "Generates a backronym where each letter of a word becomes the start of a phrase.",
+    "default": false
   }
 ]
