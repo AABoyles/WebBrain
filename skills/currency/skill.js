@@ -68,25 +68,74 @@ const CURRENCIES = {
   ETH:{name:'Ethereum',symbol:'Ξ',countries:'Decentralized'},
 };
 
-const BY_NAME = Object.fromEntries(Object.entries(CURRENCIES).map(([k,v]) => [v.name.toUpperCase(), k]));
+const BY_NAME   = Object.fromEntries(Object.entries(CURRENCIES).map(([k,v]) => [v.name.toUpperCase(), k]));
+const DEC_PLACES = { JPY:0, KRW:0, VND:0, XOF:0, XAF:0, CLP:0, KWD:3, BHD:3, OMR:3, JOD:3 };
+const SYM_TO_CODE = Object.fromEntries(Object.entries(CURRENCIES).map(([k,v]) => [v.symbol, k]));
+
+// Precise currency arithmetic using BigInt (scaled by 10^8 to avoid float errors)
+const SCALE = 8n;
+const FACTOR = 10n ** SCALE;
+function toScaled(str) {
+  str = str.trim().replace(/,/g, '');
+  const neg = str.startsWith('-'); if (neg) str = str.slice(1);
+  const [int, dec = ''] = str.split('.');
+  const decPadded = dec.padEnd(Number(SCALE), '0').slice(0, Number(SCALE));
+  const v = BigInt(int || '0') * FACTOR + BigInt(decPadded);
+  return neg ? -v : v;
+}
+function fromScaled(v, places = 2) {
+  const neg = v < 0n; const abs = neg ? -v : v;
+  // Round half-up at the requested decimal place
+  const keep = 10n ** BigInt(Number(SCALE) - places);
+  const rounded = (abs + keep / 2n) / keep * keep;
+  const s = rounded.toString().padStart(Number(SCALE) + 1, '0');
+  const intPart = s.slice(0, -Number(SCALE)) || '0';
+  const decPart = s.slice(-Number(SCALE), -Number(SCALE) + places);
+  return (neg ? '-' : '') + intPart + (places > 0 ? '.' + decPart : '');
+}
+function calcCurrency(a, op, b) {
+  const sa = toScaled(a), sb = toScaled(b);
+  if (op === '+') return sa + sb;
+  if (op === '-') return sa - sb;
+  if (op === '*') return (sa * sb) / FACTOR;
+  if (op === '/') { if (sb === 0n) throw new Error('Division by zero'); return (sa * FACTOR) / sb; }
+  throw new Error(`Unknown op: ${op}`);
+}
 
 export default {
   tag: 'currency',
-  instruction: `CURRENCY SKILL: To look up a currency by ISO 4217 code or name, emit <currency>value</currency>.
+  instruction: `CURRENCY SKILL: To look up a currency, emit <currency>USD</currency>. To do precise currency arithmetic, emit <currency>USD 10.20 + 0.10</currency> (use ISO code or symbol). Supports +, -, *, /.
 
 Examples:
 - "What is JPY?" → <currency>JPY</currency>
-- "Tell me about the Euro" → <currency>EUR</currency>`,
+- "$10.20 + $0.10 precisely" → <currency>USD 10.20 + 0.10</currency>
+- "Split £37.50 among 4" → <currency>GBP 37.50 / 4</currency>`,
   call(content) {
+    // Try arithmetic: optional CODE/symbol, then: number OP number
+    const mathMatch = content.trim().match(/^([A-Z]{3}|[$€£¥₹₿Ξ]|\S{2,4})?\s*([\d.,]+)\s*([+\-*/])\s*([\d.,]+)$/i);
+    if (mathMatch) {
+      const [, codeRaw, aStr, op, bStr] = mathMatch;
+      // Resolve currency code
+      let code = null, sym = null;
+      if (codeRaw) {
+        const up = codeRaw.toUpperCase();
+        if (CURRENCIES[up]) { code = up; sym = CURRENCIES[code].symbol; }
+        else if (SYM_TO_CODE[codeRaw]) { code = SYM_TO_CODE[codeRaw]; sym = codeRaw; }
+      }
+      const places = code ? (DEC_PLACES[code] ?? 2) : 2;
+      try {
+        const result = calcCurrency(aStr.replace(/,/g,''), op, bStr.replace(/,/g,''));
+        const formatted = fromScaled(result, places);
+        const label = sym ? `${sym}${formatted}` : (code ? `${formatted} ${code}` : formatted);
+        return `${aStr} ${op} ${bStr} = ${label}`;
+      } catch (e) { return `Arithmetic error: ${e.message}`; }
+    }
+    // Lookup
     const input = content.trim().toUpperCase();
     const code  = CURRENCIES[input] ? input : BY_NAME[input];
     const data  = code ? CURRENCIES[code] : null;
     if (!data) return `Currency not found: "${content}". Try an ISO code (USD, EUR) or full name.`;
-    return [
-      `${data.name} (${code})`,
-      `Symbol: ${data.symbol}`,
-      `Used in: ${data.countries}`,
-    ].join('\n');
+    return [`${data.name} (${code})`, `Symbol: ${data.symbol}`, `Used in: ${data.countries}`].join('\n');
   },
   async handle() {},
 };
