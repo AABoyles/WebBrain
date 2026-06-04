@@ -77,10 +77,10 @@
 - [x] **SSN decoder** (`<ssn>`) — pre-2011 area-number → issuing state lookup, group/serial structure; flags obviously invalid numbers
 - [x] **ISBN decoder** (`<isbn>`) — check digit validation, publisher prefix group, ISBN-10 ↔ ISBN-13 conversion
 - [x] **IBAN decoder** (`<iban>`) — country code, check digit (MOD-97), BBAN structure; validates and explains each field
-- [ ] **SWIFT / BIC decoder** (`<swift>`) — bank code, country, location, branch; pure lookup
-- [ ] **ABA routing number** (`<aba>`) — Federal Reserve district prefix, check digit algorithm
-- [ ] **EIN decoder** (`<ein>`) — Employer Identification Number prefix → IRS campus that assigned it
-- [ ] **UUID decoder** (`<uuid-decode>`) — version (1/3/4/5), variant, timestamp extraction for v1, namespace for v3/v5
+- [ ] ~~**SWIFT / BIC decoder** (`<swift>`) — bank code, country, location, branch; pure lookup~~ (skipped)
+- [ ] ~~**ABA routing number** (`<aba>`) — Federal Reserve district prefix, check digit algorithm~~ (skipped)
+- [ ] ~~**EIN decoder** (`<ein>`) — Employer Identification Number prefix → IRS campus that assigned it~~ (skipped)
+- [x] **UUID decoder** (`<uuid-decode>`) — version (1/3/4/5), variant, timestamp extraction for v1, namespace for v3/v5
 - [ ] **UPC / EAN barcode** (`<upc>`) — check digit validation, GS1 company prefix structure
 - [ ] **IMEI decoder** (`<imei>`) — TAC → device type, Luhn check; pure algorithm
 

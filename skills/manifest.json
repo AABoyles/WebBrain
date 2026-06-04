@@ -334,5 +334,11 @@
     "label": "IBAN Decoder",
     "description": "Validates an IBAN via MOD-97 and decodes country, check digits, and BBAN.",
     "default": false
+  },
+  {
+    "tag": "uuid-decode",
+    "label": "UUID Decoder",
+    "description": "Decodes UUID version (1–5), variant, and for v1 extracts the embedded timestamp and node.",
+    "default": false
   }
 ]
