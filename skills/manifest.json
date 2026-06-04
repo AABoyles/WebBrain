@@ -202,5 +202,11 @@
     "label": "Statistics",
     "description": "Computes mean, median, mode, std dev, min, max, and more for a list of numbers.",
     "default": false
+  },
+  {
+    "tag": "compound",
+    "label": "Compound Interest",
+    "description": "Calculates compound interest: final amount, interest earned, and return percentage.",
+    "default": false
   }
 ]
