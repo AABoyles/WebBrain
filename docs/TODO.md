@@ -191,11 +191,11 @@
 
 ### Minimal external API (free, no key required)
 
-- [ ] **Weather** (`<weather>`) — Open-Meteo (free, no auth); pairs with the Location skill for lat/lon
-- [ ] **Word definition** (`<define>`) — Free Dictionary API (`api.dictionaryapi.dev`); no key, no rate limits
-- [ ] **Open Library search** (`<book>`) — search Open Library by title/author; returns summary, year, cover; no key
-- [ ] **Sunrise / sunset** (`<sun>`) — sunrise-sunset.org API; takes lat/lon from Location skill; no key required
-- [ ] **Number trivia** (`<numtrivia>`) — numbersapi.com; `42` → "42 is the answer to life, the universe, and everything"
-- [ ] **Pokédex** (`<pokemon>`) — PokéAPI (free, no auth); any Pokémon name → type, abilities, base stats, flavor text
-- [ ] **ISS position** (`<iss>`) — Open Notify API; current latitude/longitude of the International Space Station
-- [ ] **Dad joke** (`<dadjoke>`) — icanhazdadjoke.com; `Accept: application/json`; no key; the jokes are bad and that's the point
+- [x] **Weather** (`<weather>`) — Open-Meteo (free, no auth); pairs with the Location skill for lat/lon
+- [x] **Word definition** (`<define>`) — Free Dictionary API (`api.dictionaryapi.dev`); no key, no rate limits
+- [x] **Open Library search** (`<book>`) — search Open Library by title/author; returns summary, year, cover; no key
+- [x] **Sunrise / sunset** (`<sun>`) — sunrise-sunset.org API; takes lat/lon from Location skill; no key required
+- [x] **Number trivia** (`<numtrivia>`) — numbersapi.com; `42` → "42 is the answer to life, the universe, and everything"
+- [x] **Pokédex** (`<pokemon>`) — PokéAPI (free, no auth); any Pokémon name → type, abilities, base stats, flavor text
+- [x] **ISS position** (`<iss>`) — Open Notify API; current latitude/longitude of the International Space Station
+- [x] **Dad joke** (`<dadjoke>`) — icanhazdadjoke.com; `Accept: application/json`; no key; the jokes are bad and that's the point

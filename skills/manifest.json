@@ -766,5 +766,53 @@
     "label": "Acronym Builder",
     "description": "Generates a backronym where each letter of a word becomes the start of a phrase.",
     "default": false
+  },
+  {
+    "tag": "weather",
+    "label": "Weather",
+    "description": "Gets current weather (temp, conditions, wind, humidity) via Open-Meteo API; takes lat,lon.",
+    "default": false
+  },
+  {
+    "tag": "define",
+    "label": "Word Definition",
+    "description": "Looks up word definitions via the Free Dictionary API (no key required).",
+    "default": false
+  },
+  {
+    "tag": "book",
+    "label": "Book Search",
+    "description": "Searches Open Library by title or author; returns top results with year.",
+    "default": false
+  },
+  {
+    "tag": "sun",
+    "label": "Sunrise / Sunset",
+    "description": "Gets sunrise, sunset, and solar noon for any lat/lon via sunrise-sunset.org.",
+    "default": false
+  },
+  {
+    "tag": "numtrivia",
+    "label": "Number Trivia",
+    "description": "Gets a fun fact about any number or year via numbersapi.com.",
+    "default": false
+  },
+  {
+    "tag": "pokemon",
+    "label": "Pokédex",
+    "description": "Looks up any Pokémon by name or number via PokéAPI; shows type, stats, and moves.",
+    "default": false
+  },
+  {
+    "tag": "iss",
+    "label": "ISS Position",
+    "description": "Gets the current latitude/longitude of the International Space Station.",
+    "default": false
+  },
+  {
+    "tag": "dadjoke",
+    "label": "Dad Joke",
+    "description": "Fetches a random dad joke from icanhazdadjoke.com. They're terrible. That's the point.",
+    "default": false
   }
 ]
