@@ -364,5 +364,11 @@
     "label": "Cron Expression",
     "description": "Translates a 5-field cron schedule expression into plain-English description.",
     "default": false
+  },
+  {
+    "tag": "jwt",
+    "label": "JWT Decoder",
+    "description": "Base64url-decodes JWT header and payload; shows claims and expiry; does not verify signature.",
+    "default": false
   }
 ]

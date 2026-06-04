@@ -88,7 +88,7 @@
 
 - [x] **Semver parser** (`<semver>`) — `1.2.3-beta.4+build.5` → major, minor, patch, pre-release, build metadata; range comparison
 - [x] **Cron expression** (`<cron>`) — `0 9 * * 1` → "Every Monday at 9:00 AM"; pure parser
-- [ ] **JWT decoder** (`<jwt>`) — base64url-decode header and payload, display claims; no signature verification (by design)
+- [x] **JWT decoder** (`<jwt>`) — base64url-decode header and payload, display claims; no signature verification (by design)
 - [ ] **IPv4 / CIDR** (`<ip>`) — subnet mask, network/broadcast address, host range, number of hosts; pure bit math
 - [ ] **MAC address** (`<mac>`) — OUI prefix → manufacturer; first-octet flags (unicast/multicast, locally administered)
 - [ ] **Unix timestamp** (`<epoch>`) — epoch ↔ human date in any direction; also shows "time ago / from now"
