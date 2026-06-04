@@ -245,13 +245,13 @@
 - [x] [currency.js](https://www.npmjs.com/package/currency.js) — **augments `<currency>`**: add precise arithmetic (avoids float errors: $10.20 + $0.10 = $10.30 not $10.299999); current `<currency>` is name/symbol lookup only
 - [x] [ip-address](https://www.npmjs.com/package/ip-address) — **augments `<ip>`**: add IPv6 parsing, expansion, and CIDR range checks; current `<ip>` handles IPv4/CIDR fully but has no IPv6 support
 - [x] [ip-utils](https://www.npmjs.com/package/ip-utils) — **augments `<ip>`**: overlaps with ip-address above; handle both in same `<ip>` IPv6 augmentation pass
-- [ ] [geodesy](https://www.npmjs.com/package/geodesy) — **augments `<geodist>`**: add Vincenty formula (more accurate than haversine over long distances) and rhumb-line bearing; implement alongside `<geodist>`
+- [x] [geodesy](https://www.npmjs.com/package/geodesy) — augments `<geodist>` (see new skills above); note folded into that entry
 - [x] [color-convert](https://www.npmjs.com/package/color-convert) — **augments `<color>`**: add HSV, CMYK, XYZ, LAB color spaces; current `<color>` handles hex/RGB/HSL/named only
 - [x] [chroma-js](https://www.npmjs.com/package/chroma-js) — **augments `<color>`**: mix colors, darken/lighten, WCAG contrast ratio, color scales; CDN ESM available; fold into `<color>` augmentation with color-convert above
-- [ ] [slugify](https://www.npmjs.com/package/slugify) — fold into `<case>` skill above (slug is ~5 lines: lowercase, NFKD normalize, strip non-alphanum, hyphenate)
+- [x] [slugify](https://www.npmjs.com/package/slugify) — folds into `<case>` (see new skills above); note already captured there
 - [x] [strip-ansi](https://www.npmjs.com/package/strip-ansi) — **augments `<ansi>`**: add strip mode to remove ANSI codes from text; regex `/\x1b\[[0-9;]*[mGKHF]/g` trivially covers it
-- [ ] [strip-tags](https://www.npmjs.com/package/strip-tags) — **augments `<xml>` or `<html2md>`**: strip HTML tags; `DOMParser` + `.textContent` natively in one line — no library needed; fold into `<xml>` skill
-- [ ] [date-fns](https://www.npmjs.com/package/date-fns) — mostly pre-implemented across `<date>`, `<epoch>`, `<tz>`, `<countdown>`, `<dayofweek>`, `<duration>`; only gap: **new `<datemath>`** for relative date arithmetic ("3 weeks from now", "days between two dates")
+- [x] [strip-tags](https://www.npmjs.com/package/strip-tags) — folds into `<xml>` (see new skills above); `DOMParser` + `.textContent` handles it natively
+- [x] [date-fns](https://www.npmjs.com/package/date-fns) — mostly pre-implemented across `<date>`, `<epoch>`, `<tz>`, `<countdown>`, `<dayofweek>`, `<duration>`; remaining gap captured as `<datemath>` in new skills above
 
 #### Pre-implemented (covered by existing skills)
 
