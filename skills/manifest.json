@@ -946,5 +946,11 @@
     "label": "Geohash",
     "description": "Encode lat/lng coordinates to Geohash strings and decode back",
     "default": false
+  },
+  {
+    "tag": "proj",
+    "label": "Coordinate Projection",
+    "description": "Convert between WGS84 lat/lon and UTM coordinates",
+    "default": false
   }
 ]
