@@ -928,5 +928,11 @@
     "label": "HTML to Markdown",
     "description": "Convert HTML markup to Markdown text",
     "default": false
+  },
+  {
+    "tag": "hashid",
+    "label": "Hashids",
+    "description": "Encode integers to short YouTube-style IDs and decode back",
+    "default": false
   }
 ]
