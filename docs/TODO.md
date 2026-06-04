@@ -72,7 +72,7 @@
 
 ### ID & document decoders (pure lookup tables + check-digit algorithms)
 
-- [ ] **VIN decoder** (`<vin>`) — World Manufacturer Identifier, model year encoding, plant code, check digit validation (NHTSA formula)
+- [x] **VIN decoder** (`<vin>`) — World Manufacturer Identifier, model year encoding, plant code, check digit validation (NHTSA formula)
 - [ ] **Credit card decoder** (`<cc>`) — Luhn algorithm validation, IIN prefix → issuer (Visa/MC/Amex/Discover/JCB/UnionPay), length check; never stores the number
 - [ ] **SSN decoder** (`<ssn>`) — pre-2011 area-number → issuing state lookup, group/serial structure; flags obviously invalid numbers
 - [ ] **ISBN decoder** (`<isbn>`) — check digit validation, publisher prefix group, ISBN-10 ↔ ISBN-13 conversion
