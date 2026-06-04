@@ -580,5 +580,71 @@
     "label": "Time There",
     "description": "Shows the current local time in any city or country by name.",
     "default": false
+  },
+  {
+    "tag": "element",
+    "label": "Periodic Table",
+    "description": "Looks up any element by name, symbol, or atomic number; shows weight, period, group, state, and a fun fact.",
+    "default": false
+  },
+  {
+    "tag": "mohs",
+    "label": "Mohs Hardness",
+    "description": "Looks up a Mohs hardness value and what minerals/objects can scratch it.",
+    "default": false
+  },
+  {
+    "tag": "beaufort",
+    "label": "Beaufort Scale",
+    "description": "Describes wind force, sea state, and land effects for any Beaufort number 0–12.",
+    "default": false
+  },
+  {
+    "tag": "fujita",
+    "label": "Fujita Scale",
+    "description": "Describes wind speed and expected damage for Enhanced Fujita tornado ratings EF0–EF5.",
+    "default": false
+  },
+  {
+    "tag": "cloud",
+    "label": "Cloud Types",
+    "description": "Describes cloud types by altitude, appearance, and associated weather.",
+    "default": false
+  },
+  {
+    "tag": "collective",
+    "label": "Collective Nouns",
+    "description": "Finds the collective noun for a group of animals (a murder of crows, a flamboyance of flamingos…).",
+    "default": false
+  },
+  {
+    "tag": "babyname",
+    "label": "Baby Animal Names",
+    "description": "Finds what a baby animal is called (joey, puggle, cygnet…).",
+    "default": false
+  },
+  {
+    "tag": "sound",
+    "label": "Animal Sounds",
+    "description": "Finds what sound an animal makes, including the less obvious ones.",
+    "default": false
+  },
+  {
+    "tag": "si",
+    "label": "SI Prefix",
+    "description": "Looks up SI metric prefixes (kilo, mega, µ…) and binary prefixes (kibi, mebi…).",
+    "default": false
+  },
+  {
+    "tag": "greek",
+    "label": "Greek Letters",
+    "description": "Looks up Greek letter symbols and their common uses in math and science.",
+    "default": false
+  },
+  {
+    "tag": "resistor",
+    "label": "Resistor Color Code",
+    "description": "Decodes 4-band and 5-band resistor color sequences to resistance values.",
+    "default": false
   }
 ]

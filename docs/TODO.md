@@ -136,17 +136,17 @@
 
 ### Science & nature lookup
 
-- [ ] **Periodic table** (`<element>`) — symbol or name → atomic number, weight, period, group, state, discovery year, fun fact
-- [ ] **Mohs hardness** (`<mohs>`) — hardness value → example mineral and what it can scratch/be scratched by
-- [ ] **Beaufort scale** (`<beaufort>`) — wind force number → description, sea state, land effects
-- [ ] **Fujita scale** (`<fujita>`) — EF rating → wind speed range, expected damage
-- [ ] **Cloud types** (`<cloud>`) — name → altitude, description, weather association (cumulonimbus, lenticular, mammatus…)
-- [ ] **Collective nouns** (`<collective>`) — `crows` → "a murder", `owls` → "a parliament", `flamingos` → "a flamboyance"
-- [ ] **Baby animal names** (`<babyname>`) — `kangaroo` → joey, `fox` → kit, `platypus` → puggle
-- [ ] **Animal sounds** (`<sound>`) — `fox` → "screams / gekkering"; goes beyond the obvious ones
-- [ ] **SI prefix** (`<si>`) — `µ` → micro, 10⁻⁶; full table from yocto to yotta; also binary prefixes (kibi, mebi…)
-- [ ] **Greek letters** (`<greek>`) — name ↔ symbol ↔ common usage in math/science
-- [ ] **Resistor color code** (`<resistor>`) — read 4/5/6-band color sequence → resistance and tolerance value
+- [x] **Periodic table** (`<element>`) — symbol or name → atomic number, weight, period, group, state, discovery year, fun fact
+- [x] **Mohs hardness** (`<mohs>`) — hardness value → example mineral and what it can scratch/be scratched by
+- [x] **Beaufort scale** (`<beaufort>`) — wind force number → description, sea state, land effects
+- [x] **Fujita scale** (`<fujita>`) — EF rating → wind speed range, expected damage
+- [x] **Cloud types** (`<cloud>`) — name → altitude, description, weather association (cumulonimbus, lenticular, mammatus…)
+- [x] **Collective nouns** (`<collective>`) — `crows` → "a murder", `owls` → "a parliament", `flamingos` → "a flamboyance"
+- [x] **Baby animal names** (`<babyname>`) — `kangaroo` → joey, `fox` → kit, `platypus` → puggle
+- [x] **Animal sounds** (`<sound>`) — `fox` → "screams / gekkering"; goes beyond the obvious ones
+- [x] **SI prefix** (`<si>`) — `µ` → micro, 10⁻⁶; full table from yocto to yotta; also binary prefixes (kibi, mebi…)
+- [x] **Greek letters** (`<greek>`) — name ↔ symbol ↔ common usage in math/science
+- [x] **Resistor color code** (`<resistor>`) — read 4/5/6-band color sequence → resistance and tolerance value
 
 ### Numbers & mathematical curiosities
 
