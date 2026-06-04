@@ -173,10 +173,10 @@
 
 ### Hardware & retro computing
 
-- [ ] **ASCII table** (`<ascii-table>`) — code → character and character → code; includes control characters with descriptions
-- [ ] **Color from ANSI code** (`<ansi>`) — `\e[31m` → "red foreground"; full 256-color and truecolor support
-- [ ] **Commodore BASIC errors** (`<cbmerror>`) — error number → message and common cause
-- [ ] **HTTP cats / dogs** (`<httpcat>`) — status code → describes the cat/dog image meme; pure fun lookup
+- [x] **ASCII table** (`<ascii-table>`) — code → character and character → code; includes control characters with descriptions
+- [x] **Color from ANSI code** (`<ansi>`) — `\e[31m` → "red foreground"; full 256-color and truecolor support
+- [x] **Commodore BASIC errors** (`<cbmerror>`) — error number → message and common cause
+- [x] **HTTP cats / dogs** (`<httpcat>`) — status code → describes the cat/dog image meme; pure fun lookup
 
 ### Pop culture & personality
 

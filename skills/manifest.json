@@ -706,5 +706,29 @@
     "label": "Portmanteau Builder",
     "description": "Blends two words into portmanteau suggestions.",
     "default": false
+  },
+  {
+    "tag": "ascii-table",
+    "label": "ASCII Table",
+    "description": "Looks up ASCII codes by character or finds the character for a code (0–127).",
+    "default": false
+  },
+  {
+    "tag": "ansi",
+    "label": "ANSI Color Codes",
+    "description": "Decodes ANSI SGR escape sequences into foreground/background color and attribute names.",
+    "default": false
+  },
+  {
+    "tag": "cbmerror",
+    "label": "Commodore BASIC Errors",
+    "description": "Looks up Commodore 64/128 BASIC error numbers with message and common cause.",
+    "default": false
+  },
+  {
+    "tag": "httpcat",
+    "label": "HTTP Cats",
+    "description": "Gives a whimsical cat-themed description for any HTTP status code.",
+    "default": false
   }
 ]
