@@ -934,5 +934,11 @@
     "label": "Hashids",
     "description": "Encode integers to short YouTube-style IDs and decode back",
     "default": false
+  },
+  {
+    "tag": "geodist",
+    "label": "Geo Distance",
+    "description": "Calculate distance, bearing, and midpoint between two lat/lng coordinates",
+    "default": false
   }
 ]
