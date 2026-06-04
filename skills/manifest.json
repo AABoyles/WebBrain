@@ -208,5 +208,11 @@
     "label": "Compound Interest",
     "description": "Calculates compound interest: final amount, interest earned, and return percentage.",
     "default": false
+  },
+  {
+    "tag": "sleep",
+    "label": "Sleep Cycles",
+    "description": "Suggests optimal bedtimes or wake times based on 90-minute REM cycle math.",
+    "default": false
   }
 ]
