@@ -226,5 +226,11 @@
     "label": "Prime Factorizer",
     "description": "Returns the prime factorization of any integer up to one trillion.",
     "default": false
+  },
+  {
+    "tag": "dayofweek",
+    "label": "Day of Week",
+    "description": "Finds what day of the week any date (past or future) falls on.",
+    "default": false
   }
 ]

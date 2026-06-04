@@ -43,7 +43,7 @@
 - [x] **Sleep cycles** (`<sleep>`) — given a bedtime or wake-up target, suggest optimal times based on 90-minute REM cycles
 - [x] **Fibonacci / sequences** (`<seq>`) — generate terms of Fibonacci, primes, triangular numbers, etc.
 - [x] **Prime factorizer** (`<factor>`) — factor any integer; pure JS
-- [ ] **Day of week oracle** (`<dayofweek>`) — what day was/will any date fall on? Zeller's formula, pure JS
+- [x] **Day of week oracle** (`<dayofweek>`) — what day was/will any date fall on? Zeller's formula, pure JS
 
 ### Games & randomness
 
