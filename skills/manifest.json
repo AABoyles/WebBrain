@@ -130,5 +130,11 @@
     "label": "DTMF Tones",
     "description": "Plays telephone keypad dual-tone multi-frequency (DTMF) tones via Web Audio.",
     "default": false
+  },
+  {
+    "tag": "nato",
+    "label": "NATO Phonetic",
+    "description": "Spells text using the NATO phonetic alphabet (Alpha, Bravo, Charlie…).",
+    "default": false
   }
 ]
