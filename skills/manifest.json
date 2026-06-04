@@ -400,5 +400,11 @@
     "label": "URL Dissector",
     "description": "Parses any URL into scheme, host, port, path, query parameters, and fragment.",
     "default": false
+  },
+  {
+    "tag": "mime",
+    "label": "MIME Type",
+    "description": "Looks up MIME type by file extension or finds extensions for a given MIME type.",
+    "default": false
   }
 ]
