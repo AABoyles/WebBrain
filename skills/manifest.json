@@ -238,5 +238,11 @@
     "label": "Magic 8-Ball",
     "description": "Answers yes/no questions with one of the 20 canonical Magic 8-Ball responses.",
     "default": false
+  },
+  {
+    "tag": "tarot",
+    "label": "Tarot Draw",
+    "description": "Draws from a full 78-card tarot deck with card meanings; supports 1-card and 3-card spreads.",
+    "default": false
   }
 ]
