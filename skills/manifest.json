@@ -646,5 +646,35 @@
     "label": "Resistor Color Code",
     "description": "Decodes 4-band and 5-band resistor color sequences to resistance values.",
     "default": false
+  },
+  {
+    "tag": "collatz",
+    "label": "Collatz Sequence",
+    "description": "Runs the 3n+1 Collatz sequence from any integer and shows steps to reach 1.",
+    "default": false
+  },
+  {
+    "tag": "digitalroot",
+    "label": "Digital Root",
+    "description": "Iteratively sums digits until a single digit; shows each step (casting out nines).",
+    "default": false
+  },
+  {
+    "tag": "numprop",
+    "label": "Number Properties",
+    "description": "Checks whether a number is prime, perfect, abundant, happy, Armstrong, palindrome, etc.",
+    "default": false
+  },
+  {
+    "tag": "zeckendorf",
+    "label": "Zeckendorf",
+    "description": "Expresses any integer as a unique sum of non-consecutive Fibonacci numbers.",
+    "default": false
+  },
+  {
+    "tag": "kaprekar",
+    "label": "Kaprekar Routine",
+    "description": "Applies the Kaprekar routine to a 4-digit number (always reaches 6174).",
+    "default": false
   }
 ]

@@ -150,12 +150,12 @@
 
 ### Numbers & mathematical curiosities
 
-- [ ] **Collatz sequence** (`<collatz>`) — how many steps to reach 1; show the path; `27` takes 111 steps
-- [ ] **Digital root** (`<digitalroot>`) — iteratively sum digits until single digit; explains casting out nines
-- [ ] **Number properties** (`<numprop>`) — is it prime, perfect, abundant, deficient, happy, Armstrong, palindrome?
-- [ ] **Zeckendorf representation** (`<zeckendorf>`) — any positive integer as a unique sum of non-consecutive Fibonacci numbers
+- [x] **Collatz sequence** (`<collatz>`) — how many steps to reach 1; show the path; `27` takes 111 steps
+- [x] **Digital root** (`<digitalroot>`) — iteratively sum digits until single digit; explains casting out nines
+- [x] **Number properties** (`<numprop>`) — is it prime, perfect, abundant, deficient, happy, Armstrong, palindrome?
+- [x] **Zeckendorf representation** (`<zeckendorf>`) — any positive integer as a unique sum of non-consecutive Fibonacci numbers
 - [ ] **Continued fraction** (`<cf>`) — expand any rational or famous irrational (π, e, φ) as `[a₀; a₁, a₂, …]`
-- [ ] **Kaprekar routine** (`<kaprekar>`) — apply to any 4-digit number; always reaches 6174 in ≤7 steps
+- [x] **Kaprekar routine** (`<kaprekar>`) — apply to any 4-digit number; always reaches 6174 in ≤7 steps
 - [ ] **Stern-Brocot tree** (`<sternbrocot>`) — find path to any fraction in the Stern-Brocot tree
 
 ### Language & linguistics
