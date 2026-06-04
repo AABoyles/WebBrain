@@ -11,7 +11,7 @@
 - [x] **Color converter** (`<color>`) — pure math; hex ↔ rgb ↔ hsl conversions
 - [x] **Time zone converter** (`<tz>`) — `Intl.DateTimeFormat`; e.g. `3pm EST to PST`
 - [x] **Hash** (`<hash>`) — `crypto.subtle.digest`; SHA-256 and friends
-- [ ] **ROT13** (`<rot13>`)
+- [x] **ROT13** (`<rot13>`)
 - [ ] **Caesar Cipher** (`<caesar>`)
 - [ ] **Morse Code** (`<morse>`)
 

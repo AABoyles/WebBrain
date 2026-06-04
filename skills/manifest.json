@@ -88,5 +88,11 @@
     "label": "Hash",
     "description": "Computes SHA-1, SHA-256, SHA-384, or SHA-512 digests via the Web Crypto API.",
     "default": false
+  },
+  {
+    "tag": "rot13",
+    "label": "ROT13",
+    "description": "Applies ROT13 substitution cipher (self-inverse: same operation encodes and decodes).",
+    "default": false
   }
 ]
