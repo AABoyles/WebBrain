@@ -874,5 +874,11 @@
     "label": "Meter Checker",
     "description": "Marks stressed and unstressed syllables in a line of poetry and identifies the dominant foot.",
     "default": false
+  },
+  {
+    "tag": "dna",
+    "label": "DNA/RNA Tool",
+    "description": "Complement, transcription, translation, FASTA parsing, and GC content for DNA/RNA sequences",
+    "default": false
   }
 ]
