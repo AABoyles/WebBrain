@@ -250,5 +250,11 @@
     "label": "Rock Paper Scissors",
     "description": "Plays rock-paper-scissors against the browser using crypto-random CPU choice.",
     "default": false
+  },
+  {
+    "tag": "countdown",
+    "label": "Countdown",
+    "description": "Shows days, hours, and minutes remaining until any target date.",
+    "default": false
   }
 ]
