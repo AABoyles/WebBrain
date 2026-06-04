@@ -186,7 +186,7 @@
 - [x] **Hogwarts Sorting** (`<hogwarts>`) — deterministic house assignment from name hash; pure fun
 - [x] **Elf name generator** (`<elfname>`) — first pet name + childhood street → classic generator formula
 - [x] **Phonetic similarity** (`<soundslike>`) — Soundex or Metaphone algorithm; does "Smith" sound like "Smyth"?
-- [ ] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
+- [x] **Name day** (`<nameday>`) — European tradition; given a first name, return the feast day (built-in table for common names)
 - [x] **Acronym builder** (`<acronym>`) — given a word, generate a plausible backronym for each letter
 
 ### Minimal external API (free, no key required)
@@ -206,10 +206,10 @@
 - [ ] [bionode-fasta](https://www.npmjs.com/package/bionode-fasta)
 - [ ] [vin-decode](https://www.npmjs.com/package/vin-decode)
 - [ ] [vin-validator](https://www.npmjs.com/package/vin-validator)
-- [ ] [@cardog/corgi](https://www.google.com/search?q=https://www.npmjs.com/package/%40cardog/corgi)
+- [ ] [@cardog/corgi](https://www.npmjs.com/package/%40cardog/corgi)
 - [ ] [@huggingface/transformers](https://www.npmjs.com/package/@huggingface/transformers)
 - [ ] [suspicious link removed]
-- [ ] [compromise](https://www.google.com/search?q=https://www.npmjs.com/package/compromise)
+- [ ] [compromise](https://www.npmjs.com/package/compromise)
 - [ ] [franc](https://www.npmjs.com/package/franc)
 - [ ] [he](https://www.npmjs.com/package/he)
 - [ ] [ini](https://www.google.com/search?q=https://www.npmjs.com/package/ini)
@@ -258,11 +258,11 @@
 - [ ] [geodesy](https://www.google.com/search?q=https://www.npmjs.com/package/geodesy)
 - [ ] [proj4](https://www.npmjs.com/package/proj4)
 - [ ] [node-geohash](https://www.google.com/search?q=https://www.npmjs.com/package/node-geohash)
-- [ ] [country-code-lookup](https://www.google.com/search?q=https://www.npmjs.com/package/country-code-lookup)
+- [ ] [country-code-lookup](https://www.npmjs.com/package/country-code-lookup)
 - [ ] [country-codes-list](https://www.npmjs.com/package/country-codes-list)
-- [ ] [i18n-iso-countries](https://www.google.com/search?q=https://www.npmjs.com/package/i18n-iso-countries)
+- [ ] [i18n-iso-countries](https://www.npmjs.com/package/i18n-iso-countries)
 - [ ] [color-convert](https://www.npmjs.com/package/color-convert)
 - [ ] [chroma-js](https://www.npmjs.com/package/chroma-js)
-- [ ] [chemical-formula-parser](https://www.google.com/search?q=https://www.npmjs.com/package/chemical-formula-parser)
+- [ ] [chemical-formula-parser](https://www.npmjs.com/package/chemical-formula-parser)
 - [ ] [ip-utils](https://www.npmjs.com/package/ip-utils)
 - [ ] [bwip-js](https://www.npmjs.com/package/bwip-js)
