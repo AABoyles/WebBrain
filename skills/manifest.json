@@ -184,5 +184,11 @@
     "label": "Scrabble Score",
     "description": "Calculates the Scrabble tile point value for any word.",
     "default": false
+  },
+  {
+    "tag": "haiku",
+    "label": "Haiku Checker",
+    "description": "Checks whether a three-line poem follows the 5-7-5 syllable structure.",
+    "default": false
   }
 ]

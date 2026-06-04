@@ -33,7 +33,7 @@
 - [x] **Leet speak** (`<leet>`) — 1337 5p34k; pure substitution table
 - [x] **Pirate speak** (`<pirate>`) — word-substitution table; "hello" → "ahoy"; fun for the persona
 - [x] **Scrabble score** (`<scrabble>`) — calculate tile point value for a word; pure lookup table
-- [ ] **Haiku checker** (`<haiku>`) — count syllables per line and verify 5-7-5 structure; algorithmic syllable counter
+- [x] **Haiku checker** (`<haiku>`) — count syllables per line and verify 5-7-5 structure; algorithmic syllable counter
 - [ ] **Readability score** (`<flesch>`) — Flesch-Kincaid reading ease score from pasted text; pure math on word/sentence/syllable counts
 
 ### Math & science
