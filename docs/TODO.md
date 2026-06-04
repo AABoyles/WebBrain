@@ -93,7 +93,7 @@
 - [x] **MAC address** (`<mac>`) — OUI prefix → manufacturer; first-octet flags (unicast/multicast, locally administered)
 - [x] **Unix timestamp** (`<epoch>`) — epoch ↔ human date in any direction; also shows "time ago / from now"
 - [x] **ISO 8601 duration** (`<duration>`) — `P1Y2M3DT4H5M6S` → "1 year, 2 months, 3 days, 4 hours…"
-- [ ] **URL dissector** (`<url>`) — parse any URL into scheme, auth, host, TLD, path, query params, fragment; explain each part
+- [x] **URL dissector** (`<url>`) — parse any URL into scheme, auth, host, TLD, path, query params, fragment; explain each part
 - [ ] **MIME type** (`<mime>`) — extension → type or type → extension; built-in table of ~150 common types
 - [ ] **HTTP status** (`<http>`) — `418` → "I'm a Teapot (RFC 2324)"; full table including WebDAV, nginx, Cloudflare codes
 - [ ] **TCP port** (`<port>`) — well-known port → service; `443` → HTTPS, `22` → SSH, `6379` → Redis, etc.

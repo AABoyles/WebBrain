@@ -394,5 +394,11 @@
     "label": "ISO 8601 Duration",
     "description": "Decodes ISO 8601 duration strings (P1Y2M3DT4H5M6S) into plain-English descriptions.",
     "default": false
+  },
+  {
+    "tag": "url",
+    "label": "URL Dissector",
+    "description": "Parses any URL into scheme, host, port, path, query parameters, and fragment.",
+    "default": false
   }
 ]
