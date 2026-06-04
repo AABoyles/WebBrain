@@ -940,5 +940,11 @@
     "label": "Geo Distance",
     "description": "Calculate distance, bearing, and midpoint between two lat/lng coordinates",
     "default": false
+  },
+  {
+    "tag": "geohash",
+    "label": "Geohash",
+    "description": "Encode lat/lng coordinates to Geohash strings and decode back",
+    "default": false
   }
 ]
