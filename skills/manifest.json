@@ -256,5 +256,11 @@
     "label": "Countdown",
     "description": "Shows days, hours, and minutes remaining until any target date.",
     "default": false
+  },
+  {
+    "tag": "poetictime",
+    "label": "Poetic Time",
+    "description": "Renders the current time in natural language (\"quarter past midnight\", \"nearly noon\").",
+    "default": false
   }
 ]

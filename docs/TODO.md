@@ -54,7 +54,7 @@
 ### Time & date
 
 - [x] **Countdown** (`<countdown>`) — time remaining until a specific date/event; pure JS date math
-- [ ] **Poetic time** (`<poetictime>`) — render current time in natural language ("quarter past midnight", "nearly noon")
+- [x] **Poetic time** (`<poetictime>`) — render current time in natural language ("quarter past midnight", "nearly noon")
 - [ ] **Day progress** (`<daypct>`) — what percentage of the day/week/year has elapsed; great for journaling
 
 ### Developer tools
