@@ -50,15 +50,10 @@
 - [ ] **Magic 8-ball** (`<8ball>`) — 20 canonical responses, `crypto.getRandomValues`; delightful
 - [ ] **Tarot draw** (`<tarot>`) — draw one or three cards from a full 78-card deck with built-in meanings; `crypto.getRandomValues`
 - [ ] **Rock paper scissors** (`<rps>`) — play against the browser; crypto-random choice
-- [ ] **Fortune cookie** (`<fortune>`) — random aphorism from a built-in list of 50–100 classics
-- [ ] **Compliment generator** (`<compliment>`) — draw a random specific compliment; pairs well with TTS
-- [ ] **Writing prompt** (`<prompt>`) — random creative fiction, journaling, or poetry prompt from a built-in list
-- [ ] **Would you rather** (`<wyr>`) — generate a random dilemma for conversation or reflection
 
 ### Time & date
 
 - [ ] **Countdown** (`<countdown>`) — time remaining until a specific date/event; pure JS date math
-- [ ] **Is it Friday?** (`<friday>`) — the most important question; zero deps
 - [ ] **Poetic time** (`<poetictime>`) — render current time in natural language ("quarter past midnight", "nearly noon")
 - [ ] **Day progress** (`<daypct>`) — what percentage of the day/week/year has elapsed; great for journaling
 

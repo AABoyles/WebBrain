@@ -1,0 +1,50 @@
+[
+  {
+    "tag": "fact",
+    "label": "Memory",
+    "description": "Saves personal details shared in conversation as persistent facts.",
+    "default": true
+  },
+  {
+    "tag": "date",
+    "label": "Date Awareness",
+    "description": "Lets the model look up the current date and time on demand.",
+    "default": false
+  },
+  {
+    "tag": "calc",
+    "label": "Calculator",
+    "description": "Evaluates math expressions precisely using the JS engine — no hallucination.",
+    "default": false
+  },
+  {
+    "tag": "remind",
+    "label": "Reminders",
+    "description": "Sets timed browser notifications.",
+    "default": false
+  },
+  {
+    "tag": "todo",
+    "label": "To-Do List",
+    "description": "Manages a persistent to-do list stored in your browser.",
+    "default": false
+  },
+  {
+    "tag": "convert",
+    "label": "Unit Converter",
+    "description": "Converts between length, mass, temperature, volume, speed, area, and data units.",
+    "default": false
+  },
+  {
+    "tag": "wiki",
+    "label": "Wikipedia",
+    "description": "Fetches a real Wikipedia summary instead of hallucinating facts.",
+    "default": false
+  },
+  {
+    "tag": "location",
+    "label": "Location",
+    "description": "Gets your approximate location for context-aware answers.",
+    "default": false
+  }
+]

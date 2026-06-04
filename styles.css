@@ -963,3 +963,41 @@ body.thinking #status-bar::before {
   text-decoration: line-through;
   opacity: 0.4;
 }
+
+/* Tool-use badge */
+.tool-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.35rem;
+  font-size: 0.65rem;
+  color: var(--text-3);
+  vertical-align: middle;
+  cursor: help;
+  position: relative;
+  transition: color 0.14s;
+}
+.tool-badge:hover {
+  color: var(--accent);
+}
+.tool-badge::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  font-size: 0.7rem;
+  font-family: "Instrument Sans", sans-serif;
+  padding: 3px 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+.tool-badge:hover::after {
+  opacity: 1;
+}
