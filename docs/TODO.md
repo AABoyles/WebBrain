@@ -115,13 +115,13 @@
 
 ### Music theory (pure math & lookup)
 
-- [ ] **MIDI note decoder** (`<midi>`) — note number ↔ note name; `60` → `C4 (middle C)`, `440Hz` → `A4`
-- [ ] **Frequency → note** (`<freq2note>`) — nearest musical note and cents deviation from exact pitch
-- [ ] **Key & scale** (`<scale>`) — given a root + mode, list all notes; C major, D dorian, F# phrygian, etc.
-- [ ] **Chord identifier** (`<chord>`) — given note names, identify the chord and its inversions
-- [ ] **Interval calculator** (`<interval>`) — C → G = perfect fifth; direction-aware, handles enharmonics
-- [ ] **Circle of fifths** (`<fifths>`) — given a key, show neighbors, relative minor, parallel minor, key signature
-- [ ] **BPM ↔ ms** (`<bpm>`) — `120 BPM` → `500ms per beat, 125ms per 16th`; useful for music production
+- [x] **MIDI note decoder** (`<midi>`) — note number ↔ note name; `60` → `C4 (middle C)`, `440Hz` → `A4`
+- [x] **Frequency → note** (`<freq2note>`) — nearest musical note and cents deviation from exact pitch
+- [x] **Key & scale** (`<scale>`) — given a root + mode, list all notes; C major, D dorian, F# phrygian, etc.
+- [x] **Chord identifier** (`<chord>`) — given note names, identify the chord and its inversions
+- [x] **Interval calculator** (`<interval>`) — C → G = perfect fifth; direction-aware, handles enharmonics
+- [x] **Circle of fifths** (`<fifths>`) — given a key, show neighbors, relative minor, parallel minor, key signature
+- [x] **BPM ↔ ms** (`<bpm>`) — `120 BPM` → `500ms per beat, 125ms per 16th`; useful for music production
 
 ### Geography & country lookup tables
 

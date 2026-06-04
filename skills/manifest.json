@@ -490,5 +490,47 @@
     "label": "Pigpen Cipher",
     "description": "Describes Masonic pigpen cipher grid positions for each letter.",
     "default": false
+  },
+  {
+    "tag": "midi",
+    "label": "MIDI Note",
+    "description": "Converts between MIDI note numbers (0–127) and note names with frequencies.",
+    "default": false
+  },
+  {
+    "tag": "freq2note",
+    "label": "Frequency → Note",
+    "description": "Finds the nearest musical note to any frequency in Hz, with cents deviation.",
+    "default": false
+  },
+  {
+    "tag": "scale",
+    "label": "Key & Scale",
+    "description": "Lists all notes in any key and mode (major, minor, dorian, pentatonic, blues, etc.).",
+    "default": false
+  },
+  {
+    "tag": "chord",
+    "label": "Chord Identifier",
+    "description": "Identifies a chord name from a set of note names.",
+    "default": false
+  },
+  {
+    "tag": "interval",
+    "label": "Interval Calculator",
+    "description": "Names the interval between two notes in semitones.",
+    "default": false
+  },
+  {
+    "tag": "fifths",
+    "label": "Circle of Fifths",
+    "description": "Looks up any key on the circle of fifths: key signature, relative minor, neighbors.",
+    "default": false
+  },
+  {
+    "tag": "bpm",
+    "label": "BPM ↔ ms",
+    "description": "Converts BPM to millisecond durations for whole, half, quarter, 8th, 16th, and triplet notes.",
+    "default": false
   }
 ]
