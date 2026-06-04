@@ -68,7 +68,7 @@
 
 - [x] **Dream log** (`<dream>`) — timestamped dream entries in a dedicated IndexedDB store; indexed by date for retrieval
 - [x] **Gratitude entry** (`<grateful>`) — one-sentence gratitude log; retrievable by the model for reflection prompts
-- [ ] **Habit tracker** (`<habit>`) — log a named habit as done for today; model can query streaks
+- [x] **Habit tracker** (`<habit>`) — log a named habit as done for today; model can query streaks
 
 ### ID & document decoders (pure lookup tables + check-digit algorithms)
 

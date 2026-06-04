@@ -298,5 +298,11 @@
     "label": "Gratitude Log",
     "description": "Logs one-sentence gratitude entries in IndexedDB for daily reflection.",
     "default": false
+  },
+  {
+    "tag": "habit",
+    "label": "Habit Tracker",
+    "description": "Logs named habits as done today and tracks consecutive day streaks.",
+    "default": false
   }
 ]
