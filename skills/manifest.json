@@ -280,5 +280,11 @@
     "label": "JSON Formatter",
     "description": "Pretty-prints or minifies JSON; catches malformed input with a clear error.",
     "default": false
+  },
+  {
+    "tag": "uuid",
+    "label": "UUID Generator",
+    "description": "Generates one or more cryptographically random UUID v4 strings.",
+    "default": false
   }
 ]
