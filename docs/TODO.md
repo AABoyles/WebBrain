@@ -49,7 +49,7 @@
 
 - [x] **Magic 8-ball** (`<8ball>`) — 20 canonical responses, `crypto.getRandomValues`; delightful
 - [x] **Tarot draw** (`<tarot>`) — draw one or three cards from a full 78-card deck with built-in meanings; `crypto.getRandomValues`
-- [ ] **Rock paper scissors** (`<rps>`) — play against the browser; crypto-random choice
+- [x] **Rock paper scissors** (`<rps>`) — play against the browser; crypto-random choice
 
 ### Time & date
 

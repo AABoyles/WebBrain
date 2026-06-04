@@ -244,5 +244,11 @@
     "label": "Tarot Draw",
     "description": "Draws from a full 78-card tarot deck with card meanings; supports 1-card and 3-card spreads.",
     "default": false
+  },
+  {
+    "tag": "rps",
+    "label": "Rock Paper Scissors",
+    "description": "Plays rock-paper-scissors against the browser using crypto-random CPU choice.",
+    "default": false
   }
 ]
