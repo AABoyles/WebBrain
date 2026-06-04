@@ -25,7 +25,7 @@
 ### Text transformation & codes
 
 - [x] **NATO phonetic** (`<nato>`) — "Tony" → "Tango Oscar November Yankee"; pure lookup table, useful for spelling things over the phone
-- [ ] **Number to words** (`<n2w>`) — 1,234 → "one thousand two hundred thirty-four"; pure JS logic
+- [x] **Number to words** (`<n2w>`) — 1,234 → "one thousand two hundred thirty-four"; pure JS logic
 - [ ] **Roman numerals** (`<roman>`) — convert to/from; `<roman>2024</roman>` → `MMXXIV`
 - [ ] **Radix converter** (`<radix>`) — `<radix>255 to hex</radix>` → `FF`; bin/oct/dec/hex; useful for developers
 - [ ] **Flip text** (`<flip>`) — upside-down Unicode text using a character map; pure novelty but people love it

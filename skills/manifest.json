@@ -136,5 +136,11 @@
     "label": "NATO Phonetic",
     "description": "Spells text using the NATO phonetic alphabet (Alpha, Bravo, Charlie…).",
     "default": false
+  },
+  {
+    "tag": "n2w",
+    "label": "Number to Words",
+    "description": "Converts integers to English words (e.g. 1234 → \"one thousand two hundred thirty-four\").",
+    "default": false
   }
 ]
