@@ -982,5 +982,11 @@
     "label": "Emoji Lookup",
     "description": "Find emoji by name, keyword, or Unicode codepoint",
     "default": false
+  },
+  {
+    "tag": "punycode",
+    "label": "Punycode / IDN",
+    "description": "Encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de)",
+    "default": false
   }
 ]
