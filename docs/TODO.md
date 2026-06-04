@@ -6,7 +6,7 @@
 
 - [x] **Dice roller** (`<roll>`) — `crypto.getRandomValues`; supports `d20`, `2d6+3`, `heads|tails`, etc.
 - [x] **Text-to-speech** (`<speak>`) — Web Speech API; model can narrate answers aloud
-- [ ] **Password generator** (`<password>`) — `crypto.getRandomValues`; configurable length and character sets
+- [x] **Password generator** (`<password>`) — `crypto.getRandomValues`; configurable length and character sets
 - [ ] **Encode / decode** (`<encode>`) — `btoa`/`atob`/`encodeURIComponent`; base64, URL encoding, etc.
 - [ ] **Color converter** (`<color>`) — pure math; hex ↔ rgb ↔ hsl conversions
 - [ ] **Time zone converter** (`<tz>`) — `Intl.DateTimeFormat`; e.g. `3pm EST to PST`

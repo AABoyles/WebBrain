@@ -58,5 +58,11 @@
     "label": "Text-to-Speech",
     "description": "Narrates model responses aloud using the Web Speech API.",
     "default": false
+  },
+  {
+    "tag": "password",
+    "label": "Password Generator",
+    "description": "Generates cryptographically random passwords with configurable length and character sets.",
+    "default": false
   }
 ]
