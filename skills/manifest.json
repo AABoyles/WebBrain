@@ -76,5 +76,11 @@
     "label": "Color Converter",
     "description": "Converts colors between hex, RGB, and HSL formats.",
     "default": false
+  },
+  {
+    "tag": "tz",
+    "label": "Timezone Converter",
+    "description": "Shows the current time in any IANA timezone, or converts a specific time between zones.",
+    "default": false
   }
 ]

@@ -9,7 +9,7 @@
 - [x] **Password generator** (`<password>`) — `crypto.getRandomValues`; configurable length and character sets
 - [x] **Encode / decode** (`<encode>`) — `btoa`/`atob`/`encodeURIComponent`; base64, URL encoding, etc.
 - [x] **Color converter** (`<color>`) — pure math; hex ↔ rgb ↔ hsl conversions
-- [ ] **Time zone converter** (`<tz>`) — `Intl.DateTimeFormat`; e.g. `3pm EST to PST`
+- [x] **Time zone converter** (`<tz>`) — `Intl.DateTimeFormat`; e.g. `3pm EST to PST`
 - [ ] **Hash** (`<hash>`) — `crypto.subtle.digest`; SHA-256 and friends
 - [ ] **ROT13** (`<rot13>`)
 - [ ] **Caesar Cipher** (`<caesar>`)
