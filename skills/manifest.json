@@ -64,5 +64,11 @@
     "label": "Password Generator",
     "description": "Generates cryptographically random passwords with configurable length and character sets.",
     "default": false
+  },
+  {
+    "tag": "encode",
+    "label": "Encode/Decode",
+    "description": "Encodes and decodes text: Base64, URL encoding, HTML entities.",
+    "default": false
   }
 ]
