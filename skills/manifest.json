@@ -112,5 +112,11 @@
     "label": "Tone Generator",
     "description": "Plays a continuous sine-wave tone at a given frequency or note name via Web Audio API.",
     "default": false
+  },
+  {
+    "tag": "metronome",
+    "label": "Metronome",
+    "description": "Plays a click track at a given BPM using Web Audio API scheduling.",
+    "default": false
   }
 ]
