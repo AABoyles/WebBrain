@@ -70,5 +70,11 @@
     "label": "Encode/Decode",
     "description": "Encodes and decodes text: Base64, URL encoding, HTML entities.",
     "default": false
+  },
+  {
+    "tag": "color",
+    "label": "Color Converter",
+    "description": "Converts colors between hex, RGB, and HSL formats.",
+    "default": false
   }
 ]
