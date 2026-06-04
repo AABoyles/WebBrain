@@ -28,7 +28,7 @@
 - [x] **Number to words** (`<n2w>`) — 1,234 → "one thousand two hundred thirty-four"; pure JS logic
 - [x] **Roman numerals** (`<roman>`) — convert to/from; `<roman>2024</roman>` → `MMXXIV`
 - [x] **Radix converter** (`<radix>`) — `<radix>255 to hex</radix>` → `FF`; bin/oct/dec/hex; useful for developers
-- [ ] **Flip text** (`<flip>`) — upside-down Unicode text using a character map; pure novelty but people love it
+- [x] **Flip text** (`<flip>`) — upside-down Unicode text using a character map; pure novelty but people love it
 - [ ] **Pig Latin** (`<piglatin>`) — classic childhood cipher; pure string manipulation
 - [ ] **Leet speak** (`<leet>`) — 1337 5p34k; pure substitution table
 - [ ] **Pirate speak** (`<pirate>`) — word-substitution table; "hello" → "ahoy"; fun for the persona

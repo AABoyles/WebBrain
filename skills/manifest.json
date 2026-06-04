@@ -154,5 +154,11 @@
     "label": "Radix Converter",
     "description": "Converts numbers between binary, octal, decimal, and hexadecimal bases.",
     "default": false
+  },
+  {
+    "tag": "flip",
+    "label": "Flip Text",
+    "description": "Renders text upside-down using Unicode look-alike characters.",
+    "default": false
   }
 ]
