@@ -46,5 +46,11 @@
     "label": "Location",
     "description": "Gets your approximate location for context-aware answers.",
     "default": false
+  },
+  {
+    "tag": "roll",
+    "label": "Dice Roller",
+    "description": "Rolls dice (d4–d100, NdX+M notation) or flips a coin using crypto-random values.",
+    "default": false
   }
 ]

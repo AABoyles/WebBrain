@@ -4,7 +4,7 @@
 
 ### Client-side only (Web APIs, zero external dependencies)
 
-- [ ] **Dice roller** (`<roll>`) — `crypto.getRandomValues`; supports `d20`, `2d6+3`, `heads|tails`, etc.
+- [x] **Dice roller** (`<roll>`) — `crypto.getRandomValues`; supports `d20`, `2d6+3`, `heads|tails`, etc.
 - [ ] **Text-to-speech** (`<speak>`) — Web Speech API; model can narrate answers aloud
 - [ ] **Password generator** (`<password>`) — `crypto.getRandomValues`; configurable length and character sets
 - [ ] **Encode / decode** (`<encode>`) — `btoa`/`atob`/`encodeURIComponent`; base64, URL encoding, etc.
