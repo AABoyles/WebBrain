@@ -292,5 +292,11 @@
     "label": "Dream Log",
     "description": "Logs timestamped dream entries in IndexedDB; the model can retrieve and reflect on them.",
     "default": false
+  },
+  {
+    "tag": "grateful",
+    "label": "Gratitude Log",
+    "description": "Logs one-sentence gratitude entries in IndexedDB for daily reflection.",
+    "default": false
   }
 ]
