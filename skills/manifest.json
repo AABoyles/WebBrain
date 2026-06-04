@@ -988,5 +988,11 @@
     "label": "Punycode / IDN",
     "description": "Encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de)",
     "default": false
+  },
+  {
+    "tag": "barcode",
+    "label": "Barcode Generator",
+    "description": "Generate Code128, QR, EAN-13, UPC, and other barcodes rendered as canvas images (loads bwip-js via CDN)",
+    "default": false
   }
 ]
