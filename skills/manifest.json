@@ -232,5 +232,11 @@
     "label": "Day of Week",
     "description": "Finds what day of the week any date (past or future) falls on.",
     "default": false
+  },
+  {
+    "tag": "8ball",
+    "label": "Magic 8-Ball",
+    "description": "Answers yes/no questions with one of the 20 canonical Magic 8-Ball responses.",
+    "default": false
   }
 ]
