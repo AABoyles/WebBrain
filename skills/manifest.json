@@ -310,5 +310,11 @@
     "label": "VIN Decoder",
     "description": "Decodes a 17-character Vehicle Identification Number: WMI, model year, check digit.",
     "default": false
+  },
+  {
+    "tag": "cc",
+    "label": "Credit Card Decoder",
+    "description": "Validates Luhn checksum and identifies card issuer (Visa/MC/Amex/etc); never stores the number.",
+    "default": false
   }
 ]
