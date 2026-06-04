@@ -880,5 +880,11 @@
     "label": "DNA/RNA Tool",
     "description": "Complement, transcription, translation, FASTA parsing, and GC content for DNA/RNA sequences",
     "default": false
+  },
+  {
+    "tag": "case",
+    "label": "Case Converter",
+    "description": "Convert text between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, slug, and more",
+    "default": false
   }
 ]
