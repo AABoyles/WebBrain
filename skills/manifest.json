@@ -106,5 +106,11 @@
     "label": "Morse Code",
     "description": "Encodes text to Morse code or decodes Morse back to text.",
     "default": false
+  },
+  {
+    "tag": "tone",
+    "label": "Tone Generator",
+    "description": "Plays a continuous sine-wave tone at a given frequency or note name via Web Audio API.",
+    "default": false
   }
 ]
