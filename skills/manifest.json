@@ -958,5 +958,11 @@
     "label": "Chemical Formula",
     "description": "Parse chemical formulas: molecular weight, element breakdown, atom counts",
     "default": false
+  },
+  {
+    "tag": "phone",
+    "label": "Phone Number",
+    "description": "Parse, validate, and format international phone numbers (E.164)",
+    "default": false
   }
 ]
