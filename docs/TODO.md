@@ -34,7 +34,7 @@
 - [x] **Pirate speak** (`<pirate>`) — word-substitution table; "hello" → "ahoy"; fun for the persona
 - [x] **Scrabble score** (`<scrabble>`) — calculate tile point value for a word; pure lookup table
 - [x] **Haiku checker** (`<haiku>`) — count syllables per line and verify 5-7-5 structure; algorithmic syllable counter
-- [ ] **Readability score** (`<flesch>`) — Flesch-Kincaid reading ease score from pasted text; pure math on word/sentence/syllable counts
+- [x] **Readability score** (`<flesch>`) — Flesch-Kincaid reading ease score from pasted text; pure math on word/sentence/syllable counts
 
 ### Math & science
 

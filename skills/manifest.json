@@ -190,5 +190,11 @@
     "label": "Haiku Checker",
     "description": "Checks whether a three-line poem follows the 5-7-5 syllable structure.",
     "default": false
+  },
+  {
+    "tag": "flesch",
+    "label": "Readability Score",
+    "description": "Computes the Flesch Reading Ease score and estimated grade level for any text.",
+    "default": false
   }
 ]
