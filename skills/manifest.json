@@ -886,5 +886,11 @@
     "label": "Case Converter",
     "description": "Convert text between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, slug, and more",
     "default": false
+  },
+  {
+    "tag": "ini",
+    "label": "INI Parser",
+    "description": "Parse and format INI configuration files",
+    "default": false
   }
 ]
