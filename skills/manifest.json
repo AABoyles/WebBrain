@@ -478,5 +478,17 @@
     "label": "Braille",
     "description": "Encodes English text as Grade 1 Braille using Unicode Braille block characters.",
     "default": false
+  },
+  {
+    "tag": "semaphore",
+    "label": "Semaphore",
+    "description": "Describes flag semaphore positions for each letter as clock-face angles.",
+    "default": false
+  },
+  {
+    "tag": "pigpen",
+    "label": "Pigpen Cipher",
+    "description": "Describes Masonic pigpen cipher grid positions for each letter.",
+    "default": false
   }
 ]
