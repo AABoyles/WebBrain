@@ -1,15 +1,18 @@
 // Shared IndexedDB singleton — imported by script.js and all skill modules.
 // ES module semantics guarantee this runs once; every importer shares the same db.
 const DB_NAME    = 'webbrain';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 export const db = await new Promise((resolve, reject) => {
   const req = indexedDB.open(DB_NAME, DB_VERSION);
   req.onupgradeneeded = ({ target: { result: d } }) => {
     for (const [name, opts] of [
-      ['facts',  { keyPath: 'id', autoIncrement: true }],
-      ['chats',  { keyPath: 'id', autoIncrement: true }],
-      ['todos',  { keyPath: 'id', autoIncrement: true }],
+      ['facts',     { keyPath: 'id', autoIncrement: true }],
+      ['chats',     { keyPath: 'id', autoIncrement: true }],
+      ['todos',     { keyPath: 'id', autoIncrement: true }],
+      ['dreams',    { keyPath: 'id', autoIncrement: true }],
+      ['gratitude', { keyPath: 'id', autoIncrement: true }],
+      ['habits',    { keyPath: 'id', autoIncrement: true }],
     ]) {
       if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, opts);
     }
@@ -42,3 +45,18 @@ export const clearDoneTodos = async () => {
   const done = (await getTodos()).filter(t => t.done);
   await Promise.all(done.map(t => txDelete('todos', t.id)));
 };
+
+// ── Dreams ────────────────────────────────────────────────────────────────────
+export const getDreams   = ()    => txAll('dreams');
+export const addDream    = text  => txAdd('dreams', { text, created: Date.now() });
+export const deleteDream = id    => txDelete('dreams', id);
+
+// ── Gratitude ─────────────────────────────────────────────────────────────────
+export const getGratitude   = ()   => txAll('gratitude');
+export const addGratitude   = text => txAdd('gratitude', { text, created: Date.now() });
+export const deleteGratitude = id  => txDelete('gratitude', id);
+
+// ── Habits ────────────────────────────────────────────────────────────────────
+export const getHabits    = ()              => txAll('habits');
+export const logHabit     = (name, date)    => txAdd('habits', { name, date: date ?? new Date().toISOString().slice(0, 10), created: Date.now() });
+export const deleteHabit  = id              => txDelete('habits', id);

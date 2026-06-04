@@ -286,5 +286,11 @@
     "label": "UUID Generator",
     "description": "Generates one or more cryptographically random UUID v4 strings.",
     "default": false
+  },
+  {
+    "tag": "dream",
+    "label": "Dream Log",
+    "description": "Logs timestamped dream entries in IndexedDB; the model can retrieve and reflect on them.",
+    "default": false
   }
 ]
