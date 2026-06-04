@@ -454,5 +454,29 @@
     "label": "Rail Fence Cipher",
     "description": "Encodes and decodes text with the rail fence (zigzag) transposition cipher.",
     "default": false
+  },
+  {
+    "tag": "tap",
+    "label": "Tap Code",
+    "description": "Encodes and decodes the prison wall tap code (5×5 Polybius square, C=K).",
+    "default": false
+  },
+  {
+    "tag": "polybius",
+    "label": "Polybius Square",
+    "description": "Encodes and decodes text using the 5×5 Polybius square grid coordinates (I=J).",
+    "default": false
+  },
+  {
+    "tag": "bacon",
+    "label": "Baconian Cipher",
+    "description": "Encodes and decodes Francis Bacon's biliteral A/B cipher.",
+    "default": false
+  },
+  {
+    "tag": "braille",
+    "label": "Braille",
+    "description": "Encodes English text as Grade 1 Braille using Unicode Braille block characters.",
+    "default": false
   }
 ]

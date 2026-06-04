@@ -107,10 +107,10 @@
 - [x] **Atbash cipher** (`<atbash>`) — Hebrew mirror cipher; A↔Z, B↔Y; works on any alphabet
 - [x] **Rail fence cipher** (`<railfence>`) — zigzag transposition; encode/decode with rail count
 - [ ] **Pigpen cipher** (`<pigpen>`) — Masonic cipher; encode to Unicode block characters approximating the grid symbols
-- [ ] **Tap code** (`<tap>`) — prison wall-tapping code (5×5 Polybius square); encode/decode
-- [ ] **Polybius square** (`<polybius>`) — 5×5 grid encoding; coordinates for each letter
-- [ ] **Baconian cipher** (`<bacon>`) — Francis Bacon's biliteral cipher; A/B or X/Y substitution
-- [ ] **Braille** (`<braille>`) — encode English text to Unicode Braille block characters; Grade 1 only
+- [x] **Tap code** (`<tap>`) — prison wall-tapping code (5×5 Polybius square); encode/decode
+- [x] **Polybius square** (`<polybius>`) — 5×5 grid encoding; coordinates for each letter
+- [x] **Baconian cipher** (`<bacon>`) — Francis Bacon's biliteral cipher; A/B or X/Y substitution
+- [x] **Braille** (`<braille>`) — encode English text to Unicode Braille block characters; Grade 1 only
 - [ ] **Semaphore** (`<semaphore>`) — flag semaphore letter descriptions as compass positions
 
 ### Music theory (pure math & lookup)
