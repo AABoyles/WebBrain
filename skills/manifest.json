@@ -160,5 +160,11 @@
     "label": "Flip Text",
     "description": "Renders text upside-down using Unicode look-alike characters.",
     "default": false
+  },
+  {
+    "tag": "piglatin",
+    "label": "Pig Latin",
+    "description": "Translates English text to Pig Latin.",
+    "default": false
   }
 ]
