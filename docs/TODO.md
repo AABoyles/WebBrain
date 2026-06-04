@@ -10,7 +10,7 @@
 - [x] **Encode / decode** (`<encode>`) — `btoa`/`atob`/`encodeURIComponent`; base64, URL encoding, etc.
 - [x] **Color converter** (`<color>`) — pure math; hex ↔ rgb ↔ hsl conversions
 - [x] **Time zone converter** (`<tz>`) — `Intl.DateTimeFormat`; e.g. `3pm EST to PST`
-- [ ] **Hash** (`<hash>`) — `crypto.subtle.digest`; SHA-256 and friends
+- [x] **Hash** (`<hash>`) — `crypto.subtle.digest`; SHA-256 and friends
 - [ ] **ROT13** (`<rot13>`)
 - [ ] **Caesar Cipher** (`<caesar>`)
 - [ ] **Morse Code** (`<morse>`)

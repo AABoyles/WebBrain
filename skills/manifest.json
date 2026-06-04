@@ -82,5 +82,11 @@
     "label": "Timezone Converter",
     "description": "Shows the current time in any IANA timezone, or converts a specific time between zones.",
     "default": false
+  },
+  {
+    "tag": "hash",
+    "label": "Hash",
+    "description": "Computes SHA-1, SHA-256, SHA-384, or SHA-512 digests via the Web Crypto API.",
+    "default": false
   }
 ]
