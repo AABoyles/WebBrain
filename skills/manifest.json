@@ -388,5 +388,11 @@
     "label": "Unix Timestamp",
     "description": "Converts Unix timestamps to human dates and vice versa; shows relative time.",
     "default": false
+  },
+  {
+    "tag": "duration",
+    "label": "ISO 8601 Duration",
+    "description": "Decodes ISO 8601 duration strings (P1Y2M3DT4H5M6S) into plain-English descriptions.",
+    "default": false
   }
 ]
