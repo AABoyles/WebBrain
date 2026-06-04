@@ -898,5 +898,11 @@
     "label": "XML Tool",
     "description": "Parse, pretty-print, strip tags, and convert XML↔JSON",
     "default": false
+  },
+  {
+    "tag": "yaml",
+    "label": "YAML Tool",
+    "description": "Parse YAML to JSON, format JSON as YAML, or validate YAML syntax (loads js-yaml via CDN)",
+    "default": false
   }
 ]
