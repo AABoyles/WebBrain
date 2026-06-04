@@ -262,5 +262,11 @@
     "label": "Poetic Time",
     "description": "Renders the current time in natural language (\"quarter past midnight\", \"nearly noon\").",
     "default": false
+  },
+  {
+    "tag": "daypct",
+    "label": "Day Progress",
+    "description": "Shows percentage of the day, week, and year elapsed with ASCII progress bars.",
+    "default": false
   }
 ]
