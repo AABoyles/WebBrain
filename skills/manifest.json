@@ -148,5 +148,11 @@
     "label": "Roman Numerals",
     "description": "Converts integers (1–3999) to Roman numerals and back.",
     "default": false
+  },
+  {
+    "tag": "radix",
+    "label": "Radix Converter",
+    "description": "Converts numbers between binary, octal, decimal, and hexadecimal bases.",
+    "default": false
   }
 ]
