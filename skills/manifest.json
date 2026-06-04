@@ -370,5 +370,11 @@
     "label": "JWT Decoder",
     "description": "Base64url-decodes JWT header and payload; shows claims and expiry; does not verify signature.",
     "default": false
+  },
+  {
+    "tag": "ip",
+    "label": "IPv4/CIDR",
+    "description": "Analyzes IPv4 addresses and CIDR blocks: subnet mask, network, broadcast, host range, address type.",
+    "default": false
   }
 ]
