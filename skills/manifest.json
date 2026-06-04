@@ -358,5 +358,11 @@
     "label": "Semver Parser",
     "description": "Parses semantic versions and compares two versions with correct pre-release ordering.",
     "default": false
+  },
+  {
+    "tag": "cron",
+    "label": "Cron Expression",
+    "description": "Translates a 5-field cron schedule expression into plain-English description.",
+    "default": false
   }
 ]
