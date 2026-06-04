@@ -970,5 +970,11 @@
     "label": "Language Detect",
     "description": "Detect the language of a text using trigram frequency scoring",
     "default": false
+  },
+  {
+    "tag": "pos",
+    "label": "Part-of-Speech",
+    "description": "Tag words with grammatical roles and extract named entities using compromise.js (loads via CDN)",
+    "default": false
   }
 ]
