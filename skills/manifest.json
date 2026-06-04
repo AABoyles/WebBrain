@@ -382,5 +382,11 @@
     "label": "MAC Address",
     "description": "Decodes a MAC address: OUI vendor lookup, unicast/multicast flag, global/local bit.",
     "default": false
+  },
+  {
+    "tag": "epoch",
+    "label": "Unix Timestamp",
+    "description": "Converts Unix timestamps to human dates and vice versa; shows relative time.",
+    "default": false
   }
 ]
