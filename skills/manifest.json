@@ -994,5 +994,17 @@
     "label": "Barcode Generator",
     "description": "Generate Code128, QR, EAN-13, UPC, and other barcodes rendered as canvas images (loads bwip-js via CDN)",
     "default": false
+  },
+  {
+    "tag": "jsparse",
+    "label": "JS Parser",
+    "description": "Parse JavaScript to AST, count node types, or validate syntax (loads acorn via CDN)",
+    "default": false
+  },
+  {
+    "tag": "datemath",
+    "label": "Date Arithmetic",
+    "description": "Calculate date differences, add/subtract durations, and parse relative date expressions",
+    "default": false
   }
 ]
