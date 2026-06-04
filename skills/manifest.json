@@ -94,5 +94,11 @@
     "label": "ROT13",
     "description": "Applies ROT13 substitution cipher (self-inverse: same operation encodes and decodes).",
     "default": false
+  },
+  {
+    "tag": "caesar",
+    "label": "Caesar Cipher",
+    "description": "Encodes or decodes text with a configurable alphabetic shift.",
+    "default": false
   }
 ]

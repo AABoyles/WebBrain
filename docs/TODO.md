@@ -12,7 +12,7 @@
 - [x] **Time zone converter** (`<tz>`) — `Intl.DateTimeFormat`; e.g. `3pm EST to PST`
 - [x] **Hash** (`<hash>`) — `crypto.subtle.digest`; SHA-256 and friends
 - [x] **ROT13** (`<rot13>`)
-- [ ] **Caesar Cipher** (`<caesar>`)
+- [x] **Caesar Cipher** (`<caesar>`)
 - [ ] **Morse Code** (`<morse>`)
 
 ### Audio (Web Audio API — zero deps, works offline)
