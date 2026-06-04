@@ -76,7 +76,7 @@
 - [x] **Credit card decoder** (`<cc>`) — Luhn algorithm validation, IIN prefix → issuer (Visa/MC/Amex/Discover/JCB/UnionPay), length check; never stores the number
 - [x] **SSN decoder** (`<ssn>`) — pre-2011 area-number → issuing state lookup, group/serial structure; flags obviously invalid numbers
 - [x] **ISBN decoder** (`<isbn>`) — check digit validation, publisher prefix group, ISBN-10 ↔ ISBN-13 conversion
-- [ ] **IBAN decoder** (`<iban>`) — country code, check digit (MOD-97), BBAN structure; validates and explains each field
+- [x] **IBAN decoder** (`<iban>`) — country code, check digit (MOD-97), BBAN structure; validates and explains each field
 - [ ] **SWIFT / BIC decoder** (`<swift>`) — bank code, country, location, branch; pure lookup
 - [ ] **ABA routing number** (`<aba>`) — Federal Reserve district prefix, check digit algorithm
 - [ ] **EIN decoder** (`<ein>`) — Employer Identification Number prefix → IRS campus that assigned it

@@ -328,5 +328,11 @@
     "label": "ISBN Decoder",
     "description": "Validates ISBN-10 and ISBN-13 check digits; converts between formats.",
     "default": false
+  },
+  {
+    "tag": "iban",
+    "label": "IBAN Decoder",
+    "description": "Validates an IBAN via MOD-97 and decodes country, check digits, and BBAN.",
+    "default": false
   }
 ]
