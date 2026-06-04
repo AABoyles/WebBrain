@@ -92,6 +92,12 @@
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-memory">Memory</button>
           </li>
           <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-skills">Skills</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-todos">Todos</button>
+          </li>
+          <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-soul">SOUL</button>
           </li>
         </ul>
@@ -143,6 +149,34 @@
                 <input type="text" class="f-input" id="new-fact"
                        placeholder="e.g., My name is Alex, I work in biotech">
                 <button class="btn-amber" id="add-fact-btn" style="flex-shrink:0;">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills tab -->
+          <div class="tab-pane fade" id="tab-skills">
+            <p class="f-hint" style="margin-bottom:0.85rem;">
+              Disabled skills are excluded from the system prompt, saving context space. Tags emitted by the model are still stripped from the display regardless.
+            </p>
+            <div id="skills-list"></div>
+            <p id="context-window-note" class="f-hint" style="margin-top:0.75rem;"></p>
+          </div>
+
+          <!-- Todos tab -->
+          <div class="tab-pane fade" id="tab-todos">
+            <div class="section-row">
+              <span class="section-title">To-Do List</span>
+              <button class="btn-danger" id="clear-done-btn">
+                <i class="bi bi-check2-all"></i> Clear Done
+              </button>
+            </div>
+            <div id="todo-list" style="margin-bottom:1.25rem;"></div>
+            <div class="f-group" style="margin-bottom:0;">
+              <label class="f-label">Add a Task</label>
+              <div class="f-row">
+                <input type="text" class="f-input" id="new-todo"
+                       placeholder="e.g., Buy groceries, Call dentist">
+                <button class="btn-amber" id="add-todo-btn" style="flex-shrink:0;">Add</button>
               </div>
             </div>
           </div>

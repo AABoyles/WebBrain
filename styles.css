@@ -865,3 +865,101 @@ body.thinking #status-bar::before {
   gap: 0.5rem;
   margin-top: 0.75rem;
 }
+
+/* Skill rows */
+.skill-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  margin-bottom: 0.35rem;
+  animation: rise 0.2s ease both;
+}
+.skill-info {
+  flex: 1;
+}
+.skill-name {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--text);
+  margin-bottom: 0.1rem;
+}
+.skill-tokens {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  margin-left: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+}
+.skill-desc {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+
+/* Toggle switch */
+.toggle {
+  flex-shrink: 0;
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  cursor: pointer;
+  margin-top: 2px;
+}
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-hi);
+  transition: background 0.18s, border-color 0.18s;
+}
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-3);
+  transition: transform 0.18s, background 0.18s;
+}
+.toggle input:checked + .toggle-track {
+  background: var(--accent-dim);
+  border-color: rgba(200, 147, 74, 0.4);
+}
+.toggle input:checked + .toggle-track::after {
+  transform: translateX(16px);
+  background: var(--accent);
+}
+
+/* Todo list */
+.todo-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  cursor: pointer;
+}
+.todo-check {
+  accent-color: var(--accent);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.todo-done .fact-text {
+  text-decoration: line-through;
+  opacity: 0.4;
+}
