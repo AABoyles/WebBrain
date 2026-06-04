@@ -904,5 +904,11 @@
     "label": "YAML Tool",
     "description": "Parse YAML to JSON, format JSON as YAML, or validate YAML syntax (loads js-yaml via CDN)",
     "default": false
+  },
+  {
+    "tag": "csv",
+    "label": "CSV Tool",
+    "description": "Parse, summarize, and convert CSV/TSV data to/from JSON",
+    "default": false
   }
 ]
