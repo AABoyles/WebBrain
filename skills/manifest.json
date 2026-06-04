@@ -220,5 +220,11 @@
     "label": "Sequences",
     "description": "Generates terms of Fibonacci, primes, triangular, square, cube, factorial, or powers-of-2 sequences.",
     "default": false
+  },
+  {
+    "tag": "factor",
+    "label": "Prime Factorizer",
+    "description": "Returns the prime factorization of any integer up to one trillion.",
+    "default": false
   }
 ]
