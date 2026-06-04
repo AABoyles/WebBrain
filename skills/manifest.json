@@ -340,5 +340,11 @@
     "label": "UUID Decoder",
     "description": "Decodes UUID version (1–5), variant, and for v1 extracts the embedded timestamp and node.",
     "default": false
+  },
+  {
+    "tag": "upc",
+    "label": "UPC/EAN Barcode",
+    "description": "Validates UPC-A (12-digit) and EAN-13 barcodes; decodes GS1 country prefix.",
+    "default": false
   }
 ]
