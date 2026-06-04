@@ -1,0 +1,115 @@
+const COUNTRIES = {
+  AF:{name:'Afghanistan',cap:'Kabul',curr:'AFN',dial:93,tld:'.af',cont:'Asia'},
+  AL:{name:'Albania',cap:'Tirana',curr:'ALL',dial:355,tld:'.al',cont:'Europe'},
+  DZ:{name:'Algeria',cap:'Algiers',curr:'DZD',dial:213,tld:'.dz',cont:'Africa'},
+  AR:{name:'Argentina',cap:'Buenos Aires',curr:'ARS',dial:54,tld:'.ar',cont:'South America'},
+  AU:{name:'Australia',cap:'Canberra',curr:'AUD',dial:61,tld:'.au',cont:'Oceania'},
+  AT:{name:'Austria',cap:'Vienna',curr:'EUR',dial:43,tld:'.at',cont:'Europe'},
+  AZ:{name:'Azerbaijan',cap:'Baku',curr:'AZN',dial:994,tld:'.az',cont:'Asia'},
+  BD:{name:'Bangladesh',cap:'Dhaka',curr:'BDT',dial:880,tld:'.bd',cont:'Asia'},
+  BE:{name:'Belgium',cap:'Brussels',curr:'EUR',dial:32,tld:'.be',cont:'Europe'},
+  BR:{name:'Brazil',cap:'Brasília',curr:'BRL',dial:55,tld:'.br',cont:'South America'},
+  CA:{name:'Canada',cap:'Ottawa',curr:'CAD',dial:1,tld:'.ca',cont:'North America'},
+  CL:{name:'Chile',cap:'Santiago',curr:'CLP',dial:56,tld:'.cl',cont:'South America'},
+  CN:{name:'China',cap:'Beijing',curr:'CNY',dial:86,tld:'.cn',cont:'Asia'},
+  CO:{name:'Colombia',cap:'Bogotá',curr:'COP',dial:57,tld:'.co',cont:'South America'},
+  HR:{name:'Croatia',cap:'Zagreb',curr:'EUR',dial:385,tld:'.hr',cont:'Europe'},
+  CZ:{name:'Czech Republic',cap:'Prague',curr:'CZK',dial:420,tld:'.cz',cont:'Europe'},
+  DK:{name:'Denmark',cap:'Copenhagen',curr:'DKK',dial:45,tld:'.dk',cont:'Europe'},
+  EG:{name:'Egypt',cap:'Cairo',curr:'EGP',dial:20,tld:'.eg',cont:'Africa'},
+  EE:{name:'Estonia',cap:'Tallinn',curr:'EUR',dial:372,tld:'.ee',cont:'Europe'},
+  FI:{name:'Finland',cap:'Helsinki',curr:'EUR',dial:358,tld:'.fi',cont:'Europe'},
+  FR:{name:'France',cap:'Paris',curr:'EUR',dial:33,tld:'.fr',cont:'Europe'},
+  DE:{name:'Germany',cap:'Berlin',curr:'EUR',dial:49,tld:'.de',cont:'Europe'},
+  GH:{name:'Ghana',cap:'Accra',curr:'GHS',dial:233,tld:'.gh',cont:'Africa'},
+  GR:{name:'Greece',cap:'Athens',curr:'EUR',dial:30,tld:'.gr',cont:'Europe'},
+  HK:{name:'Hong Kong',cap:'Victoria City',curr:'HKD',dial:852,tld:'.hk',cont:'Asia'},
+  HU:{name:'Hungary',cap:'Budapest',curr:'HUF',dial:36,tld:'.hu',cont:'Europe'},
+  IS:{name:'Iceland',cap:'Reykjavík',curr:'ISK',dial:354,tld:'.is',cont:'Europe'},
+  IN:{name:'India',cap:'New Delhi',curr:'INR',dial:91,tld:'.in',cont:'Asia'},
+  ID:{name:'Indonesia',cap:'Jakarta',curr:'IDR',dial:62,tld:'.id',cont:'Asia'},
+  IR:{name:'Iran',cap:'Tehran',curr:'IRR',dial:98,tld:'.ir',cont:'Asia'},
+  IQ:{name:'Iraq',cap:'Baghdad',curr:'IQD',dial:964,tld:'.iq',cont:'Asia'},
+  IE:{name:'Ireland',cap:'Dublin',curr:'EUR',dial:353,tld:'.ie',cont:'Europe'},
+  IL:{name:'Israel',cap:'Jerusalem',curr:'ILS',dial:972,tld:'.il',cont:'Asia'},
+  IT:{name:'Italy',cap:'Rome',curr:'EUR',dial:39,tld:'.it',cont:'Europe'},
+  JP:{name:'Japan',cap:'Tokyo',curr:'JPY',dial:81,tld:'.jp',cont:'Asia'},
+  JO:{name:'Jordan',cap:'Amman',curr:'JOD',dial:962,tld:'.jo',cont:'Asia'},
+  KZ:{name:'Kazakhstan',cap:'Astana',curr:'KZT',dial:7,tld:'.kz',cont:'Asia'},
+  KE:{name:'Kenya',cap:'Nairobi',curr:'KES',dial:254,tld:'.ke',cont:'Africa'},
+  KR:{name:'South Korea',cap:'Seoul',curr:'KRW',dial:82,tld:'.kr',cont:'Asia'},
+  KW:{name:'Kuwait',cap:'Kuwait City',curr:'KWD',dial:965,tld:'.kw',cont:'Asia'},
+  LV:{name:'Latvia',cap:'Riga',curr:'EUR',dial:371,tld:'.lv',cont:'Europe'},
+  LB:{name:'Lebanon',cap:'Beirut',curr:'LBP',dial:961,tld:'.lb',cont:'Asia'},
+  LT:{name:'Lithuania',cap:'Vilnius',curr:'EUR',dial:370,tld:'.lt',cont:'Europe'},
+  LU:{name:'Luxembourg',cap:'Luxembourg City',curr:'EUR',dial:352,tld:'.lu',cont:'Europe'},
+  MY:{name:'Malaysia',cap:'Kuala Lumpur',curr:'MYR',dial:60,tld:'.my',cont:'Asia'},
+  MX:{name:'Mexico',cap:'Mexico City',curr:'MXN',dial:52,tld:'.mx',cont:'North America'},
+  MA:{name:'Morocco',cap:'Rabat',curr:'MAD',dial:212,tld:'.ma',cont:'Africa'},
+  NL:{name:'Netherlands',cap:'Amsterdam',curr:'EUR',dial:31,tld:'.nl',cont:'Europe'},
+  NZ:{name:'New Zealand',cap:'Wellington',curr:'NZD',dial:64,tld:'.nz',cont:'Oceania'},
+  NG:{name:'Nigeria',cap:'Abuja',curr:'NGN',dial:234,tld:'.ng',cont:'Africa'},
+  NO:{name:'Norway',cap:'Oslo',curr:'NOK',dial:47,tld:'.no',cont:'Europe'},
+  PK:{name:'Pakistan',cap:'Islamabad',curr:'PKR',dial:92,tld:'.pk',cont:'Asia'},
+  PE:{name:'Peru',cap:'Lima',curr:'PEN',dial:51,tld:'.pe',cont:'South America'},
+  PH:{name:'Philippines',cap:'Manila',curr:'PHP',dial:63,tld:'.ph',cont:'Asia'},
+  PL:{name:'Poland',cap:'Warsaw',curr:'PLN',dial:48,tld:'.pl',cont:'Europe'},
+  PT:{name:'Portugal',cap:'Lisbon',curr:'EUR',dial:351,tld:'.pt',cont:'Europe'},
+  QA:{name:'Qatar',cap:'Doha',curr:'QAR',dial:974,tld:'.qa',cont:'Asia'},
+  RO:{name:'Romania',cap:'Bucharest',curr:'RON',dial:40,tld:'.ro',cont:'Europe'},
+  RU:{name:'Russia',cap:'Moscow',curr:'RUB',dial:7,tld:'.ru',cont:'Europe/Asia'},
+  SA:{name:'Saudi Arabia',cap:'Riyadh',curr:'SAR',dial:966,tld:'.sa',cont:'Asia'},
+  RS:{name:'Serbia',cap:'Belgrade',curr:'RSD',dial:381,tld:'.rs',cont:'Europe'},
+  SG:{name:'Singapore',cap:'Singapore',curr:'SGD',dial:65,tld:'.sg',cont:'Asia'},
+  ZA:{name:'South Africa',cap:'Pretoria',curr:'ZAR',dial:27,tld:'.za',cont:'Africa'},
+  ES:{name:'Spain',cap:'Madrid',curr:'EUR',dial:34,tld:'.es',cont:'Europe'},
+  LK:{name:'Sri Lanka',cap:'Sri Jayawardenepura Kotte',curr:'LKR',dial:94,tld:'.lk',cont:'Asia'},
+  SE:{name:'Sweden',cap:'Stockholm',curr:'SEK',dial:46,tld:'.se',cont:'Europe'},
+  CH:{name:'Switzerland',cap:'Bern',curr:'CHF',dial:41,tld:'.ch',cont:'Europe'},
+  TW:{name:'Taiwan',cap:'Taipei',curr:'TWD',dial:886,tld:'.tw',cont:'Asia'},
+  TZ:{name:'Tanzania',cap:'Dodoma',curr:'TZS',dial:255,tld:'.tz',cont:'Africa'},
+  TH:{name:'Thailand',cap:'Bangkok',curr:'THB',dial:66,tld:'.th',cont:'Asia'},
+  TN:{name:'Tunisia',cap:'Tunis',curr:'TND',dial:216,tld:'.tn',cont:'Africa'},
+  TR:{name:'Turkey',cap:'Ankara',curr:'TRY',dial:90,tld:'.tr',cont:'Europe/Asia'},
+  UA:{name:'Ukraine',cap:'Kyiv',curr:'UAH',dial:380,tld:'.ua',cont:'Europe'},
+  AE:{name:'UAE',cap:'Abu Dhabi',curr:'AED',dial:971,tld:'.ae',cont:'Asia'},
+  GB:{name:'United Kingdom',cap:'London',curr:'GBP',dial:44,tld:'.uk',cont:'Europe'},
+  US:{name:'United States',cap:'Washington D.C.',curr:'USD',dial:1,tld:'.us/.com',cont:'North America'},
+  UY:{name:'Uruguay',cap:'Montevideo',curr:'UYU',dial:598,tld:'.uy',cont:'South America'},
+  UZ:{name:'Uzbekistan',cap:'Tashkent',curr:'UZS',dial:998,tld:'.uz',cont:'Asia'},
+  VE:{name:'Venezuela',cap:'Caracas',curr:'VES',dial:58,tld:'.ve',cont:'South America'},
+  VN:{name:'Vietnam',cap:'Hanoi',curr:'VND',dial:84,tld:'.vn',cont:'Asia'},
+  YE:{name:'Yemen',cap:'Sanaa',curr:'YER',dial:967,tld:'.ye',cont:'Asia'},
+  ZM:{name:'Zambia',cap:'Lusaka',curr:'ZMW',dial:260,tld:'.zm',cont:'Africa'},
+  ZW:{name:'Zimbabwe',cap:'Harare',curr:'ZWL',dial:263,tld:'.zw',cont:'Africa'},
+};
+
+const BY_NAME = Object.fromEntries(Object.entries(COUNTRIES).map(([k,v]) => [v.name.toUpperCase(), k]));
+
+function flagEmoji(code) {
+  return [...code.toUpperCase()].map(c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join('');
+}
+
+export default {
+  tag: 'country',
+  instruction: `COUNTRY INFO SKILL: To get facts about a country, emit <country>ISO code or name</country>.
+
+Examples:
+- "Tell me about Japan" → <country>Japan</country>
+- "Info on DE" → <country>DE</country>`,
+  call(content) {
+    const input = content.trim().toUpperCase();
+    const code  = COUNTRIES[input] ? input : BY_NAME[input];
+    const data  = code ? COUNTRIES[code] : null;
+    if (!data) return `Country not found: "${content}". Try an ISO code (JP, FR) or country name.`;
+    return [
+      `${flagEmoji(code)} ${data.name} (${code})`,
+      `Capital:      ${data.cap}`,
+      `Currency:     ${data.curr}`,
+      `Calling code: +${data.dial}`,
+      `TLD:          ${data.tld}`,
+      `Continent:    ${data.cont}`,
+    ].join('\n');
+  },
+  async handle() {},
+};

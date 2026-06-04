@@ -125,14 +125,14 @@
 
 ### Geography & country lookup tables
 
-- [ ] **Country info** (`<country>`) — ISO code → capital, currency, calling code, TLD, flag emoji, languages, continent
-- [ ] **Flag emoji** (`<flag>`) — country name or code → flag emoji; pure Unicode regional indicator magic
-- [ ] **Airport code** (`<airport>`) — IATA/ICAO code → city and airport name; built-in table of the ~300 busiest
-- [ ] **Currency** (`<currency>`) — ISO 4217 code → name, symbol, countries that use it
-- [ ] **Calling code** (`<dialcode>`) — country → `+1`, `+44`, etc.; or reverse lookup
-- [ ] **US ZIP prefix** (`<zip>`) — first 3 digits → state/region; rough geographic area without exact DB
-- [ ] **US state** (`<state>`) — abbreviation ↔ full name, capital, admission date, nickname
-- [ ] **What time is it there?** (`<theretime>`) — convert "now" to any named city's local time via Intl.DateTimeFormat
+- [x] **Country info** (`<country>`) — ISO code → capital, currency, calling code, TLD, flag emoji, languages, continent
+- [x] **Flag emoji** (`<flag>`) — country name or code → flag emoji; pure Unicode regional indicator magic
+- [x] **Airport code** (`<airport>`) — IATA/ICAO code → city and airport name; built-in table of the ~300 busiest
+- [x] **Currency** (`<currency>`) — ISO 4217 code → name, symbol, countries that use it
+- [x] **Calling code** (`<dialcode>`) — country → `+1`, `+44`, etc.; or reverse lookup
+- [x] **US ZIP prefix** (`<zip>`) — first 3 digits → state/region; rough geographic area without exact DB
+- [x] **US state** (`<state>`) — abbreviation ↔ full name, capital, admission date, nickname
+- [x] **What time is it there?** (`<theretime>`) — convert "now" to any named city's local time via Intl.DateTimeFormat
 
 ### Science & nature lookup
 

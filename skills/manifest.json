@@ -532,5 +532,53 @@
     "label": "BPM ↔ ms",
     "description": "Converts BPM to millisecond durations for whole, half, quarter, 8th, 16th, and triplet notes.",
     "default": false
+  },
+  {
+    "tag": "country",
+    "label": "Country Info",
+    "description": "Looks up capital, currency, calling code, TLD, and continent for any country.",
+    "default": false
+  },
+  {
+    "tag": "flag",
+    "label": "Flag Emoji",
+    "description": "Returns the flag emoji for any country by ISO code or common name.",
+    "default": false
+  },
+  {
+    "tag": "airport",
+    "label": "Airport Code",
+    "description": "Looks up IATA airport codes by code or city name for ~200 major airports.",
+    "default": false
+  },
+  {
+    "tag": "currency",
+    "label": "Currency",
+    "description": "Looks up currency name, symbol, and countries by ISO 4217 code or name.",
+    "default": false
+  },
+  {
+    "tag": "dialcode",
+    "label": "Calling Code",
+    "description": "Looks up international dialing code by country ISO code or reverses a dial code to country.",
+    "default": false
+  },
+  {
+    "tag": "zip",
+    "label": "US ZIP Prefix",
+    "description": "Maps first 3 digits of a US ZIP code to its state/region.",
+    "default": false
+  },
+  {
+    "tag": "state",
+    "label": "US State",
+    "description": "Looks up US state by abbreviation or full name: capital, admission year, nickname.",
+    "default": false
+  },
+  {
+    "tag": "theretime",
+    "label": "Time There",
+    "description": "Shows the current local time in any city or country by name.",
+    "default": false
   }
 ]
