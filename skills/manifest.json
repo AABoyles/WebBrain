@@ -274,5 +274,11 @@
     "label": "Regex Tester",
     "description": "Tests a regular expression pattern against a string and shows all matches and groups.",
     "default": false
+  },
+  {
+    "tag": "json",
+    "label": "JSON Formatter",
+    "description": "Pretty-prints or minifies JSON; catches malformed input with a clear error.",
+    "default": false
   }
 ]
