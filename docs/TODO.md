@@ -82,7 +82,7 @@
 - [ ] ~~**EIN decoder** (`<ein>`) — Employer Identification Number prefix → IRS campus that assigned it~~ (skipped)
 - [x] **UUID decoder** (`<uuid-decode>`) — version (1/3/4/5), variant, timestamp extraction for v1, namespace for v3/v5
 - [x] **UPC / EAN barcode** (`<upc>`) — check digit validation, GS1 company prefix structure
-- [ ] **IMEI decoder** (`<imei>`) — TAC → device type, Luhn check; pure algorithm
+- [x] **IMEI decoder** (`<imei>`) — TAC → device type, Luhn check; pure algorithm
 
 ### Format & protocol parsers
 

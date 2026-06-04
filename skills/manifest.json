@@ -346,5 +346,11 @@
     "label": "UPC/EAN Barcode",
     "description": "Validates UPC-A (12-digit) and EAN-13 barcodes; decodes GS1 country prefix.",
     "default": false
+  },
+  {
+    "tag": "imei",
+    "label": "IMEI Decoder",
+    "description": "Validates Luhn check digit and decodes TAC, reporting body, and serial number from an IMEI.",
+    "default": false
   }
 ]
