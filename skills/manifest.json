@@ -166,5 +166,11 @@
     "label": "Pig Latin",
     "description": "Translates English text to Pig Latin.",
     "default": false
+  },
+  {
+    "tag": "leet",
+    "label": "Leet Speak",
+    "description": "Translates text to 1337 5p34k substitution cipher.",
+    "default": false
   }
 ]

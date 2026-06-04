@@ -30,7 +30,7 @@
 - [x] **Radix converter** (`<radix>`) — `<radix>255 to hex</radix>` → `FF`; bin/oct/dec/hex; useful for developers
 - [x] **Flip text** (`<flip>`) — upside-down Unicode text using a character map; pure novelty but people love it
 - [x] **Pig Latin** (`<piglatin>`) — classic childhood cipher; pure string manipulation
-- [ ] **Leet speak** (`<leet>`) — 1337 5p34k; pure substitution table
+- [x] **Leet speak** (`<leet>`) — 1337 5p34k; pure substitution table
 - [ ] **Pirate speak** (`<pirate>`) — word-substitution table; "hello" → "ahoy"; fun for the persona
 - [ ] **Scrabble score** (`<scrabble>`) — calculate tile point value for a word; pure lookup table
 - [ ] **Haiku checker** (`<haiku>`) — count syllables per line and verify 5-7-5 structure; algorithmic syllable counter
