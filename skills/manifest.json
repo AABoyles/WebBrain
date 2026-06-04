@@ -418,5 +418,23 @@
     "label": "TCP Port",
     "description": "Looks up well-known TCP/UDP port numbers and identifies the service.",
     "default": false
+  },
+  {
+    "tag": "dns",
+    "label": "DNS Record Types",
+    "description": "Explains what each DNS record type does (A, AAAA, CNAME, MX, TXT, SRV, CAA, SOA, etc.).",
+    "default": false
+  },
+  {
+    "tag": "signal",
+    "label": "Unix Signal",
+    "description": "Looks up Unix signal by name or number; explains default behavior and common use cases.",
+    "default": false
+  },
+  {
+    "tag": "exit",
+    "label": "Exit Code",
+    "description": "Explains shell and program exit codes; decodes signal-based codes (128 + signal).",
+    "default": false
   }
 ]

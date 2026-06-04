@@ -97,9 +97,9 @@
 - [x] **MIME type** (`<mime>`) — extension → type or type → extension; built-in table of ~150 common types
 - [x] **HTTP status** (`<http>`) — `418` → "I'm a Teapot (RFC 2324)"; full table including WebDAV, nginx, Cloudflare codes
 - [x] **TCP port** (`<port>`) — well-known port → service; `443` → HTTPS, `22` → SSH, `6379` → Redis, etc.
-- [ ] **DNS record types** (`<dns>`) — explain what A, AAAA, CNAME, MX, TXT, SRV, CAA, SOA records do
-- [ ] **Unix signal** (`<signal>`) — `SIGTERM` ↔ `15`; explains default behavior and when each is used
-- [ ] **Exit code** (`<exit>`) — `137` → OOM-killed (128+SIGKILL); common shell and program exit codes
+- [x] **DNS record types** (`<dns>`) — explain what A, AAAA, CNAME, MX, TXT, SRV, CAA, SOA records do
+- [x] **Unix signal** (`<signal>`) — `SIGTERM` ↔ `15`; explains default behavior and when each is used
+- [x] **Exit code** (`<exit>`) — `137` → OOM-killed (128+SIGKILL); common shell and program exit codes
 
 ### More ciphers & encodings
 
