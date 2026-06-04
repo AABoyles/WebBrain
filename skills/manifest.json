@@ -916,5 +916,17 @@
     "label": "Mustache Templates",
     "description": "Fill Mustache templates ({{var}}, sections, loops) with JSON data",
     "default": false
+  },
+  {
+    "tag": "md",
+    "label": "Markdown Renderer",
+    "description": "Render Markdown as formatted HTML injected into the chat view (loads marked via CDN)",
+    "default": false
+  },
+  {
+    "tag": "html2md",
+    "label": "HTML to Markdown",
+    "description": "Convert HTML markup to Markdown text",
+    "default": false
   }
 ]
