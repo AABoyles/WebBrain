@@ -142,5 +142,11 @@
     "label": "Number to Words",
     "description": "Converts integers to English words (e.g. 1234 → \"one thousand two hundred thirty-four\").",
     "default": false
+  },
+  {
+    "tag": "roman",
+    "label": "Roman Numerals",
+    "description": "Converts integers (1–3999) to Roman numerals and back.",
+    "default": false
   }
 ]
