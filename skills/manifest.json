@@ -100,5 +100,11 @@
     "label": "Caesar Cipher",
     "description": "Encodes or decodes text with a configurable alphabetic shift.",
     "default": false
+  },
+  {
+    "tag": "morse",
+    "label": "Morse Code",
+    "description": "Encodes text to Morse code or decodes Morse back to text.",
+    "default": false
   }
 ]

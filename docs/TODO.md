@@ -13,7 +13,7 @@
 - [x] **Hash** (`<hash>`) — `crypto.subtle.digest`; SHA-256 and friends
 - [x] **ROT13** (`<rot13>`)
 - [x] **Caesar Cipher** (`<caesar>`)
-- [ ] **Morse Code** (`<morse>`)
+- [x] **Morse Code** (`<morse>`)
 
 ### Audio (Web Audio API — zero deps, works offline)
 
