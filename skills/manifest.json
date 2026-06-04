@@ -172,5 +172,11 @@
     "label": "Leet Speak",
     "description": "Translates text to 1337 5p34k substitution cipher.",
     "default": false
+  },
+  {
+    "tag": "pirate",
+    "label": "Pirate Speak",
+    "description": "Translates text into pirate dialect (ahoy, matey, arrr).",
+    "default": false
   }
 ]
