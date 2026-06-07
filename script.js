@@ -749,6 +749,28 @@ async function renderTodos() {
   });
 }
 
+// ── Theme ─────────────────────────────────────────────────────────────────────
+(function initTheme() {
+  let saved;
+  try { saved = localStorage.getItem('theme'); } catch { /* storage blocked */ }
+  if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+  else saved = null; // ignore any invalid stored value
+  const isDark = saved === 'dark' ||
+    (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const btn = $('theme-toggle');
+  if (btn) btn.querySelector('i').className = isDark ? 'bi bi-sun' : 'bi bi-moon';
+})();
+
+$('theme-toggle').addEventListener('click', () => {
+  const cur = document.documentElement.dataset.theme;
+  const isDark = cur === 'dark' ||
+    (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('theme', next); } catch { /* storage blocked */ }
+  $('theme-toggle').querySelector('i').className = next === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
+});
+
 // ── Event listeners ───────────────────────────────────────────────────────────
 $('send-btn').addEventListener('click', send);
 
