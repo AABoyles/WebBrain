@@ -82,6 +82,7 @@ async function persistChat(id, messages, title) {
 let backend = 'none';
 let session = null;
 let llm     = null;
+let liteRtWarmup = null; // resolves when the post-init warm-up inference finishes
 
 async function initAI(preferredBackend) {
   session = null;
@@ -249,10 +250,10 @@ async function tryInitLitert() {
     backend = 'litert';
     setStatus('Litert-LM ready.');
     // Pre-compile WebGPU shaders before the first real user message.
-    // First inference triggers JIT compilation; this hides that cost in the background.
-    llm.generateResponse(
+    // Tracked so streamAI can await it — LlmInference is not re-entrant.
+    liteRtWarmup = llm.generateResponse(
       '<start_of_turn>user\nhi<end_of_turn>\n<start_of_turn>model\n', () => {}
-    ).catch(() => {});
+    ).catch(() => {}).finally(() => { liteRtWarmup = null; });
   } catch (e) {
     console.error('Litert-LM init failed:', e);
     setStatus(`Litert-LM failed: ${e.message}`);
@@ -327,6 +328,7 @@ async function* streamAI(messages, systemPrompt) {
       yield (raw ?? '').replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
     }
   } else if (backend === 'litert') {
+    if (liteRtWarmup) await liteRtWarmup; // ensure warm-up finished before we start
     const prompt = buildGemmaPrompt(systemPrompt, messages);
     const EOT    = '<end_of_turn>';
 
@@ -466,10 +468,25 @@ async function send() {
     }
     const lastLt = pending.lastIndexOf('<');
     let safe;
-    if (lastLt === -1 || pending.length - lastLt > MAX_TAG_OVERHEAD) {
+    if (lastLt === -1) {
       safe = pending; pending = '';
     } else {
-      safe = pending.slice(0, lastLt); pending = pending.slice(lastLt);
+      // Check for a confirmed skill tag opener (e.g. '<fact>') in pending.
+      // If found, hold from that position regardless of buffer size — we cannot
+      // flush tag content until the closing tag arrives (regression guard).
+      let openerAt = Infinity;
+      for (const skill of SKILLS) {
+        const idx = pending.indexOf('<' + skill.tag + '>');
+        if (idx !== -1 && idx < openerAt) openerAt = idx;
+      }
+      if (openerAt < Infinity) {
+        safe = pending.slice(0, openerAt); pending = pending.slice(openerAt);
+      } else if (pending.length - lastLt > MAX_TAG_OVERHEAD) {
+        // '<' too far back to be a tag opener — safe to flush
+        safe = pending; pending = '';
+      } else {
+        safe = pending.slice(0, lastLt); pending = pending.slice(lastLt);
+      }
     }
     if (safe) bubble.insertBefore(document.createTextNode(safe), cursor);
     scheduleScroll();
