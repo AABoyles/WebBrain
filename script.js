@@ -290,12 +290,27 @@ async function* streamAI(messages, systemPrompt) {
     if (typeof sess.promptStreaming === 'function') {
       // Each chunk is an incremental delta — yield directly.
       // (Older Chrome builds returned cumulative text, but current builds return deltas.)
+      const EOT    = '<end_of_turn>';
       const stream = sess.promptStreaming(lastMsg);
+      let held = '';
       for await (const chunk of stream) {
-        if (chunk) yield chunk;
+        if (!chunk) continue;
+        held += chunk;
+        const eotIdx = held.indexOf(EOT);
+        if (eotIdx !== -1) {
+          const clean = held.slice(0, eotIdx).trimEnd();
+          if (clean) yield clean;
+          return;
+        }
+        if (held.length >= EOT.length) {
+          yield held.slice(0, -(EOT.length - 1));
+          held = held.slice(-(EOT.length - 1));
+        }
       }
+      if (held) yield held.replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
     } else {
-      yield await sess.prompt(lastMsg);
+      const raw = await sess.prompt(lastMsg);
+      yield (raw ?? '').replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
     }
   } else if (backend === 'litert') {
     const prompt = buildGemmaPrompt(systemPrompt, messages);
@@ -331,8 +346,12 @@ async function* streamAI(messages, systemPrompt) {
       while (queue.length) {
         const { partial, done } = queue.shift();
         held += partial;
-        if (done) {
-          const clean = held.replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
+        // Check for EOT on every chunk — it can arrive with done=false, in which
+        // case the hold-back slice would split the token across yields without this.
+        const eotIdx = held.indexOf(EOT);
+        if (eotIdx !== -1 || done) {
+          const text  = eotIdx !== -1 ? held.slice(0, eotIdx) : held;
+          const clean = text.trimEnd();
           yield clean || '[No response — check console]';
           return;
         }
