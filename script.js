@@ -28,6 +28,7 @@ async function setEnabledSkills(set) {
 
 async function loadSkill(tag) {
   if (SKILLS.some(s => s.tag === tag)) return;
+  invalidateStaticSysPrompt();
   try {
     const { default: skill } = await import(`./skills/${tag}/skill.js`);
     SKILLS.push(skill);
@@ -38,6 +39,7 @@ async function loadSkill(tag) {
 
 function unloadSkill(tag) {
   SKILLS = SKILLS.filter(s => s.tag !== tag);
+  invalidateStaticSysPrompt();
 }
 
 async function initSkills() {
@@ -47,15 +49,22 @@ async function initSkills() {
 }
 
 // ── System prompt ─────────────────────────────────────────────────────────────
+// The static prefix (soul + skill instructions) is cached across turns; only
+// live-context fetches and facts are re-evaluated each time they can change.
+let _staticSysPrompt = null;
+function invalidateStaticSysPrompt() { _staticSysPrompt = null; }
+
 async function buildSystemPrompt() {
-  const soul      = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
-  const skillBlock = SKILLS.filter(s => s.instruction).map(s => s.instruction).join('\n\n');
-  const liveLines  = (await Promise.all(SKILLS.filter(s => s.fetch).map(s => s.fetch()))).filter(Boolean);
-  const facts      = await getFacts();
-  let prompt = soul;
-  if (skillBlock)    prompt += '\n\n' + skillBlock;
+  if (!_staticSysPrompt) {
+    const soul       = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
+    const skillBlock = SKILLS.filter(s => s.instruction).map(s => s.instruction).join('\n\n');
+    _staticSysPrompt = skillBlock ? soul + '\n\n' + skillBlock : soul;
+  }
+  const liveLines = (await Promise.all(SKILLS.filter(s => s.fetch).map(s => s.fetch()))).filter(Boolean);
+  const facts     = await getFacts();
+  let prompt = _staticSysPrompt;
   if (liveLines.length) prompt += '\n\n## Live context:\n' + liveLines.join('\n');
-  if (facts.length)  prompt += '\n\n## Facts I recorded:\n' + facts.map(f => `- ${f.text}`).join('\n');
+  if (facts.length)     prompt += '\n\n## Facts I recorded:\n' + facts.map(f => `- ${f.text}`).join('\n');
   return prompt;
 }
 
@@ -234,11 +243,16 @@ async function tryInitLitert() {
     llm = await LlmInference.createFromOptions(genai, {
       baseOptions: { modelAssetPath: modelUrl },
       maxTokens: await computeMaxTokens(),
-      topK: 40,
+      topK: 20,
       temperature: 0.8,
     });
     backend = 'litert';
     setStatus('Litert-LM ready.');
+    // Pre-compile WebGPU shaders before the first real user message.
+    // First inference triggers JIT compilation; this hides that cost in the background.
+    llm.generateResponse(
+      '<start_of_turn>user\nhi<end_of_turn>\n<start_of_turn>model\n', () => {}
+    ).catch(() => {});
   } catch (e) {
     console.error('Litert-LM init failed:', e);
     setStatus(`Litert-LM failed: ${e.message}`);
@@ -423,6 +437,16 @@ async function send() {
   cursor.className = 'cursor';
   bubble.appendChild(cursor);
 
+  let scrollPending = false;
+  const scheduleScroll = () => {
+    if (scrollPending) return;
+    scrollPending = true;
+    requestAnimationFrame(() => {
+      $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+      scrollPending = false;
+    });
+  };
+
   let fullText = '';
   try {
     const sysPrompt = await buildSystemPrompt();
@@ -432,7 +456,7 @@ async function send() {
       fullText += chunk;
       bubble.textContent = stripSkillTags(fullText);
       bubble.appendChild(cursor);
-      $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+      scheduleScroll();
     }
 
     // Collect results from any call() skills the model invoked
@@ -464,7 +488,7 @@ async function send() {
         fullText += chunk;
         bubble.textContent = stripSkillTags(fullText);
         bubble.appendChild(cursor);
-        $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+        scheduleScroll();
       }
       session = null; // discard augmented session; next turn rebuilds from real messages
     }
@@ -735,12 +759,14 @@ $('new-todo').addEventListener('keydown', e => {
 
 $('save-soul-btn').addEventListener('click', async () => {
   await txPut('settings', $('soul-editor').value, 'soul');
+  invalidateStaticSysPrompt();
   session = null;
   bootstrap.Modal.getInstance($('settingsModal')).hide();
 });
 $('reset-soul-btn').addEventListener('click', async () => {
   await txPut('settings', DEFAULT_SOUL, 'soul');
   $('soul-editor').value = DEFAULT_SOUL;
+  invalidateStaticSysPrompt();
   session = null;
 });
 
