@@ -447,6 +447,35 @@ async function send() {
     });
   };
 
+  // Maximum characters that can appear between '<' and '>' of any skill tag opening.
+  // Used to detect when a '<' in the stream is definitely not a skill tag opener.
+  const MAX_TAG_OVERHEAD = SKILLS.reduce((m, s) => Math.max(m, s.tag.length + 2), 32);
+
+  // Incrementally emit safe text into the bubble. Holds back content from the
+  // last '<' to guard against suppressing mid-stream skill tag openers.
+  // O(|pending| * m) per chunk rather than O(n * m) — pending stays small.
+  function emitChunk(chunk) {
+    pending += chunk;
+    for (const skill of SKILLS) {
+      if (!pending.includes('<' + skill.tag + '>')) continue;
+      const subst = skill.replace ?? (() => '');
+      pending = pending.replace(
+        new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g'),
+        (_, c) => subst(c.trim())
+      );
+    }
+    const lastLt = pending.lastIndexOf('<');
+    let safe;
+    if (lastLt === -1 || pending.length - lastLt > MAX_TAG_OVERHEAD) {
+      safe = pending; pending = '';
+    } else {
+      safe = pending.slice(0, lastLt); pending = pending.slice(lastLt);
+    }
+    if (safe) bubble.insertBefore(document.createTextNode(safe), cursor);
+    scheduleScroll();
+  }
+
+  let pending  = '';
   let fullText = '';
   try {
     const sysPrompt = await buildSystemPrompt();
@@ -454,9 +483,7 @@ async function send() {
     // Pass 1
     for await (const chunk of streamAI(messages, sysPrompt)) {
       fullText += chunk;
-      bubble.textContent = stripSkillTags(fullText);
-      bubble.appendChild(cursor);
-      scheduleScroll();
+      emitChunk(chunk);
     }
 
     // Collect results from any call() skills the model invoked
@@ -475,6 +502,8 @@ async function send() {
     if (toolResults.length) {
       // Pass 2: clear bubble, inject results, re-invoke so the model answers with real data
       bubble.textContent = '';
+      bubble.appendChild(cursor); // textContent= removed cursor; restore it for pass 2
+      pending = '';               // reset incremental buffer for pass 2
       setStatus('Running tools…');
       const pass1Clean = stripSkillTags(fullText).trim();
       const augmented  = [
@@ -486,9 +515,7 @@ async function send() {
       session  = null; // force Chrome to rebuild session with augmented history
       for await (const chunk of streamAI(augmented, sysPrompt)) {
         fullText += chunk;
-        bubble.textContent = stripSkillTags(fullText);
-        bubble.appendChild(cursor);
-        scheduleScroll();
+        emitChunk(chunk);
       }
       session = null; // discard augmented session; next turn rebuilds from real messages
     }
