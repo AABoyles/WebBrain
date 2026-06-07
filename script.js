@@ -194,11 +194,15 @@ async function getModelBlobUrl(remoteUrl) {
 // WebGPU doesn't expose raw VRAM, but adapter.limits.maxBufferSize is a
 // reliable proxy — drivers typically cap single-allocation size at ~50 % of
 // usable VRAM, so multiplying by 2 gives a reasonable estimate.
-// KV-cache cost for a Gemma-class 2 B model at int8: ~20 KB / token.
-// Model weights occupy roughly 2 GB, leaving the rest for KV cache.
+// KV-cache cost for Gemma 4 2B at int8 with grouped-query attention: ~8 KB/token
+// (1 KV head * 256 head_dim * 18 layers * 2 [K+V] * 1 byte ≈ 9 KB; round to 8 KB
+// to stay slightly conservative). Model weights occupy roughly 2 GB.
+// PRACTICAL_CEIL caps at 16 K tokens — well above any real web chat session and
+// avoids allocating multi-GB KV caches on high-VRAM GPUs that would hurt throughput.
 async function computeMaxTokens() {
-  const FLOOR = 1000;
-  const CEIL  = 2 ** 17; // Gemma 4's maximum context length
+  const FLOOR          = 1000;
+  const PRACTICAL_CEIL = 16384; // generous for real conversations, avoids VRAM waste
+  const ABSOLUTE_CEIL  = 2 ** 17; // Gemma 4's architectural maximum
   try {
     if (!navigator.gpu) return FLOOR;
     const adapter = await navigator.gpu.requestAdapter();
@@ -206,10 +210,11 @@ async function computeMaxTokens() {
     const maxBuf           = adapter.limits.maxBufferSize ?? 256 * 1024 * 1024;
     const estimatedVram    = maxBuf * 2;
     const MODEL_BYTES      = 2 * 1024 ** 3;
-    const KV_BYTES_PER_TOK = 20 * 1024;
+    const KV_BYTES_PER_TOK = 8 * 1024;
     const headroom = estimatedVram - MODEL_BYTES;
     if (headroom <= 0) return FLOOR;
-    return Math.max(FLOOR, Math.min(Math.floor(headroom / KV_BYTES_PER_TOK), CEIL));
+    const vramBased = Math.floor(headroom / KV_BYTES_PER_TOK);
+    return Math.max(FLOOR, Math.min(vramBased, PRACTICAL_CEIL, ABSOLUTE_CEIL));
   } catch {
     return FLOOR;
   }
