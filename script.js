@@ -28,6 +28,7 @@ async function setEnabledSkills(set) {
 
 async function loadSkill(tag) {
   if (SKILLS.some(s => s.tag === tag)) return;
+  invalidateStaticSysPrompt();
   try {
     const { default: skill } = await import(`./skills/${tag}/skill.js`);
     SKILLS.push(skill);
@@ -38,6 +39,7 @@ async function loadSkill(tag) {
 
 function unloadSkill(tag) {
   SKILLS = SKILLS.filter(s => s.tag !== tag);
+  invalidateStaticSysPrompt();
 }
 
 async function initSkills() {
@@ -47,15 +49,22 @@ async function initSkills() {
 }
 
 // ── System prompt ─────────────────────────────────────────────────────────────
+// The static prefix (soul + skill instructions) is cached across turns; only
+// live-context fetches and facts are re-evaluated each time they can change.
+let _staticSysPrompt = null;
+function invalidateStaticSysPrompt() { _staticSysPrompt = null; }
+
 async function buildSystemPrompt() {
-  const soul      = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
-  const skillBlock = SKILLS.filter(s => s.instruction).map(s => s.instruction).join('\n\n');
-  const liveLines  = (await Promise.all(SKILLS.filter(s => s.fetch).map(s => s.fetch()))).filter(Boolean);
-  const facts      = await getFacts();
-  let prompt = soul;
-  if (skillBlock)    prompt += '\n\n' + skillBlock;
+  if (!_staticSysPrompt) {
+    const soul       = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
+    const skillBlock = SKILLS.filter(s => s.instruction).map(s => s.instruction).join('\n\n');
+    _staticSysPrompt = skillBlock ? soul + '\n\n' + skillBlock : soul;
+  }
+  const liveLines = (await Promise.all(SKILLS.filter(s => s.fetch).map(s => s.fetch()))).filter(Boolean);
+  const facts     = await getFacts();
+  let prompt = _staticSysPrompt;
   if (liveLines.length) prompt += '\n\n## Live context:\n' + liveLines.join('\n');
-  if (facts.length)  prompt += '\n\n## Facts I recorded:\n' + facts.map(f => `- ${f.text}`).join('\n');
+  if (facts.length)     prompt += '\n\n## Facts I recorded:\n' + facts.map(f => `- ${f.text}`).join('\n');
   return prompt;
 }
 
@@ -73,6 +82,7 @@ async function persistChat(id, messages, title) {
 let backend = 'none';
 let session = null;
 let llm     = null;
+let liteRtWarmup = null; // resolves when the post-init warm-up inference finishes
 
 async function initAI(preferredBackend) {
   session = null;
@@ -234,11 +244,16 @@ async function tryInitLitert() {
     llm = await LlmInference.createFromOptions(genai, {
       baseOptions: { modelAssetPath: modelUrl },
       maxTokens: await computeMaxTokens(),
-      topK: 40,
+      topK: 20,
       temperature: 0.8,
     });
     backend = 'litert';
     setStatus('Litert-LM ready.');
+    // Pre-compile WebGPU shaders before the first real user message.
+    // Tracked so streamAI can await it — LlmInference is not re-entrant.
+    liteRtWarmup = llm.generateResponse(
+      '<start_of_turn>user\nhi<end_of_turn>\n<start_of_turn>model\n', () => {}
+    ).catch(() => {}).finally(() => { liteRtWarmup = null; });
   } catch (e) {
     console.error('Litert-LM init failed:', e);
     setStatus(`Litert-LM failed: ${e.message}`);
@@ -290,14 +305,30 @@ async function* streamAI(messages, systemPrompt) {
     if (typeof sess.promptStreaming === 'function') {
       // Each chunk is an incremental delta — yield directly.
       // (Older Chrome builds returned cumulative text, but current builds return deltas.)
+      const EOT    = '<end_of_turn>';
       const stream = sess.promptStreaming(lastMsg);
+      let held = '';
       for await (const chunk of stream) {
-        if (chunk) yield chunk;
+        if (!chunk) continue;
+        held += chunk;
+        const eotIdx = held.indexOf(EOT);
+        if (eotIdx !== -1) {
+          const clean = held.slice(0, eotIdx).trimEnd();
+          if (clean) yield clean;
+          return;
+        }
+        if (held.length >= EOT.length) {
+          yield held.slice(0, -(EOT.length - 1));
+          held = held.slice(-(EOT.length - 1));
+        }
       }
+      if (held) yield held.replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
     } else {
-      yield await sess.prompt(lastMsg);
+      const raw = await sess.prompt(lastMsg);
+      yield (raw ?? '').replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
     }
   } else if (backend === 'litert') {
+    if (liteRtWarmup) await liteRtWarmup; // ensure warm-up finished before we start
     const prompt = buildGemmaPrompt(systemPrompt, messages);
     const EOT    = '<end_of_turn>';
 
@@ -331,8 +362,12 @@ async function* streamAI(messages, systemPrompt) {
       while (queue.length) {
         const { partial, done } = queue.shift();
         held += partial;
-        if (done) {
-          const clean = held.replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
+        // Check for EOT on every chunk — it can arrive with done=false, in which
+        // case the hold-back slice would split the token across yields without this.
+        const eotIdx = held.indexOf(EOT);
+        if (eotIdx !== -1 || done) {
+          const text  = eotIdx !== -1 ? held.slice(0, eotIdx) : held;
+          const clean = text.trimEnd();
           yield clean || '[No response — check console]';
           return;
         }
@@ -404,6 +439,60 @@ async function send() {
   cursor.className = 'cursor';
   bubble.appendChild(cursor);
 
+  let scrollPending = false;
+  const scheduleScroll = () => {
+    if (scrollPending) return;
+    scrollPending = true;
+    requestAnimationFrame(() => {
+      $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+      scrollPending = false;
+    });
+  };
+
+  // Maximum characters that can appear between '<' and '>' of any skill tag opening.
+  // Used to detect when a '<' in the stream is definitely not a skill tag opener.
+  const MAX_TAG_OVERHEAD = SKILLS.reduce((m, s) => Math.max(m, s.tag.length + 2), 32);
+
+  // Incrementally emit safe text into the bubble. Holds back content from the
+  // last '<' to guard against suppressing mid-stream skill tag openers.
+  // O(|pending| * m) per chunk rather than O(n * m) — pending stays small.
+  function emitChunk(chunk) {
+    pending += chunk;
+    for (const skill of SKILLS) {
+      if (!pending.includes('<' + skill.tag + '>')) continue;
+      const subst = skill.replace ?? (() => '');
+      pending = pending.replace(
+        new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g'),
+        (_, c) => subst(c.trim())
+      );
+    }
+    const lastLt = pending.lastIndexOf('<');
+    let safe;
+    if (lastLt === -1) {
+      safe = pending; pending = '';
+    } else {
+      // Check for a confirmed skill tag opener (e.g. '<fact>') in pending.
+      // If found, hold from that position regardless of buffer size — we cannot
+      // flush tag content until the closing tag arrives (regression guard).
+      let openerAt = Infinity;
+      for (const skill of SKILLS) {
+        const idx = pending.indexOf('<' + skill.tag + '>');
+        if (idx !== -1 && idx < openerAt) openerAt = idx;
+      }
+      if (openerAt < Infinity) {
+        safe = pending.slice(0, openerAt); pending = pending.slice(openerAt);
+      } else if (pending.length - lastLt > MAX_TAG_OVERHEAD) {
+        // '<' too far back to be a tag opener — safe to flush
+        safe = pending; pending = '';
+      } else {
+        safe = pending.slice(0, lastLt); pending = pending.slice(lastLt);
+      }
+    }
+    if (safe) bubble.insertBefore(document.createTextNode(safe), cursor);
+    scheduleScroll();
+  }
+
+  let pending  = '';
   let fullText = '';
   try {
     const sysPrompt = await buildSystemPrompt();
@@ -411,9 +500,7 @@ async function send() {
     // Pass 1
     for await (const chunk of streamAI(messages, sysPrompt)) {
       fullText += chunk;
-      bubble.textContent = stripSkillTags(fullText);
-      bubble.appendChild(cursor);
-      $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+      emitChunk(chunk);
     }
 
     // Collect results from any call() skills the model invoked
@@ -432,6 +519,8 @@ async function send() {
     if (toolResults.length) {
       // Pass 2: clear bubble, inject results, re-invoke so the model answers with real data
       bubble.textContent = '';
+      bubble.appendChild(cursor); // textContent= removed cursor; restore it for pass 2
+      pending = '';               // reset incremental buffer for pass 2
       setStatus('Running tools…');
       const pass1Clean = stripSkillTags(fullText).trim();
       const augmented  = [
@@ -443,9 +532,7 @@ async function send() {
       session  = null; // force Chrome to rebuild session with augmented history
       for await (const chunk of streamAI(augmented, sysPrompt)) {
         fullText += chunk;
-        bubble.textContent = stripSkillTags(fullText);
-        bubble.appendChild(cursor);
-        $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+        emitChunk(chunk);
       }
       session = null; // discard augmented session; next turn rebuilds from real messages
     }
@@ -716,12 +803,14 @@ $('new-todo').addEventListener('keydown', e => {
 
 $('save-soul-btn').addEventListener('click', async () => {
   await txPut('settings', $('soul-editor').value, 'soul');
+  invalidateStaticSysPrompt();
   session = null;
   bootstrap.Modal.getInstance($('settingsModal')).hide();
 });
 $('reset-soul-btn').addEventListener('click', async () => {
   await txPut('settings', DEFAULT_SOUL, 'soul');
   $('soul-editor').value = DEFAULT_SOUL;
+  invalidateStaticSysPrompt();
   session = null;
 });
 
@@ -764,9 +853,11 @@ $('settingsModal').addEventListener('show.bs.modal', async () => {
 });
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
+// initAI and initSkills are independent — skills are only used at inference time,
+// not during model loading. Run them in parallel so the tool registry is populated
+// as soon as the manifest is fetched rather than waiting for model init.
 const savedBackend = await txGet('settings', 'backend');
-await initAI(savedBackend);
-await initSkills();
+await Promise.all([initAI(savedBackend), initSkills()]);
 await renderHistory();
 setSend(false);
 $('user-input').dispatchEvent(new Event('input'));
