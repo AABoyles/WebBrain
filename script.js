@@ -298,11 +298,42 @@ async function* streamAI(messages, systemPrompt) {
       yield await sess.prompt(lastMsg);
     }
   } else if (backend === 'litert') {
-    const prompt   = buildGemmaPrompt(systemPrompt, messages);
-    const raw      = await llm.generateResponse(prompt);
-    // Strip the end-of-turn token if the model echoes it back
-    const response = (raw ?? '').replace(/<end_of_turn>[\s\S]*$/, '').trim();
-    yield response || '[No response — check console]';
+    const prompt = buildGemmaPrompt(systemPrompt, messages);
+    const EOT    = '<end_of_turn>';
+
+    // Bridge MediaPipe's callback-based streaming to this async generator.
+    // Hold back EOT.length-1 chars at all times so a cross-chunk <end_of_turn>
+    // is never emitted to the UI before we can strip it on the done=true call.
+    const queue = [];
+    let finished = false;
+    let wakeUp   = null;
+
+    llm.generateResponse(prompt, (partial, done) => {
+      queue.push({ partial: partial ?? '', done });
+      if (done) finished = true;
+      wakeUp?.();
+    });
+
+    let held = '';
+    while (!finished || queue.length) {
+      if (!queue.length) {
+        await new Promise(r => { wakeUp = r; });
+        wakeUp = null;
+      }
+      while (queue.length) {
+        const { partial, done } = queue.shift();
+        held += partial;
+        if (done) {
+          const clean = held.replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
+          yield clean || '[No response — check console]';
+          return;
+        }
+        if (held.length > EOT.length) {
+          yield held.slice(0, -(EOT.length - 1));
+          held = held.slice(-(EOT.length - 1));
+        }
+      }
+    }
   } else {
     yield 'No AI backend is configured. Open Settings → Model to set one up.';
   }
