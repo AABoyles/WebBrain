@@ -194,9 +194,9 @@ async function getModelBlobUrl(remoteUrl) {
 // WebGPU doesn't expose raw VRAM, but adapter.limits.maxBufferSize is a
 // reliable proxy — drivers typically cap single-allocation size at ~50 % of
 // usable VRAM, so multiplying by 2 gives a reasonable estimate.
-// KV-cache cost for Gemma 4 2B at int8 with grouped-query attention: ~8 KB/token
-// (1 KV head * 256 head_dim * 18 layers * 2 [K+V] * 1 byte ≈ 9 KB; round to 8 KB
-// to stay slightly conservative). Model weights occupy roughly 2 GB.
+// KV-cache cost for Gemma 4 2B at int8 with grouped-query attention: ~10 KB/token
+// (1 KV head * 256 head_dim * 18 layers * 2 [K+V] * 1 byte ≈ 9 KB; round up to
+// 10 KB to stay conservative and avoid OOM). Model weights occupy roughly 2 GB.
 // PRACTICAL_CEIL caps at 16 K tokens — well above any real web chat session and
 // avoids allocating multi-GB KV caches on high-VRAM GPUs that would hurt throughput.
 async function computeMaxTokens() {
@@ -210,7 +210,7 @@ async function computeMaxTokens() {
     const maxBuf           = adapter.limits.maxBufferSize ?? 256 * 1024 * 1024;
     const estimatedVram    = maxBuf * 2;
     const MODEL_BYTES      = 2 * 1024 ** 3;
-    const KV_BYTES_PER_TOK = 8 * 1024;
+    const KV_BYTES_PER_TOK = 10 * 1024;
     const headroom = estimatedVram - MODEL_BYTES;
     if (headroom <= 0) return FLOOR;
     const vramBased = Math.floor(headroom / KV_BYTES_PER_TOK);
@@ -306,11 +306,18 @@ async function* streamAI(messages, systemPrompt) {
     // is never emitted to the UI before we can strip it on the done=true call.
     const queue = [];
     let finished = false;
+    let streamError = null;
     let wakeUp   = null;
 
+    // generateResponse returns a Promise even in callback mode; catch rejections
+    // so a failed inference wakes the loop instead of hanging indefinitely.
     llm.generateResponse(prompt, (partial, done) => {
       queue.push({ partial: partial ?? '', done });
       if (done) finished = true;
+      wakeUp?.();
+    }).catch(e => {
+      streamError = e;
+      finished = true;
       wakeUp?.();
     });
 
@@ -320,6 +327,7 @@ async function* streamAI(messages, systemPrompt) {
         await new Promise(r => { wakeUp = r; });
         wakeUp = null;
       }
+      if (streamError) throw streamError;
       while (queue.length) {
         const { partial, done } = queue.shift();
         held += partial;
@@ -328,7 +336,8 @@ async function* streamAI(messages, systemPrompt) {
           yield clean || '[No response — check console]';
           return;
         }
-        if (held.length > EOT.length) {
+        // >= EOT.length ensures we always hold back exactly EOT.length-1 chars.
+        if (held.length >= EOT.length) {
           yield held.slice(0, -(EOT.length - 1));
           held = held.slice(-(EOT.length - 1));
         }
