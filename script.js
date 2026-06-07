@@ -809,9 +809,11 @@ $('settingsModal').addEventListener('show.bs.modal', async () => {
 });
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
+// initAI and initSkills are independent — skills are only used at inference time,
+// not during model loading. Run them in parallel so the tool registry is populated
+// as soon as the manifest is fetched rather than waiting for model init.
 const savedBackend = await txGet('settings', 'backend');
-await initAI(savedBackend);
-await initSkills();
+await Promise.all([initAI(savedBackend), initSkills()]);
 await renderHistory();
 setSend(false);
 $('user-input').dispatchEvent(new Event('input'));
