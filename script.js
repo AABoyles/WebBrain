@@ -749,6 +749,26 @@ async function renderTodos() {
   });
 }
 
+// ── Theme ─────────────────────────────────────────────────────────────────────
+(function initTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  const isDark = saved === 'dark' ||
+    (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const btn = $('theme-toggle');
+  if (btn) btn.querySelector('i').className = isDark ? 'bi bi-sun' : 'bi bi-moon';
+})();
+
+$('theme-toggle').addEventListener('click', () => {
+  const cur = document.documentElement.dataset.theme;
+  const isDark = cur === 'dark' ||
+    (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('theme', next);
+  $('theme-toggle').querySelector('i').className = next === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
+});
+
 // ── Event listeners ───────────────────────────────────────────────────────────
 $('send-btn').addEventListener('click', send);
 
