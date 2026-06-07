@@ -751,8 +751,10 @@ async function renderTodos() {
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 (function initTheme() {
-  const saved = localStorage.getItem('theme');
-  if (saved) document.documentElement.dataset.theme = saved;
+  let saved;
+  try { saved = localStorage.getItem('theme'); } catch { /* storage blocked */ }
+  if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+  else saved = null; // ignore any invalid stored value
   const isDark = saved === 'dark' ||
     (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
   const btn = $('theme-toggle');
@@ -765,7 +767,7 @@ $('theme-toggle').addEventListener('click', () => {
     (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
   const next = isDark ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
-  localStorage.setItem('theme', next);
+  try { localStorage.setItem('theme', next); } catch { /* storage blocked */ }
   $('theme-toggle').querySelector('i').className = next === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
 });
 
