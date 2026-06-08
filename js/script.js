@@ -161,6 +161,11 @@ $('settingsModal').addEventListener('show.bs.modal', async () => {
   $('soul-editor').value = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
 });
 
+// ── Service Worker ────────────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 const savedBackend = await txGet('settings', 'backend');
 await Promise.all([initAI(savedBackend), initSkills()]);
