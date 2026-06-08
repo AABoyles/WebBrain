@@ -1,1010 +1,2314 @@
 [
   {
+    "tag": "date",
+    "label": "Date Awareness",
+    "description": "Injects the current date and time into every response.",
+    "default": true,
+    "category": "Core",
+    "triggers": [
+      "today",
+      "what day",
+      "what time",
+      "current time",
+      "current date"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "location",
+    "label": "Location",
+    "description": "Injects your approximate location into responses (fetched once per session).",
+    "default": true,
+    "category": "Core",
+    "triggers": [
+      "my location",
+      "where am i",
+      "my coordinates",
+      "current location",
+      "my gps"
+    ],
+    "risk": "permission_required"
+  },
+  {
     "tag": "fact",
     "label": "Memory",
     "description": "Saves personal details shared in conversation as persistent facts.",
-    "default": true
-  },
-  {
-    "tag": "date",
-    "label": "Date Awareness",
-    "description": "Lets the model look up the current date and time on demand.",
-    "default": false
+    "default": true,
+    "category": "Core",
+    "triggers": [],
+    "risk": "side_effect"
   },
   {
     "tag": "calc",
     "label": "Calculator",
     "description": "Evaluates math expressions precisely using the JS engine — no hallucination.",
-    "default": false
-  },
-  {
-    "tag": "remind",
-    "label": "Reminders",
-    "description": "Sets timed browser notifications.",
-    "default": false
-  },
-  {
-    "tag": "todo",
-    "label": "To-Do List",
-    "description": "Manages a persistent to-do list stored in your browser.",
-    "default": false
-  },
-  {
-    "tag": "convert",
-    "label": "Unit Converter",
-    "description": "Converts between length, mass, temperature, volume, speed, area, and data units.",
-    "default": false
-  },
-  {
-    "tag": "wiki",
-    "label": "Wikipedia",
-    "description": "Fetches a real Wikipedia summary instead of hallucinating facts.",
-    "default": false
-  },
-  {
-    "tag": "location",
-    "label": "Location",
-    "description": "Gets your approximate location for context-aware answers.",
-    "default": false
-  },
-  {
-    "tag": "roll",
-    "label": "Dice Roller",
-    "description": "Rolls dice (d4–d100, NdX+M notation) or flips a coin using crypto-random values.",
-    "default": false
-  },
-  {
-    "tag": "speak",
-    "label": "Text-to-Speech",
-    "description": "Narrates model responses aloud using the Web Speech API.",
-    "default": false
-  },
-  {
-    "tag": "password",
-    "label": "Password Generator",
-    "description": "Generates cryptographically random passwords with configurable length and character sets.",
-    "default": false
-  },
-  {
-    "tag": "encode",
-    "label": "Encode/Decode",
-    "description": "Encodes and decodes text: Base64, URL encoding, HTML entities.",
-    "default": false
-  },
-  {
-    "tag": "color",
-    "label": "Color Converter",
-    "description": "Converts colors between hex, RGB, and HSL formats.",
-    "default": false
-  },
-  {
-    "tag": "tz",
-    "label": "Timezone Converter",
-    "description": "Shows the current time in any IANA timezone, or converts a specific time between zones.",
-    "default": false
-  },
-  {
-    "tag": "hash",
-    "label": "Hash",
-    "description": "Computes SHA-1, SHA-256, SHA-384, or SHA-512 digests via the Web Crypto API.",
-    "default": false
-  },
-  {
-    "tag": "rot13",
-    "label": "ROT13",
-    "description": "Applies ROT13 substitution cipher (self-inverse: same operation encodes and decodes).",
-    "default": false
-  },
-  {
-    "tag": "caesar",
-    "label": "Caesar Cipher",
-    "description": "Encodes or decodes text with a configurable alphabetic shift.",
-    "default": false
-  },
-  {
-    "tag": "morse",
-    "label": "Morse Code",
-    "description": "Encodes text to Morse code or decodes Morse back to text.",
-    "default": false
-  },
-  {
-    "tag": "tone",
-    "label": "Tone Generator",
-    "description": "Plays a continuous sine-wave tone at a given frequency or note name via Web Audio API.",
-    "default": false
-  },
-  {
-    "tag": "metronome",
-    "label": "Metronome",
-    "description": "Plays a click track at a given BPM using Web Audio API scheduling.",
-    "default": false
-  },
-  {
-    "tag": "morse-audio",
-    "label": "Morse Audio",
-    "description": "Plays text as Morse code beeps via Web Audio API.",
-    "default": false
-  },
-  {
-    "tag": "dtmf",
-    "label": "DTMF Tones",
-    "description": "Plays telephone keypad dual-tone multi-frequency (DTMF) tones via Web Audio.",
-    "default": false
-  },
-  {
-    "tag": "nato",
-    "label": "NATO Phonetic",
-    "description": "Spells text using the NATO phonetic alphabet (Alpha, Bravo, Charlie…).",
-    "default": false
-  },
-  {
-    "tag": "n2w",
-    "label": "Number to Words",
-    "description": "Converts integers to English words (e.g. 1234 → \"one thousand two hundred thirty-four\").",
-    "default": false
-  },
-  {
-    "tag": "roman",
-    "label": "Roman Numerals",
-    "description": "Converts integers (1–3999) to Roman numerals and back.",
-    "default": false
-  },
-  {
-    "tag": "radix",
-    "label": "Radix Converter",
-    "description": "Converts numbers between binary, octal, decimal, and hexadecimal bases.",
-    "default": false
-  },
-  {
-    "tag": "flip",
-    "label": "Flip Text",
-    "description": "Renders text upside-down using Unicode look-alike characters.",
-    "default": false
-  },
-  {
-    "tag": "piglatin",
-    "label": "Pig Latin",
-    "description": "Translates English text to Pig Latin.",
-    "default": false
-  },
-  {
-    "tag": "leet",
-    "label": "Leet Speak",
-    "description": "Translates text to 1337 5p34k substitution cipher.",
-    "default": false
-  },
-  {
-    "tag": "pirate",
-    "label": "Pirate Speak",
-    "description": "Translates text into pirate dialect (ahoy, matey, arrr).",
-    "default": false
-  },
-  {
-    "tag": "scrabble",
-    "label": "Scrabble Score",
-    "description": "Calculates the Scrabble tile point value for any word.",
-    "default": false
-  },
-  {
-    "tag": "haiku",
-    "label": "Haiku Checker",
-    "description": "Checks whether a three-line poem follows the 5-7-5 syllable structure.",
-    "default": false
-  },
-  {
-    "tag": "flesch",
-    "label": "Readability Score",
-    "description": "Computes the Flesch Reading Ease score and estimated grade level for any text.",
-    "default": false
-  },
-  {
-    "tag": "stats",
-    "label": "Statistics",
-    "description": "Computes mean, median, mode, std dev, min, max, and more for a list of numbers.",
-    "default": false
-  },
-  {
-    "tag": "compound",
-    "label": "Compound Interest",
-    "description": "Calculates compound interest: final amount, interest earned, and return percentage.",
-    "default": false
-  },
-  {
-    "tag": "sleep",
-    "label": "Sleep Cycles",
-    "description": "Suggests optimal bedtimes or wake times based on 90-minute REM cycle math.",
-    "default": false
-  },
-  {
-    "tag": "seq",
-    "label": "Sequences",
-    "description": "Generates terms of Fibonacci, primes, triangular, square, cube, factorial, or powers-of-2 sequences.",
-    "default": false
-  },
-  {
-    "tag": "factor",
-    "label": "Prime Factorizer",
-    "description": "Returns the prime factorization of any integer up to one trillion.",
-    "default": false
-  },
-  {
-    "tag": "dayofweek",
-    "label": "Day of Week",
-    "description": "Finds what day of the week any date (past or future) falls on.",
-    "default": false
-  },
-  {
-    "tag": "8ball",
-    "label": "Magic 8-Ball",
-    "description": "Answers yes/no questions with one of the 20 canonical Magic 8-Ball responses.",
-    "default": false
-  },
-  {
-    "tag": "tarot",
-    "label": "Tarot Draw",
-    "description": "Draws from a full 78-card tarot deck with card meanings; supports 1-card and 3-card spreads.",
-    "default": false
-  },
-  {
-    "tag": "rps",
-    "label": "Rock Paper Scissors",
-    "description": "Plays rock-paper-scissors against the browser using crypto-random CPU choice.",
-    "default": false
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "calculate",
+      "what is",
+      "compute",
+      "multiply",
+      "divide",
+      "square root",
+      "percent of"
+    ],
+    "risk": "passive"
   },
   {
     "tag": "countdown",
     "label": "Countdown",
     "description": "Shows days, hours, and minutes remaining until any target date.",
-    "default": false
-  },
-  {
-    "tag": "poetictime",
-    "label": "Poetic Time",
-    "description": "Renders the current time in natural language (\"quarter past midnight\", \"nearly noon\").",
-    "default": false
-  },
-  {
-    "tag": "daypct",
-    "label": "Day Progress",
-    "description": "Shows percentage of the day, week, and year elapsed with ASCII progress bars.",
-    "default": false
-  },
-  {
-    "tag": "regex",
-    "label": "Regex Tester",
-    "description": "Tests a regular expression pattern against a string and shows all matches and groups.",
-    "default": false
-  },
-  {
-    "tag": "json",
-    "label": "JSON Formatter",
-    "description": "Pretty-prints or minifies JSON; catches malformed input with a clear error.",
-    "default": false
-  },
-  {
-    "tag": "uuid",
-    "label": "UUID Generator",
-    "description": "Generates one or more cryptographically random UUID v4 strings.",
-    "default": false
-  },
-  {
-    "tag": "dream",
-    "label": "Dream Log",
-    "description": "Logs timestamped dream entries in IndexedDB; the model can retrieve and reflect on them.",
-    "default": false
-  },
-  {
-    "tag": "grateful",
-    "label": "Gratitude Log",
-    "description": "Logs one-sentence gratitude entries in IndexedDB for daily reflection.",
-    "default": false
-  },
-  {
-    "tag": "habit",
-    "label": "Habit Tracker",
-    "description": "Logs named habits as done today and tracks consecutive day streaks.",
-    "default": false
-  },
-  {
-    "tag": "vin",
-    "label": "VIN Decoder",
-    "description": "Decodes a 17-character Vehicle Identification Number: WMI, model year, check digit.",
-    "default": false
-  },
-  {
-    "tag": "cc",
-    "label": "Credit Card Decoder",
-    "description": "Validates Luhn checksum and identifies card issuer (Visa/MC/Amex/etc); never stores the number.",
-    "default": false
-  },
-  {
-    "tag": "ssn",
-    "label": "SSN Decoder",
-    "description": "Decodes US SSN structure: pre-2011 state by area number, group/serial validity; masks the number.",
-    "default": false
-  },
-  {
-    "tag": "isbn",
-    "label": "ISBN Decoder",
-    "description": "Validates ISBN-10 and ISBN-13 check digits; converts between formats.",
-    "default": false
-  },
-  {
-    "tag": "iban",
-    "label": "IBAN Decoder",
-    "description": "Validates an IBAN via MOD-97 and decodes country, check digits, and BBAN.",
-    "default": false
-  },
-  {
-    "tag": "uuid-decode",
-    "label": "UUID Decoder",
-    "description": "Decodes UUID version (1–5), variant, and for v1 extracts the embedded timestamp and node.",
-    "default": false
-  },
-  {
-    "tag": "upc",
-    "label": "UPC/EAN Barcode",
-    "description": "Validates UPC-A (12-digit) and EAN-13 barcodes; decodes GS1 country prefix.",
-    "default": false
-  },
-  {
-    "tag": "imei",
-    "label": "IMEI Decoder",
-    "description": "Validates Luhn check digit and decodes TAC, reporting body, and serial number from an IMEI.",
-    "default": false
-  },
-  {
-    "tag": "semver",
-    "label": "Semver Parser",
-    "description": "Parses semantic versions and compares two versions with correct pre-release ordering.",
-    "default": false
-  },
-  {
-    "tag": "cron",
-    "label": "Cron Expression",
-    "description": "Translates a 5-field cron schedule expression into plain-English description.",
-    "default": false
-  },
-  {
-    "tag": "jwt",
-    "label": "JWT Decoder",
-    "description": "Base64url-decodes JWT header and payload; shows claims and expiry; does not verify signature.",
-    "default": false
-  },
-  {
-    "tag": "ip",
-    "label": "IPv4/CIDR",
-    "description": "Analyzes IPv4 addresses and CIDR blocks: subnet mask, network, broadcast, host range, address type.",
-    "default": false
-  },
-  {
-    "tag": "mac",
-    "label": "MAC Address",
-    "description": "Decodes a MAC address: OUI vendor lookup, unicast/multicast flag, global/local bit.",
-    "default": false
-  },
-  {
-    "tag": "epoch",
-    "label": "Unix Timestamp",
-    "description": "Converts Unix timestamps to human dates and vice versa; shows relative time.",
-    "default": false
-  },
-  {
-    "tag": "duration",
-    "label": "ISO 8601 Duration",
-    "description": "Decodes ISO 8601 duration strings (P1Y2M3DT4H5M6S) into plain-English descriptions.",
-    "default": false
-  },
-  {
-    "tag": "url",
-    "label": "URL Dissector",
-    "description": "Parses any URL into scheme, host, port, path, query parameters, and fragment.",
-    "default": false
-  },
-  {
-    "tag": "mime",
-    "label": "MIME Type",
-    "description": "Looks up MIME type by file extension or finds extensions for a given MIME type.",
-    "default": false
-  },
-  {
-    "tag": "http",
-    "label": "HTTP Status",
-    "description": "Looks up any HTTP status code including WebDAV, nginx, and Cloudflare extensions.",
-    "default": false
-  },
-  {
-    "tag": "port",
-    "label": "TCP Port",
-    "description": "Looks up well-known TCP/UDP port numbers and identifies the service.",
-    "default": false
-  },
-  {
-    "tag": "dns",
-    "label": "DNS Record Types",
-    "description": "Explains what each DNS record type does (A, AAAA, CNAME, MX, TXT, SRV, CAA, SOA, etc.).",
-    "default": false
-  },
-  {
-    "tag": "signal",
-    "label": "Unix Signal",
-    "description": "Looks up Unix signal by name or number; explains default behavior and common use cases.",
-    "default": false
-  },
-  {
-    "tag": "exit",
-    "label": "Exit Code",
-    "description": "Explains shell and program exit codes; decodes signal-based codes (128 + signal).",
-    "default": false
-  },
-  {
-    "tag": "vigenere",
-    "label": "Vigenère Cipher",
-    "description": "Encodes and decodes text with the Vigenère polyalphabetic substitution cipher.",
-    "default": false
-  },
-  {
-    "tag": "atbash",
-    "label": "Atbash Cipher",
-    "description": "Applies the Atbash mirror cipher (A↔Z, B↔Y); self-inverse.",
-    "default": false
-  },
-  {
-    "tag": "railfence",
-    "label": "Rail Fence Cipher",
-    "description": "Encodes and decodes text with the rail fence (zigzag) transposition cipher.",
-    "default": false
-  },
-  {
-    "tag": "tap",
-    "label": "Tap Code",
-    "description": "Encodes and decodes the prison wall tap code (5×5 Polybius square, C=K).",
-    "default": false
-  },
-  {
-    "tag": "polybius",
-    "label": "Polybius Square",
-    "description": "Encodes and decodes text using the 5×5 Polybius square grid coordinates (I=J).",
-    "default": false
-  },
-  {
-    "tag": "bacon",
-    "label": "Baconian Cipher",
-    "description": "Encodes and decodes Francis Bacon's biliteral A/B cipher.",
-    "default": false
-  },
-  {
-    "tag": "braille",
-    "label": "Braille",
-    "description": "Encodes English text as Grade 1 Braille using Unicode Braille block characters.",
-    "default": false
-  },
-  {
-    "tag": "semaphore",
-    "label": "Semaphore",
-    "description": "Describes flag semaphore positions for each letter as clock-face angles.",
-    "default": false
-  },
-  {
-    "tag": "pigpen",
-    "label": "Pigpen Cipher",
-    "description": "Describes Masonic pigpen cipher grid positions for each letter.",
-    "default": false
-  },
-  {
-    "tag": "midi",
-    "label": "MIDI Note",
-    "description": "Converts between MIDI note numbers (0–127) and note names with frequencies.",
-    "default": false
-  },
-  {
-    "tag": "freq2note",
-    "label": "Frequency → Note",
-    "description": "Finds the nearest musical note to any frequency in Hz, with cents deviation.",
-    "default": false
-  },
-  {
-    "tag": "scale",
-    "label": "Key & Scale",
-    "description": "Lists all notes in any key and mode (major, minor, dorian, pentatonic, blues, etc.).",
-    "default": false
-  },
-  {
-    "tag": "chord",
-    "label": "Chord Identifier",
-    "description": "Identifies a chord name from a set of note names.",
-    "default": false
-  },
-  {
-    "tag": "interval",
-    "label": "Interval Calculator",
-    "description": "Names the interval between two notes in semitones.",
-    "default": false
-  },
-  {
-    "tag": "fifths",
-    "label": "Circle of Fifths",
-    "description": "Looks up any key on the circle of fifths: key signature, relative minor, neighbors.",
-    "default": false
-  },
-  {
-    "tag": "bpm",
-    "label": "BPM ↔ ms",
-    "description": "Converts BPM to millisecond durations for whole, half, quarter, 8th, 16th, and triplet notes.",
-    "default": false
-  },
-  {
-    "tag": "country",
-    "label": "Country Info",
-    "description": "Looks up capital, currency, calling code, TLD, and continent for any country.",
-    "default": false
-  },
-  {
-    "tag": "flag",
-    "label": "Flag Emoji",
-    "description": "Returns the flag emoji for any country by ISO code or common name.",
-    "default": false
-  },
-  {
-    "tag": "airport",
-    "label": "Airport Code",
-    "description": "Looks up IATA airport codes by code or city name for ~200 major airports.",
-    "default": false
-  },
-  {
-    "tag": "currency",
-    "label": "Currency",
-    "description": "Looks up currency name, symbol, and countries by ISO 4217 code or name.",
-    "default": false
-  },
-  {
-    "tag": "dialcode",
-    "label": "Calling Code",
-    "description": "Looks up international dialing code by country ISO code or reverses a dial code to country.",
-    "default": false
-  },
-  {
-    "tag": "zip",
-    "label": "US ZIP Prefix",
-    "description": "Maps first 3 digits of a US ZIP code to its state/region.",
-    "default": false
-  },
-  {
-    "tag": "state",
-    "label": "US State",
-    "description": "Looks up US state by abbreviation or full name: capital, admission year, nickname.",
-    "default": false
-  },
-  {
-    "tag": "theretime",
-    "label": "Time There",
-    "description": "Shows the current local time in any city or country by name.",
-    "default": false
-  },
-  {
-    "tag": "element",
-    "label": "Periodic Table",
-    "description": "Looks up any element by name, symbol, or atomic number; shows weight, period, group, state, and a fun fact.",
-    "default": false
-  },
-  {
-    "tag": "mohs",
-    "label": "Mohs Hardness",
-    "description": "Looks up a Mohs hardness value and what minerals/objects can scratch it.",
-    "default": false
-  },
-  {
-    "tag": "beaufort",
-    "label": "Beaufort Scale",
-    "description": "Describes wind force, sea state, and land effects for any Beaufort number 0–12.",
-    "default": false
-  },
-  {
-    "tag": "fujita",
-    "label": "Fujita Scale",
-    "description": "Describes wind speed and expected damage for Enhanced Fujita tornado ratings EF0–EF5.",
-    "default": false
-  },
-  {
-    "tag": "cloud",
-    "label": "Cloud Types",
-    "description": "Describes cloud types by altitude, appearance, and associated weather.",
-    "default": false
-  },
-  {
-    "tag": "collective",
-    "label": "Collective Nouns",
-    "description": "Finds the collective noun for a group of animals (a murder of crows, a flamboyance of flamingos…).",
-    "default": false
-  },
-  {
-    "tag": "babyname",
-    "label": "Baby Animal Names",
-    "description": "Finds what a baby animal is called (joey, puggle, cygnet…).",
-    "default": false
-  },
-  {
-    "tag": "sound",
-    "label": "Animal Sounds",
-    "description": "Finds what sound an animal makes, including the less obvious ones.",
-    "default": false
-  },
-  {
-    "tag": "si",
-    "label": "SI Prefix",
-    "description": "Looks up SI metric prefixes (kilo, mega, µ…) and binary prefixes (kibi, mebi…).",
-    "default": false
-  },
-  {
-    "tag": "greek",
-    "label": "Greek Letters",
-    "description": "Looks up Greek letter symbols and their common uses in math and science.",
-    "default": false
-  },
-  {
-    "tag": "resistor",
-    "label": "Resistor Color Code",
-    "description": "Decodes 4-band and 5-band resistor color sequences to resistance values.",
-    "default": false
-  },
-  {
-    "tag": "collatz",
-    "label": "Collatz Sequence",
-    "description": "Runs the 3n+1 Collatz sequence from any integer and shows steps to reach 1.",
-    "default": false
-  },
-  {
-    "tag": "digitalroot",
-    "label": "Digital Root",
-    "description": "Iteratively sums digits until a single digit; shows each step (casting out nines).",
-    "default": false
-  },
-  {
-    "tag": "numprop",
-    "label": "Number Properties",
-    "description": "Checks whether a number is prime, perfect, abundant, happy, Armstrong, palindrome, etc.",
-    "default": false
-  },
-  {
-    "tag": "zeckendorf",
-    "label": "Zeckendorf",
-    "description": "Expresses any integer as a unique sum of non-consecutive Fibonacci numbers.",
-    "default": false
-  },
-  {
-    "tag": "kaprekar",
-    "label": "Kaprekar Routine",
-    "description": "Applies the Kaprekar routine to a 4-digit number (always reaches 6174).",
-    "default": false
-  },
-  {
-    "tag": "pangram",
-    "label": "Pangram Checker",
-    "description": "Checks if text uses all 26 letters; shows missing letters if not.",
-    "default": false
-  },
-  {
-    "tag": "palindrome",
-    "label": "Palindrome Checker",
-    "description": "Checks if a word or phrase is a palindrome (ignoring spaces and punctuation).",
-    "default": false
-  },
-  {
-    "tag": "homophone",
-    "label": "Homophone Lookup",
-    "description": "Finds homophones of common English words (there/their/they're, etc.).",
-    "default": false
-  },
-  {
-    "tag": "spoonerism",
-    "label": "Spoonerism",
-    "description": "Swaps the initial consonant clusters of adjacent word pairs.",
-    "default": false
-  },
-  {
-    "tag": "portmanteau",
-    "label": "Portmanteau Builder",
-    "description": "Blends two words into portmanteau suggestions.",
-    "default": false
-  },
-  {
-    "tag": "ascii-table",
-    "label": "ASCII Table",
-    "description": "Looks up ASCII codes by character or finds the character for a code (0–127).",
-    "default": false
-  },
-  {
-    "tag": "ansi",
-    "label": "ANSI Color Codes",
-    "description": "Decodes ANSI SGR escape sequences into foreground/background color and attribute names.",
-    "default": false
-  },
-  {
-    "tag": "cbmerror",
-    "label": "Commodore BASIC Errors",
-    "description": "Looks up Commodore 64/128 BASIC error numbers with message and common cause.",
-    "default": false
-  },
-  {
-    "tag": "httpcat",
-    "label": "HTTP Cats",
-    "description": "Gives a whimsical cat-themed description for any HTTP status code.",
-    "default": false
-  },
-  {
-    "tag": "zodiac-cn",
-    "label": "Chinese Zodiac",
-    "description": "Finds the Chinese zodiac animal, element, and traits for any birth year.",
-    "default": false
-  },
-  {
-    "tag": "enneagram",
-    "label": "Enneagram",
-    "description": "Looks up Enneagram personality types 1–9: name, core fear, core desire, and wings.",
-    "default": false
-  },
-  {
-    "tag": "hogwarts",
-    "label": "Hogwarts Sorting",
-    "description": "Sorts a name into a Hogwarts house deterministically via name hash.",
-    "default": false
-  },
-  {
-    "tag": "elfname",
-    "label": "Elf Name Generator",
-    "description": "Generates a whimsical holiday elf name from any real name.",
-    "default": false
-  },
-  {
-    "tag": "soundslike",
-    "label": "Phonetic Similarity",
-    "description": "Checks if two words sound alike using the Soundex algorithm.",
-    "default": false
-  },
-  {
-    "tag": "acronym",
-    "label": "Acronym Builder",
-    "description": "Generates a backronym where each letter of a word becomes the start of a phrase.",
-    "default": false
-  },
-  {
-    "tag": "weather",
-    "label": "Weather",
-    "description": "Gets current weather (temp, conditions, wind, humidity) via Open-Meteo API; takes lat,lon.",
-    "default": false
-  },
-  {
-    "tag": "define",
-    "label": "Word Definition",
-    "description": "Looks up word definitions via the Free Dictionary API (no key required).",
-    "default": false
-  },
-  {
-    "tag": "book",
-    "label": "Book Search",
-    "description": "Searches Open Library by title or author; returns top results with year.",
-    "default": false
-  },
-  {
-    "tag": "sun",
-    "label": "Sunrise / Sunset",
-    "description": "Gets sunrise, sunset, and solar noon for any lat/lon via sunrise-sunset.org.",
-    "default": false
-  },
-  {
-    "tag": "numtrivia",
-    "label": "Number Trivia",
-    "description": "Gets a fun fact about any number or year via numbersapi.com.",
-    "default": false
-  },
-  {
-    "tag": "pokemon",
-    "label": "Pokédex",
-    "description": "Looks up any Pokémon by name or number via PokéAPI; shows type, stats, and moves.",
-    "default": false
-  },
-  {
-    "tag": "iss",
-    "label": "ISS Position",
-    "description": "Gets the current latitude/longitude of the International Space Station.",
-    "default": false
-  },
-  {
-    "tag": "dadjoke",
-    "label": "Dad Joke",
-    "description": "Fetches a random dad joke from icanhazdadjoke.com. They're terrible. That's the point.",
-    "default": false
-  },
-  {
-    "tag": "diff",
-    "label": "Diff",
-    "description": "Shows a line-level diff between two texts using LCS.",
-    "default": false
-  },
-  {
-    "tag": "cf",
-    "label": "Continued Fraction",
-    "description": "Expands a number as a continued fraction; supports decimals, fractions, and named constants (pi, e, phi).",
-    "default": false
-  },
-  {
-    "tag": "sternbrocot",
-    "label": "Stern-Brocot Tree",
-    "description": "Finds the left/right path to any proper fraction in the Stern-Brocot tree.",
-    "default": false
-  },
-  {
-    "tag": "ipa",
-    "label": "IPA Decoder",
-    "description": "Describes the articulation of an International Phonetic Alphabet symbol.",
-    "default": false
-  },
-  {
-    "tag": "root",
-    "label": "Word Roots",
-    "description": "Looks up the meaning and examples of common Latin and Greek word roots.",
-    "default": false
-  },
-  {
-    "tag": "rhymescheme",
-    "label": "Rhyme Scheme",
-    "description": "Labels the rhyme scheme (ABAB, AABB, etc.) of a poem's lines.",
-    "default": false
-  },
-  {
-    "tag": "affix",
-    "label": "Prefix/Suffix Meanings",
-    "description": "Looks up the meaning and examples of common prefixes and suffixes.",
-    "default": false
-  },
-  {
-    "tag": "tarot-lookup",
-    "label": "Tarot Major Arcana",
-    "description": "Shows upright and reversed meanings for any of the 22 Major Arcana tarot cards.",
-    "default": false
-  },
-  {
-    "tag": "nameday",
-    "label": "Name Day",
-    "description": "Finds the European feast day (name day) for a given first name.",
-    "default": false
-  },
-  {
-    "tag": "meter",
-    "label": "Meter Checker",
-    "description": "Marks stressed and unstressed syllables in a line of poetry and identifies the dominant foot.",
-    "default": false
-  },
-  {
-    "tag": "dna",
-    "label": "DNA/RNA Tool",
-    "description": "Complement, transcription, translation, FASTA parsing, and GC content for DNA/RNA sequences",
-    "default": false
-  },
-  {
-    "tag": "case",
-    "label": "Case Converter",
-    "description": "Convert text between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, slug, and more",
-    "default": false
-  },
-  {
-    "tag": "ini",
-    "label": "INI Parser",
-    "description": "Parse and format INI configuration files",
-    "default": false
-  },
-  {
-    "tag": "xml",
-    "label": "XML Tool",
-    "description": "Parse, pretty-print, strip tags, and convert XML↔JSON",
-    "default": false
-  },
-  {
-    "tag": "yaml",
-    "label": "YAML Tool",
-    "description": "Parse YAML to JSON, format JSON as YAML, or validate YAML syntax (loads js-yaml via CDN)",
-    "default": false
-  },
-  {
-    "tag": "csv",
-    "label": "CSV Tool",
-    "description": "Parse, summarize, and convert CSV/TSV data to/from JSON",
-    "default": false
-  },
-  {
-    "tag": "mustache",
-    "label": "Mustache Templates",
-    "description": "Fill Mustache templates ({{var}}, sections, loops) with JSON data",
-    "default": false
-  },
-  {
-    "tag": "md",
-    "label": "Markdown Renderer",
-    "description": "Render Markdown as formatted HTML injected into the chat view (loads marked via CDN)",
-    "default": false
-  },
-  {
-    "tag": "html2md",
-    "label": "HTML to Markdown",
-    "description": "Convert HTML markup to Markdown text",
-    "default": false
-  },
-  {
-    "tag": "hashid",
-    "label": "Hashids",
-    "description": "Encode integers to short YouTube-style IDs and decode back",
-    "default": false
-  },
-  {
-    "tag": "geodist",
-    "label": "Geo Distance",
-    "description": "Calculate distance, bearing, and midpoint between two lat/lng coordinates",
-    "default": false
-  },
-  {
-    "tag": "geohash",
-    "label": "Geohash",
-    "description": "Encode lat/lng coordinates to Geohash strings and decode back",
-    "default": false
-  },
-  {
-    "tag": "proj",
-    "label": "Coordinate Projection",
-    "description": "Convert between WGS84 lat/lon and UTM coordinates",
-    "default": false
-  },
-  {
-    "tag": "formula",
-    "label": "Chemical Formula",
-    "description": "Parse chemical formulas: molecular weight, element breakdown, atom counts",
-    "default": false
-  },
-  {
-    "tag": "phone",
-    "label": "Phone Number",
-    "description": "Parse, validate, and format international phone numbers (E.164)",
-    "default": false
-  },
-  {
-    "tag": "langdetect",
-    "label": "Language Detect",
-    "description": "Detect the language of a text using trigram frequency scoring",
-    "default": false
-  },
-  {
-    "tag": "pos",
-    "label": "Part-of-Speech",
-    "description": "Tag words with grammatical roles and extract named entities using compromise.js (loads via CDN)",
-    "default": false
-  },
-  {
-    "tag": "emoji",
-    "label": "Emoji Lookup",
-    "description": "Find emoji by name, keyword, or Unicode codepoint",
-    "default": false
-  },
-  {
-    "tag": "punycode",
-    "label": "Punycode / IDN",
-    "description": "Encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de)",
-    "default": false
-  },
-  {
-    "tag": "barcode",
-    "label": "Barcode Generator",
-    "description": "Generate Code128, QR, EAN-13, UPC, and other barcodes rendered as canvas images (loads bwip-js via CDN)",
-    "default": false
-  },
-  {
-    "tag": "jsparse",
-    "label": "JS Parser",
-    "description": "Parse JavaScript to AST, count node types, or validate syntax (loads acorn via CDN)",
-    "default": false
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "countdown to",
+      "days until",
+      "how many days until",
+      "time until"
+    ],
+    "risk": "passive"
   },
   {
     "tag": "datemath",
     "label": "Date Arithmetic",
     "description": "Calculate date differences, add/subtract durations, and parse relative date expressions",
-    "default": false
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "date math",
+      "date arithmetic",
+      "days between dates",
+      "add days to date",
+      "date difference"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dayofweek",
+    "label": "Day of Week",
+    "description": "Finds what day of the week any date (past or future) falls on.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "what day of the week",
+      "day of week",
+      "what day was",
+      "what day will"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "daypct",
+    "label": "Day Progress",
+    "description": "Shows percentage of the day, week, and year elapsed with ASCII progress bars.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "day progress",
+      "percent of day",
+      "year progress",
+      "how much of the year"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dream",
+    "label": "Dream Log",
+    "description": "Logs timestamped dream entries in IndexedDB; the model can retrieve and reflect on them.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "log dream",
+      "dream journal",
+      "had a dream",
+      "dream last night"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "grateful",
+    "label": "Gratitude Log",
+    "description": "Logs one-sentence gratitude entries in IndexedDB for daily reflection.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "gratitude log",
+      "thankful for",
+      "grateful for",
+      "log gratitude"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "habit",
+    "label": "Habit Tracker",
+    "description": "Logs named habits as done today and tracks consecutive day streaks.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "log habit",
+      "mark habit",
+      "track habit",
+      "habit streak"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "poetictime",
+    "label": "Poetic Time",
+    "description": "Renders the current time in natural language (\"quarter past midnight\", \"nearly noon\").",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "poetic time",
+      "time in words",
+      "tell me the time poetically"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "factor",
+    "label": "Prime Factorizer",
+    "description": "Returns the prime factorization of any integer up to one trillion.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "prime factor",
+      "factorize",
+      "prime factorization",
+      "factor of"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "remind",
+    "label": "Reminders",
+    "description": "Sets timed browser notifications.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "remind me",
+      "set a reminder",
+      "alert me in",
+      "alarm in",
+      "notify me in"
+    ],
+    "risk": "permission_required"
+  },
+  {
+    "tag": "seq",
+    "label": "Sequences",
+    "description": "Generates terms of Fibonacci, primes, triangular, square, cube, factorial, or powers-of-2 sequences.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "fibonacci sequence",
+      "prime sequence",
+      "generate sequence",
+      "triangular numbers"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "sleep",
+    "label": "Sleep Cycles",
+    "description": "Suggests optimal bedtimes or wake times based on 90-minute REM cycle math.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "sleep cycle",
+      "bedtime",
+      "wake up time",
+      "rem cycle",
+      "best time to sleep"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "theretime",
+    "label": "Time There",
+    "description": "Shows the current local time in any city or country by name.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "what time is it in",
+      "current time in",
+      "local time in"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "tz",
+    "label": "Timezone Converter",
+    "description": "Shows the current time in any IANA timezone, or converts a specific time between zones.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "timezone",
+      "time zone",
+      "utc offset",
+      "convert time zone"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "todo",
+    "label": "To-Do List",
+    "description": "Manages a persistent to-do list stored in your browser.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "add task",
+      "add to-do",
+      "add todo",
+      "to do list",
+      "todo list",
+      "shopping list"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "epoch",
+    "label": "Unix Timestamp",
+    "description": "Converts Unix timestamps to human dates and vice versa; shows relative time.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "unix timestamp",
+      "epoch time",
+      "convert timestamp",
+      "unix time"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "wiki",
+    "label": "Wikipedia",
+    "description": "Fetches a real Wikipedia summary instead of hallucinating facts.",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "wikipedia",
+      "who is",
+      "what is",
+      "tell me about",
+      "look up"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "yaml",
+    "label": "YAML Tool",
+    "description": "Parse YAML to JSON, format JSON as YAML, or validate YAML syntax (loads js-yaml via CDN)",
+    "default": false,
+    "category": "Productivity",
+    "triggers": [
+      "parse yaml",
+      "format yaml",
+      "yaml to json",
+      "validate yaml"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "atbash",
+    "label": "Atbash Cipher",
+    "description": "Applies the Atbash mirror cipher (A↔Z, B↔Y); self-inverse.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "atbash cipher",
+      "atbash",
+      "mirror cipher"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "bacon",
+    "label": "Baconian Cipher",
+    "description": "Encodes and decodes Francis Bacon's biliteral A/B cipher.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "baconian cipher",
+      "bacon cipher",
+      "biliteral cipher"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "braille",
+    "label": "Braille",
+    "description": "Encodes English text as Grade 1 Braille using Unicode Braille block characters.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "braille",
+      "encode braille"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "caesar",
+    "label": "Caesar Cipher",
+    "description": "Encodes or decodes text with a configurable alphabetic shift.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "caesar cipher",
+      "shift cipher",
+      "caesar code"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "case",
+    "label": "Case Converter",
+    "description": "Convert text between camelCase, snake_case, PascalCase, kebab-case, SCREAMING_SNAKE, slug, and more",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "camelcase",
+      "snake case",
+      "kebab case",
+      "pascalcase",
+      "convert case"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "color",
+    "label": "Color Converter",
+    "description": "Converts colors between hex, RGB, and HSL formats.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "hex color",
+      "rgb color",
+      "hsl color",
+      "color code",
+      "colour"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "csv",
+    "label": "CSV Tool",
+    "description": "Parse, summarize, and convert CSV/TSV data to/from JSON",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "parse csv",
+      "csv data",
+      "comma separated",
+      "tsv data",
+      "csv to json"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "diff",
+    "label": "Diff",
+    "description": "Shows a line-level diff between two texts using LCS.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "diff",
+      "compare these texts",
+      "text difference",
+      "show changes"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "encode",
+    "label": "Encode/Decode",
+    "description": "Encodes and decodes text: Base64, URL encoding, HTML entities.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "base64",
+      "url encode",
+      "html encode",
+      "decode base64"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "hash",
+    "label": "Hash",
+    "description": "Computes SHA-1, SHA-256, SHA-384, or SHA-512 digests via the Web Crypto API.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "sha256",
+      "sha-256",
+      "sha1",
+      "hash this",
+      "checksum",
+      "digest"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "html2md",
+    "label": "HTML to Markdown",
+    "description": "Convert HTML markup to Markdown text",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "html to markdown",
+      "convert html to markdown"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "ini",
+    "label": "INI Parser",
+    "description": "Parse and format INI configuration files",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "ini file",
+      "parse ini",
+      "config ini"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "json",
+    "label": "JSON Formatter",
+    "description": "Pretty-prints or minifies JSON; catches malformed input with a clear error.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "format json",
+      "pretty print json",
+      "parse json",
+      "minify json",
+      "json formatter"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "md",
+    "label": "Markdown Renderer",
+    "description": "Render Markdown as formatted HTML injected into the chat view (loads marked via CDN)",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "render markdown",
+      "show markdown",
+      "format as markdown",
+      "markdown preview"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "morse",
+    "label": "Morse Code",
+    "description": "Encodes text to Morse code or decodes Morse back to text.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "morse code",
+      "dot and dash",
+      "encode morse",
+      "decode morse"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "mustache",
+    "label": "Mustache Templates",
+    "description": "Fill Mustache templates ({{var}}, sections, loops) with JSON data",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "mustache template",
+      "fill template",
+      "template with data"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "nato",
+    "label": "NATO Phonetic",
+    "description": "Spells text using the NATO phonetic alphabet (Alpha, Bravo, Charlie…).",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "nato phonetic",
+      "phonetic alphabet",
+      "spell phonetically",
+      "alpha bravo"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "n2w",
+    "label": "Number to Words",
+    "description": "Converts integers to English words (e.g. 1234 → \"one thousand two hundred thirty-four\").",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "number to words",
+      "spell the number",
+      "write out the number",
+      "in words"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "pigpen",
+    "label": "Pigpen Cipher",
+    "description": "Describes Masonic pigpen cipher grid positions for each letter.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "pigpen cipher",
+      "masonic cipher",
+      "freemason cipher"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "polybius",
+    "label": "Polybius Square",
+    "description": "Encodes and decodes text using the 5×5 Polybius square grid coordinates (I=J).",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "polybius square",
+      "polybius cipher"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "punycode",
+    "label": "Punycode / IDN",
+    "description": "Encode/decode internationalized domain names (münchen.de ↔ xn--mnchen-3ya.de)",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "punycode",
+      "idn domain",
+      "internationalized domain"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "radix",
+    "label": "Radix Converter",
+    "description": "Converts numbers between binary, octal, decimal, and hexadecimal bases.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "binary",
+      "hexadecimal",
+      "base 16",
+      "base 2",
+      "hex to decimal",
+      "decimal to binary",
+      "octal"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "railfence",
+    "label": "Rail Fence Cipher",
+    "description": "Encodes and decodes text with the rail fence (zigzag) transposition cipher.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "rail fence cipher",
+      "railfence",
+      "zigzag cipher"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "roman",
+    "label": "Roman Numerals",
+    "description": "Converts integers (1–3999) to Roman numerals and back.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "roman numeral",
+      "in roman",
+      "roman number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "rot13",
+    "label": "ROT13",
+    "description": "Applies ROT13 substitution cipher (self-inverse: same operation encodes and decodes).",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "rot13",
+      "rot-13"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "scrabble",
+    "label": "Scrabble Score",
+    "description": "Calculates the Scrabble tile point value for any word.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "scrabble score",
+      "scrabble points",
+      "tile score"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "semaphore",
+    "label": "Semaphore",
+    "description": "Describes flag semaphore positions for each letter as clock-face angles.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "flag semaphore",
+      "semaphore positions"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "tap",
+    "label": "Tap Code",
+    "description": "Encodes and decodes the prison wall tap code (5×5 Polybius square, C=K).",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "tap code",
+      "prison tap code",
+      "wall tap"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "convert",
+    "label": "Unit Converter",
+    "description": "Converts between length, mass, temperature, volume, speed, area, and data units.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "convert",
+      "in miles",
+      "in kilometers",
+      "in celsius",
+      "in fahrenheit",
+      "in kilograms",
+      "in pounds"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "vigenere",
+    "label": "Vigenère Cipher",
+    "description": "Encodes and decodes text with the Vigenère polyalphabetic substitution cipher.",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "vigenere cipher",
+      "vigenere",
+      "polyalphabetic cipher"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "xml",
+    "label": "XML Tool",
+    "description": "Parse, pretty-print, strip tags, and convert XML↔JSON",
+    "default": false,
+    "category": "Text, Data & Encoding",
+    "triggers": [
+      "parse xml",
+      "format xml",
+      "xml to json",
+      "xml pretty print"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "acronym",
+    "label": "Acronym Builder",
+    "description": "Generates a backronym where each letter of a word becomes the start of a phrase.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "make an acronym",
+      "backronym",
+      "acronym for"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "ansi",
+    "label": "ANSI Color Codes",
+    "description": "Decodes ANSI SGR escape sequences into foreground/background color and attribute names.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "ansi code",
+      "escape code",
+      "ansi color",
+      "terminal color code"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "ascii-table",
+    "label": "ASCII Table",
+    "description": "Looks up ASCII codes by character or finds the character for a code (0–127).",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "ascii table",
+      "ascii code",
+      "character ascii",
+      "ascii value"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "barcode",
+    "label": "Barcode Generator",
+    "description": "Generate Code128, QR, EAN-13, UPC, and other barcodes rendered as canvas images (loads bwip-js via CDN)",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "generate barcode",
+      "create qr code",
+      "qr code for",
+      "barcode image"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "cbmerror",
+    "label": "Commodore BASIC Errors",
+    "description": "Looks up Commodore 64/128 BASIC error numbers with message and common cause.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "commodore error",
+      "basic error code",
+      "c64 error",
+      "commodore basic"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "cc",
+    "label": "Credit Card Decoder",
+    "description": "Validates Luhn checksum and identifies card issuer (Visa/MC/Amex/etc); never stores the number.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "credit card number",
+      "card number",
+      "luhn check",
+      "validate card"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "cron",
+    "label": "Cron Expression",
+    "description": "Translates a 5-field cron schedule expression into plain-English description.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "cron expression",
+      "crontab",
+      "schedule expression",
+      "cron schedule"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dns",
+    "label": "DNS Record Types",
+    "description": "Explains what each DNS record type does (A, AAAA, CNAME, MX, TXT, SRV, CAA, SOA, etc.).",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "dns record",
+      "a record",
+      "cname record",
+      "mx record",
+      "txt record"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "duration",
+    "label": "ISO 8601 Duration",
+    "description": "Decodes ISO 8601 duration strings (P1Y2M3DT4H5M6S) into plain-English descriptions.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "iso 8601 duration",
+      "duration string",
+      "decode duration"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "exit",
+    "label": "Exit Code",
+    "description": "Explains shell and program exit codes; decodes signal-based codes (128 + signal).",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "exit code",
+      "shell exit code",
+      "return code",
+      "program exit"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "geohash",
+    "label": "Geohash",
+    "description": "Encode lat/lng coordinates to Geohash strings and decode back",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "geohash",
+      "encode lat lon",
+      "decode geohash"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "hashid",
+    "label": "Hashids",
+    "description": "Encode integers to short YouTube-style IDs and decode back",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "hashid",
+      "encode integer id",
+      "youtube style id",
+      "short id from number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "httpcat",
+    "label": "HTTP Cats",
+    "description": "Gives a whimsical cat-themed description for any HTTP status code.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "http cat",
+      "http cats",
+      "cat status code"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "http",
+    "label": "HTTP Status",
+    "description": "Looks up any HTTP status code including WebDAV, nginx, and Cloudflare extensions.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "http status",
+      "http code",
+      "status code",
+      "error 404",
+      "error 500"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "iban",
+    "label": "IBAN Decoder",
+    "description": "Validates an IBAN via MOD-97 and decodes country, check digits, and BBAN.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "iban",
+      "bank account number",
+      "international bank account"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "imei",
+    "label": "IMEI Decoder",
+    "description": "Validates Luhn check digit and decodes TAC, reporting body, and serial number from an IMEI.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "imei",
+      "decode imei",
+      "phone imei"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "ip",
+    "label": "IPv4/CIDR",
+    "description": "Analyzes IPv4 addresses and CIDR blocks: subnet mask, network, broadcast, host range, address type.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "ip address",
+      "cidr block",
+      "subnet mask",
+      "ipv4",
+      "ip subnet"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "isbn",
+    "label": "ISBN Decoder",
+    "description": "Validates ISBN-10 and ISBN-13 check digits; converts between formats.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "isbn",
+      "book isbn",
+      "validate isbn"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "jsparse",
+    "label": "JS Parser",
+    "description": "Parse JavaScript to AST, count node types, or validate syntax (loads acorn via CDN)",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "parse javascript",
+      "javascript ast",
+      "js ast",
+      "js syntax check"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "jwt",
+    "label": "JWT Decoder",
+    "description": "Base64url-decodes JWT header and payload; shows claims and expiry; does not verify signature.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "jwt",
+      "json web token",
+      "decode jwt",
+      "bearer token"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "mac",
+    "label": "MAC Address",
+    "description": "Decodes a MAC address: OUI vendor lookup, unicast/multicast flag, global/local bit.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "mac address",
+      "ethernet address",
+      "oui lookup",
+      "mac vendor"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "mime",
+    "label": "MIME Type",
+    "description": "Looks up MIME type by file extension or finds extensions for a given MIME type.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "mime type",
+      "file extension type",
+      "content type",
+      "media type"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "phone",
+    "label": "Phone Number",
+    "description": "Parse, validate, and format international phone numbers (E.164)",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "phone number format",
+      "international phone",
+      "e.164 format",
+      "parse phone number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "regex",
+    "label": "Regex Tester",
+    "description": "Tests a regular expression pattern against a string and shows all matches and groups.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "regex",
+      "regular expression",
+      "pattern match",
+      "regexp",
+      "test pattern"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "resistor",
+    "label": "Resistor Color Code",
+    "description": "Decodes 4-band and 5-band resistor color sequences to resistance values.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "resistor color",
+      "color code resistor",
+      "band resistor"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "semver",
+    "label": "Semver Parser",
+    "description": "Parses semantic versions and compares two versions with correct pre-release ordering.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "semver",
+      "semantic version",
+      "compare versions",
+      "version number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "ssn",
+    "label": "SSN Decoder",
+    "description": "Decodes US SSN structure: pre-2011 state by area number, group/serial validity; masks the number.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "ssn",
+      "social security number",
+      "decode ssn"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "port",
+    "label": "TCP Port",
+    "description": "Looks up well-known TCP/UDP port numbers and identifies the service.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "port number",
+      "tcp port",
+      "udp port",
+      "what is port",
+      "well known port"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "signal",
+    "label": "Unix Signal",
+    "description": "Looks up Unix signal by name or number; explains default behavior and common use cases.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "unix signal",
+      "sigkill",
+      "sigterm",
+      "kill signal",
+      "signal number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "upc",
+    "label": "UPC/EAN Barcode",
+    "description": "Validates UPC-A (12-digit) and EAN-13 barcodes; decodes GS1 country prefix.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "upc code",
+      "ean-13",
+      "validate upc",
+      "ean barcode"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "url",
+    "label": "URL Dissector",
+    "description": "Parses any URL into scheme, host, port, path, query parameters, and fragment.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "parse url",
+      "url structure",
+      "url query parameters",
+      "dissect url"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "uuid-decode",
+    "label": "UUID Decoder",
+    "description": "Decodes UUID version (1–5), variant, and for v1 extracts the embedded timestamp and node.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "decode uuid",
+      "uuid version",
+      "uuid timestamp",
+      "what version uuid"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "uuid",
+    "label": "UUID Generator",
+    "description": "Generates one or more cryptographically random UUID v4 strings.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "generate uuid",
+      "new uuid",
+      "random uuid",
+      "create uuid"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "vin",
+    "label": "VIN Decoder",
+    "description": "Decodes a 17-character Vehicle Identification Number: WMI, model year, check digit.",
+    "default": false,
+    "category": "Developer & Identifier Tools",
+    "triggers": [
+      "vin number",
+      "vehicle identification number",
+      "decode vin"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "collatz",
+    "label": "Collatz Sequence",
+    "description": "Runs the 3n+1 Collatz sequence from any integer and shows steps to reach 1.",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "collatz sequence",
+      "3n+1",
+      "collatz conjecture"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "compound",
+    "label": "Compound Interest",
+    "description": "Calculates compound interest: final amount, interest earned, and return percentage.",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "compound interest",
+      "investment return",
+      "apr calculation",
+      "principal interest"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "cf",
+    "label": "Continued Fraction",
+    "description": "Expands a number as a continued fraction; supports decimals, fractions, and named constants (pi, e, phi).",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "continued fraction",
+      "fraction expansion"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "digitalroot",
+    "label": "Digital Root",
+    "description": "Iteratively sums digits until a single digit; shows each step (casting out nines).",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "digital root",
+      "digit sum",
+      "iterated digit sum"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "kaprekar",
+    "label": "Kaprekar Routine",
+    "description": "Applies the Kaprekar routine to a 4-digit number (always reaches 6174).",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "kaprekar",
+      "6174 routine",
+      "kaprekar constant"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "numprop",
+    "label": "Number Properties",
+    "description": "Checks whether a number is prime, perfect, abundant, happy, Armstrong, palindrome, etc.",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "number properties",
+      "is prime",
+      "is perfect number",
+      "armstrong number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "stats",
+    "label": "Statistics",
+    "description": "Computes mean, median, mode, std dev, min, max, and more for a list of numbers.",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "mean",
+      "median",
+      "standard deviation",
+      "std dev",
+      "variance",
+      "statistics of"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "sternbrocot",
+    "label": "Stern-Brocot Tree",
+    "description": "Finds the left/right path to any proper fraction in the Stern-Brocot tree.",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "stern-brocot",
+      "stern brocot tree",
+      "mediant fraction"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "zeckendorf",
+    "label": "Zeckendorf",
+    "description": "Expresses any integer as a unique sum of non-consecutive Fibonacci numbers.",
+    "default": false,
+    "category": "Math & Number Theory",
+    "triggers": [
+      "zeckendorf",
+      "fibonacci representation",
+      "non-consecutive fibonacci"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "bpm",
+    "label": "BPM ↔ ms",
+    "description": "Converts BPM to millisecond durations for whole, half, quarter, 8th, 16th, and triplet notes.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "bpm to ms",
+      "beats per minute to milliseconds",
+      "note duration bpm",
+      "tempo to time"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "chord",
+    "label": "Chord Identifier",
+    "description": "Identifies a chord name from a set of note names.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "identify chord",
+      "chord name",
+      "what chord",
+      "chord notes"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "fifths",
+    "label": "Circle of Fifths",
+    "description": "Looks up any key on the circle of fifths: key signature, relative minor, neighbors.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "circle of fifths",
+      "key signature",
+      "relative minor key"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dtmf",
+    "label": "DTMF Tones",
+    "description": "Plays telephone keypad dual-tone multi-frequency (DTMF) tones via Web Audio.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "dtmf",
+      "touch tone",
+      "dial tone",
+      "keypad tone"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "freq2note",
+    "label": "Frequency → Note",
+    "description": "Finds the nearest musical note to any frequency in Hz, with cents deviation.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "frequency to note",
+      "hz to note",
+      "what note is",
+      "nearest note"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "interval",
+    "label": "Interval Calculator",
+    "description": "Names the interval between two notes in semitones.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "music interval",
+      "semitone interval",
+      "what interval"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "scale",
+    "label": "Key & Scale",
+    "description": "Lists all notes in any key and mode (major, minor, dorian, pentatonic, blues, etc.).",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "music scale",
+      "notes in key",
+      "major scale",
+      "minor scale",
+      "pentatonic scale"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "metronome",
+    "label": "Metronome",
+    "description": "Plays a click track at a given BPM using Web Audio API scheduling.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "metronome",
+      "click track",
+      "set metronome"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "midi",
+    "label": "MIDI Note",
+    "description": "Converts between MIDI note numbers (0–127) and note names with frequencies.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "midi note",
+      "midi number",
+      "note number to midi",
+      "midi to note"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "morse-audio",
+    "label": "Morse Audio",
+    "description": "Plays text as Morse code beeps via Web Audio API.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "play morse",
+      "morse beep",
+      "morse audio",
+      "morse sound"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "speak",
+    "label": "Text-to-Speech",
+    "description": "Narrates model responses aloud using the Web Speech API.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "say aloud",
+      "read aloud",
+      "speak this",
+      "narrate",
+      "text to speech",
+      "tts"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "tone",
+    "label": "Tone Generator",
+    "description": "Plays a continuous sine-wave tone at a given frequency or note name via Web Audio API.",
+    "default": false,
+    "category": "Music & Audio",
+    "triggers": [
+      "play tone",
+      "play frequency",
+      "generate tone",
+      "sine wave tone"
+    ],
+    "risk": "side_effect"
+  },
+  {
+    "tag": "airport",
+    "label": "Airport Code",
+    "description": "Looks up IATA airport codes by code or city name for ~200 major airports.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "airport code",
+      "iata code",
+      "airport iata",
+      "flight code"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "beaufort",
+    "label": "Beaufort Scale",
+    "description": "Describes wind force, sea state, and land effects for any Beaufort number 0–12.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "beaufort scale",
+      "wind force",
+      "beaufort number"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dialcode",
+    "label": "Calling Code",
+    "description": "Looks up international dialing code by country ISO code or reverses a dial code to country.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "calling code",
+      "dialing code",
+      "country phone code",
+      "international prefix"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "formula",
+    "label": "Chemical Formula",
+    "description": "Parse chemical formulas: molecular weight, element breakdown, atom counts",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "chemical formula",
+      "molecular weight",
+      "molecular formula"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "cloud",
+    "label": "Cloud Types",
+    "description": "Describes cloud types by altitude, appearance, and associated weather.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "cloud type",
+      "cloud formation",
+      "cumulus",
+      "stratus",
+      "cirrus"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "proj",
+    "label": "Coordinate Projection",
+    "description": "Convert between WGS84 lat/lon and UTM coordinates",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "utm coordinates",
+      "coordinate projection",
+      "wgs84 to utm"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "country",
+    "label": "Country Info",
+    "description": "Looks up capital, currency, calling code, TLD, and continent for any country.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "capital of",
+      "country info",
+      "currency of",
+      "country code iso"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "currency",
+    "label": "Currency",
+    "description": "Looks up currency name, symbol, and countries by ISO 4217 code or name.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "currency symbol",
+      "iso 4217",
+      "currency code",
+      "what currency"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dna",
+    "label": "DNA/RNA Tool",
+    "description": "Complement, transcription, translation, FASTA parsing, and GC content for DNA/RNA sequences",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "dna sequence",
+      "rna transcription",
+      "complement dna",
+      "gc content",
+      "codon"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "flag",
+    "label": "Flag Emoji",
+    "description": "Returns the flag emoji for any country by ISO code or common name.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "flag emoji",
+      "country flag",
+      "national flag"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "fujita",
+    "label": "Fujita Scale",
+    "description": "Describes wind speed and expected damage for Enhanced Fujita tornado ratings EF0–EF5.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "fujita scale",
+      "ef scale",
+      "tornado rating",
+      "tornado category"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "geodist",
+    "label": "Geo Distance",
+    "description": "Calculate distance, bearing, and midpoint between two lat/lng coordinates",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "geo distance",
+      "haversine distance",
+      "lat lon distance",
+      "distance between coordinates"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "greek",
+    "label": "Greek Letters",
+    "description": "Looks up Greek letter symbols and their common uses in math and science.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "greek letter",
+      "greek symbol",
+      "alpha beta",
+      "greek alphabet"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "iss",
+    "label": "ISS Position",
+    "description": "Gets the current latitude/longitude of the International Space Station.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "iss position",
+      "international space station",
+      "where is the iss"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "mohs",
+    "label": "Mohs Hardness",
+    "description": "Looks up a Mohs hardness value and what minerals/objects can scratch it.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "mohs hardness",
+      "hardness scale",
+      "mineral hardness"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "element",
+    "label": "Periodic Table",
+    "description": "Looks up any element by name, symbol, or atomic number; shows weight, period, group, state, and a fun fact.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "periodic table",
+      "chemical element",
+      "atomic number",
+      "element symbol"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "si",
+    "label": "SI Prefix",
+    "description": "Looks up SI metric prefixes (kilo, mega, µ…) and binary prefixes (kibi, mebi…).",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "si prefix",
+      "metric prefix",
+      "kilo mega",
+      "milli micro"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "sun",
+    "label": "Sunrise / Sunset",
+    "description": "Gets sunrise, sunset, and solar noon for any lat/lon via sunrise-sunset.org.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "sunrise",
+      "sunset",
+      "solar noon",
+      "when does sun set"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "state",
+    "label": "US State",
+    "description": "Looks up US state by abbreviation or full name: capital, admission year, nickname.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "us state",
+      "state capital",
+      "state abbreviation",
+      "state nickname"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "zip",
+    "label": "US ZIP Prefix",
+    "description": "Maps first 3 digits of a US ZIP code to its state/region.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "zip code",
+      "us zip",
+      "zip prefix",
+      "postal code state"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "weather",
+    "label": "Weather",
+    "description": "Gets current weather (temp, conditions, wind, humidity) via Open-Meteo API; takes lat,lon.",
+    "default": false,
+    "category": "World & Science",
+    "triggers": [
+      "current weather",
+      "weather at",
+      "temperature outside",
+      "forecast"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "book",
+    "label": "Book Search",
+    "description": "Searches Open Library by title or author; returns top results with year.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "find book",
+      "search book",
+      "book by author",
+      "open library"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "emoji",
+    "label": "Emoji Lookup",
+    "description": "Find emoji by name, keyword, or Unicode codepoint",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "emoji lookup",
+      "find emoji",
+      "emoji for",
+      "unicode emoji"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "haiku",
+    "label": "Haiku Checker",
+    "description": "Checks whether a three-line poem follows the 5-7-5 syllable structure.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "haiku",
+      "5-7-5",
+      "check haiku",
+      "is this a haiku"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "homophone",
+    "label": "Homophone Lookup",
+    "description": "Finds homophones of common English words (there/their/they're, etc.).",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "homophone",
+      "sounds the same",
+      "words that sound like"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "ipa",
+    "label": "IPA Decoder",
+    "description": "Describes the articulation of an International Phonetic Alphabet symbol.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "ipa symbol",
+      "phonetic symbol",
+      "international phonetic alphabet"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "langdetect",
+    "label": "Language Detect",
+    "description": "Detect the language of a text using trigram frequency scoring",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "detect language",
+      "what language is this",
+      "language detection",
+      "identify language"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "leet",
+    "label": "Leet Speak",
+    "description": "Translates text to 1337 5p34k substitution cipher.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "leet speak",
+      "1337",
+      "leetspeak"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "meter",
+    "label": "Meter Checker",
+    "description": "Marks stressed and unstressed syllables in a line of poetry and identifies the dominant foot.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "poetic meter",
+      "iambic meter",
+      "stressed syllables",
+      "poetry meter"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "palindrome",
+    "label": "Palindrome Checker",
+    "description": "Checks if a word or phrase is a palindrome (ignoring spaces and punctuation).",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "palindrome",
+      "is a palindrome",
+      "reads the same backwards"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "pangram",
+    "label": "Pangram Checker",
+    "description": "Checks if text uses all 26 letters; shows missing letters if not.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "pangram",
+      "uses all letters",
+      "every letter of alphabet"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "pos",
+    "label": "Part-of-Speech",
+    "description": "Tag words with grammatical roles and extract named entities using compromise.js (loads via CDN)",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "part of speech",
+      "parse sentence grammar",
+      "noun verb adjective",
+      "named entity"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "password",
+    "label": "Password Generator",
+    "description": "Generates cryptographically random passwords with configurable length and character sets.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "generate password",
+      "random password",
+      "secure password",
+      "new password"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "soundslike",
+    "label": "Phonetic Similarity",
+    "description": "Checks if two words sound alike using the Soundex algorithm.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "sounds like phonetically",
+      "soundex",
+      "phonetic similarity"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "piglatin",
+    "label": "Pig Latin",
+    "description": "Translates English text to Pig Latin.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "pig latin"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "pirate",
+    "label": "Pirate Speak",
+    "description": "Translates text into pirate dialect (ahoy, matey, arrr).",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "pirate speak",
+      "pirate language",
+      "translate to pirate"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "portmanteau",
+    "label": "Portmanteau Builder",
+    "description": "Blends two words into portmanteau suggestions.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "portmanteau",
+      "blend two words",
+      "word blend"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "affix",
+    "label": "Prefix/Suffix Meanings",
+    "description": "Looks up the meaning and examples of common prefixes and suffixes.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "prefix meaning",
+      "suffix meaning",
+      "word prefix",
+      "word suffix"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "flesch",
+    "label": "Readability Score",
+    "description": "Computes the Flesch Reading Ease score and estimated grade level for any text.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "readability score",
+      "flesch",
+      "reading ease",
+      "grade level"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "rhymescheme",
+    "label": "Rhyme Scheme",
+    "description": "Labels the rhyme scheme (ABAB, AABB, etc.) of a poem's lines.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "rhyme scheme",
+      "abab pattern",
+      "rhyme pattern",
+      "analyze rhyme"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "spoonerism",
+    "label": "Spoonerism",
+    "description": "Swaps the initial consonant clusters of adjacent word pairs.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "spoonerism",
+      "swap consonants",
+      "swap sounds"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "define",
+    "label": "Word Definition",
+    "description": "Looks up word definitions via the Free Dictionary API (no key required).",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "define the word",
+      "definition of",
+      "what does mean",
+      "word definition"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "root",
+    "label": "Word Roots",
+    "description": "Looks up the meaning and examples of common Latin and Greek word roots.",
+    "default": false,
+    "category": "Language & Writing",
+    "triggers": [
+      "word root",
+      "latin root",
+      "greek root",
+      "word origin"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "sound",
+    "label": "Animal Sounds",
+    "description": "Finds what sound an animal makes, including the less obvious ones.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "animal sound",
+      "what sound does",
+      "sound an animal makes"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "babyname",
+    "label": "Baby Animal Names",
+    "description": "Finds what a baby animal is called (joey, puggle, cygnet…).",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "baby animal",
+      "what is a baby",
+      "young animal called"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "zodiac-cn",
+    "label": "Chinese Zodiac",
+    "description": "Finds the Chinese zodiac animal, element, and traits for any birth year.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "chinese zodiac",
+      "year of the",
+      "chinese horoscope"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "collective",
+    "label": "Collective Nouns",
+    "description": "Finds the collective noun for a group of animals (a murder of crows, a flamboyance of flamingos…).",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "collective noun",
+      "group of animals",
+      "a flock of",
+      "a murder of"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "dadjoke",
+    "label": "Dad Joke",
+    "description": "Fetches a random dad joke from icanhazdadjoke.com. They're terrible. That's the point.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "dad joke",
+      "tell me a joke",
+      "make me laugh",
+      "bad pun"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "roll",
+    "label": "Dice Roller",
+    "description": "Rolls dice (d4–d100, NdX+M notation) or flips a coin using crypto-random values.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "roll dice",
+      "roll a d",
+      "flip a coin",
+      "coin flip",
+      "d20",
+      "random roll"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "elfname",
+    "label": "Elf Name Generator",
+    "description": "Generates a whimsical holiday elf name from any real name.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "elf name",
+      "holiday elf name",
+      "christmas elf"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "enneagram",
+    "label": "Enneagram",
+    "description": "Looks up Enneagram personality types 1–9: name, core fear, core desire, and wings.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "enneagram",
+      "personality type",
+      "enneagram type"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "flip",
+    "label": "Flip Text",
+    "description": "Renders text upside-down using Unicode look-alike characters.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "flip text",
+      "upside down text",
+      "flip this text"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "hogwarts",
+    "label": "Hogwarts Sorting",
+    "description": "Sorts a name into a Hogwarts house deterministically via name hash.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "hogwarts house",
+      "sorting hat",
+      "harry potter house"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "8ball",
+    "label": "Magic 8-Ball",
+    "description": "Answers yes/no questions with one of the 20 canonical Magic 8-Ball responses.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "magic 8 ball",
+      "8-ball",
+      "magic eight ball",
+      "ask the 8 ball"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "nameday",
+    "label": "Name Day",
+    "description": "Finds the European feast day (name day) for a given first name.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "name day",
+      "feast day",
+      "saint day"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "numtrivia",
+    "label": "Number Trivia",
+    "description": "Gets a fun fact about any number or year via numbersapi.com.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "fun fact about number",
+      "number trivia",
+      "interesting number fact"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "pokemon",
+    "label": "Pokédex",
+    "description": "Looks up any Pokémon by name or number via PokéAPI; shows type, stats, and moves.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "pokemon",
+      "pokedex",
+      "find pokemon",
+      "what type is"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "rps",
+    "label": "Rock Paper Scissors",
+    "description": "Plays rock-paper-scissors against the browser using crypto-random CPU choice.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "rock paper scissors",
+      "roshambo",
+      "play rock paper"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "tarot",
+    "label": "Tarot Draw",
+    "description": "Draws from a full 78-card tarot deck with card meanings; supports 1-card and 3-card spreads.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "tarot reading",
+      "draw a tarot card",
+      "tarot spread",
+      "pull tarot"
+    ],
+    "risk": "passive"
+  },
+  {
+    "tag": "tarot-lookup",
+    "label": "Tarot Major Arcana",
+    "description": "Shows upright and reversed meanings for any of the 22 Major Arcana tarot cards.",
+    "default": false,
+    "category": "Fun & Culture",
+    "triggers": [
+      "tarot card meaning",
+      "major arcana meaning",
+      "tarot upright"
+    ],
+    "risk": "passive"
   }
 ]

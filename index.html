@@ -103,6 +103,9 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-soul">SOUL</button>
           </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-benchmark">Benchmark</button>
+          </li>
         </ul>
 
         <div class="tab-content">
@@ -161,7 +164,7 @@
             <p class="f-hint" style="margin-bottom:0.85rem;">
               Skills are loaded on demand. Enabled skills inject their instruction into the system prompt — disable any you don't need to save context.
             </p>
-            <div id="skills-list"></div>
+            <div id="skills-accordion" class="accordion skills-accordion"></div>
             <p id="context-window-note" class="f-hint" style="margin-top:0.75rem;"></p>
           </div>
 
@@ -182,6 +185,53 @@
                 <button class="btn-amber" id="add-todo-btn" style="flex-shrink:0;">Add</button>
               </div>
             </div>
+          </div>
+
+          <!-- Benchmark tab -->
+          <div class="tab-pane fade" id="tab-benchmark">
+            <div class="section-row">
+              <span class="section-title">Session Metrics</span>
+              <button class="btn-danger" id="clear-bench-btn">
+                <i class="bi bi-trash3"></i> Clear
+              </button>
+            </div>
+            <div id="bench-summary" class="bench-grid"></div>
+            <div style="overflow-x:auto;margin-top:0.75rem;">
+              <table class="bench-table">
+                <thead>
+                  <tr>
+                    <th title="Exchange number">#</th>
+                    <th title="AI backend">Backend</th>
+                    <th title="Tokens in: System + Skills + User">Tok In</th>
+                    <th title="Tokens out: User output + Skill calls">Tok Out</th>
+                    <th title="Time to First Token">TTFT</th>
+                    <th title="Inter-Token Latency — avg ms between tokens (Chrome streaming only)">ITL</th>
+                    <th title="Tokens Per Second">TPS</th>
+                    <th title="Time Per Output Token (ms)">TPOT</th>
+                    <th title="Generation passes (2 when tool calls triggered a second pass)">P</th>
+                  </tr>
+                </thead>
+                <tbody id="bench-tbody"></tbody>
+              </table>
+            </div>
+            <hr class="bench-hr">
+            <div class="section-row">
+              <span class="section-title">Benchmark Runner</span>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Query Count</label>
+              <div class="f-row" style="align-items:center;">
+                <input type="number" class="f-input" id="bench-count" value="5" min="1" max="50" style="max-width:90px;">
+                <p class="f-hint" style="margin:0">Runs a suite of simple fixed prompts and reports aggregate latency &amp; throughput statistics.</p>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn-amber" id="run-bench-btn">
+                <i class="bi bi-play-fill"></i> Run Benchmark
+              </button>
+            </div>
+            <p class="apply-msg" id="bench-run-status"></p>
+            <div id="bench-run-results"></div>
           </div>
 
           <!-- SOUL tab -->

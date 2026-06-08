@@ -4,6 +4,25 @@ import {
   getTodos, addTodo, setTodoDone, deleteTodo, clearDoneTodos,
 } from './skills/db.js';
 
+const TOKENX_CDN_URL = 'https://cdn.jsdelivr.net/npm/tokenx@1.3.0/+esm';
+let tokenxEstimatePromise = null;
+
+async function estimateTokens(text) {
+  if (!text) return 0;
+  if (!tokenxEstimatePromise) {
+    tokenxEstimatePromise = import(TOKENX_CDN_URL)
+      .then(mod => mod.estimateTokenCount)
+      .catch(err => {
+        console.warn('Failed to load tokenx, falling back to word heuristic:', err);
+        return null;
+      });
+  }
+
+  const estimateTokenCount = await tokenxEstimatePromise;
+  if (estimateTokenCount) return estimateTokenCount(text);
+  return Math.round(text.split(/\s+/).length * 1.33);
+}
+
 // ── Constants ─────────────────────────────────────────────────────────────────
 const DEFAULT_SOUL = `You are WebBrain, a helpful AI assistant running entirely in the user's browser. Be concise, clear, and friendly. You may ask questions, but no more than one per turn. You output plaintext, not markdown.`;
 const DEFAULT_MODEL_URL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.task';
@@ -12,6 +31,193 @@ const DEFAULT_MODEL_URL = 'https://huggingface.co/litert-community/gemma-4-E2B-i
 // Populated on boot from manifest + dynamic imports. Only loaded (enabled) skills live here.
 let SKILLS   = [];
 let manifest = [];
+let manifestByTag = new Map();
+let skillKeywordIndex = new Map();
+let skillTriggerIndex = new Map();
+let knownSkillTags = new Set();
+
+const ROUTER_STOPWORDS = new Set([
+  'the', 'and', 'for', 'with', 'that', 'this', 'from', 'into', 'your', 'you',
+  'about', 'using', 'show', 'please', 'need', 'want', 'help', 'make', 'give',
+  'what', 'when', 'where', 'which', 'who', 'how', 'just', 'real', 'some',
+  'text', 'data', 'code', 'tool', 'skill', 'browser', 'stored', 'list', 'info'
+]);
+const MAX_AUTO_SKILLS_PER_TURN = 4;
+
+function tokenizeIntent(text) {
+  return new Set((text.toLowerCase().match(/[a-z0-9]+/g) ?? []).filter(t => t.length > 2));
+}
+
+function buildSkillKeywords(entry) {
+  const words = [
+    ...(entry.tag?.split('-') ?? []),
+    ...((entry.label ?? '').toLowerCase().match(/[a-z0-9]+/g) ?? []),
+    ...((entry.description ?? '').toLowerCase().match(/[a-z0-9]+/g) ?? []),
+  ];
+  return [...new Set(words.filter(w => w.length > 2 && !ROUTER_STOPWORDS.has(w)))];
+}
+
+// Compiled per-skill trigger regexes. Each pattern does word-boundary or
+// phrase-boundary matching so "binary" doesn't fire inside "arbitrary".
+// (Populated by rebuildSkillIndexes; declared at module scope with other indexes.)
+
+function compileTriggers(entry) {
+  return (entry.triggers ?? []).map(phrase => {
+    const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // For single-word triggers use \b; for phrases just require word boundaries at the outer edges.
+    return new RegExp(`(?:^|[\\s,!?])${escaped}(?:[\\s,!?.;]|$)`, 'i');
+  });
+}
+
+function rebuildSkillIndexes() {
+  manifestByTag = new Map();
+  skillKeywordIndex = new Map();
+  skillTriggerIndex = new Map();
+  knownSkillTags = new Set();
+  for (const entry of manifest) {
+    if (!entry?.tag) continue;
+    const tag = entry.tag.toLowerCase();
+    knownSkillTags.add(tag);
+    manifestByTag.set(tag, { ...entry, tag });
+    skillKeywordIndex.set(tag, buildSkillKeywords(entry));
+    skillTriggerIndex.set(tag, compileTriggers(entry));
+  }
+}
+
+function buildSkillDirectoryPrompt(enabledSkills) {
+  if (!manifest.length) return '';
+  const lines = [
+    '## Skill Directory',
+    'Use <tag>payload</tag> when a listed skill is needed.',
+    'Only invoke skills marked enabled.',
+  ];
+  for (const entry of manifest) {
+    const state = enabledSkills.has(entry.tag) ? 'enabled' : 'disabled';
+    lines.push(`- ${entry.tag} (${state}): ${entry.label}`);
+  }
+  return lines.join('\n');
+}
+
+// Minimum score required to auto-select a skill based on its risk level.
+// passive:             low bar — keyword heuristic alone is enough
+// side_effect:         must match at least one explicit trigger phrase
+// permission_required: same; don't fire without a clear user intent signal
+const RISK_MIN_SCORE = { passive: 3, side_effect: 10, permission_required: 10 };
+
+// Score contribution weights.
+const SCORE_EXPLICIT_TAG  = 12; // user literally typed <tag> in their message
+const SCORE_TRIGGER_MATCH = 10; // matched a compiled trigger phrase
+const SCORE_LABEL_MATCH   =  5; // label phrase present in message
+const SCORE_TAG_IN_MSG    =  4; // tag string found in message text
+const SCORE_TAG_PHRASE    =  3; // tag with dashes expanded to spaces found
+const SCORE_KEYWORD_HIT   =  1; // per keyword match (capped at 4)
+const MAX_KEYWORD_HITS    =  4;
+
+function rankSkillsForPrompt(userText, enabledSkills) {
+  // Pad with spaces so phrase-boundary regex reliably matches at start/end.
+  const paddedText = ' ' + userText + ' ';
+  const normalized = userText.toLowerCase();
+  const tokens = tokenizeIntent(userText);
+  const scored = [];
+
+  for (const entry of manifest) {
+    const tag = entry.tag?.toLowerCase();
+    if (!tag || !enabledSkills.has(tag)) continue;
+
+    let score = 0;
+
+    // ── Tier 1: deterministic ───────────────────────────────────────────────
+    // Explicit XML tag in user text (model copy-paste / deliberate invocation).
+    if (normalized.includes(`<${tag}>`)) score += SCORE_EXPLICIT_TAG;
+
+    // Compiled trigger phrases from manifest.
+    let triggerHit = false;
+    for (const re of skillTriggerIndex.get(tag) ?? []) {
+      if (re.test(paddedText)) { score += SCORE_TRIGGER_MATCH; triggerHit = true; break; }
+    }
+
+    // ── Tier 2: heuristic (label / tag-name / keyword) ───────────────────────
+    // Only run heuristics when no trigger already fired (avoids double-counting).
+    if (!triggerHit) {
+      const tagPhrase   = tag.replace(/-/g, ' ');
+      const labelPhrase = (entry.label ?? '').toLowerCase();
+      if (normalized.includes(tag)) score += SCORE_TAG_IN_MSG;
+      if (tagPhrase !== tag && normalized.includes(tagPhrase)) score += SCORE_TAG_PHRASE;
+      if (labelPhrase && normalized.includes(labelPhrase)) score += SCORE_LABEL_MATCH;
+
+      let kwHits = 0;
+      for (const word of skillKeywordIndex.get(tag) ?? []) {
+        if (tokens.has(word)) { kwHits++; if (kwHits >= MAX_KEYWORD_HITS) break; }
+      }
+      score += kwHits * SCORE_KEYWORD_HIT;
+    }
+
+    if (score > 0) scored.push({ tag, score, risk: entry.risk ?? 'passive' });
+  }
+
+  scored.sort((a, b) => b.score - a.score || a.tag.localeCompare(b.tag));
+
+  const selected = [];
+  const seen = new Set();
+
+  // Always include default skills (e.g. fact/memory) regardless of scoring.
+  for (const entry of manifest) {
+    const tag = entry.tag?.toLowerCase();
+    if (entry.default && tag && enabledSkills.has(tag) && !seen.has(tag)) {
+      selected.push(tag);
+      seen.add(tag);
+    }
+  }
+
+  // Add top-scoring skills that clear their risk threshold.
+  for (const item of scored) {
+    if (seen.has(item.tag)) continue;
+    const minScore = RISK_MIN_SCORE[item.risk] ?? RISK_MIN_SCORE.passive;
+    if (item.score < minScore) continue;
+    if (selected.length >= MAX_AUTO_SKILLS_PER_TURN) break;
+    selected.push(item.tag);
+    seen.add(item.tag);
+  }
+
+  return { selectedTags: selected, scored };
+}
+
+async function loadSkillsByTag(tags) {
+  const uniqTags = [...new Set(tags.map(t => t.toLowerCase()))];
+  const results = await Promise.all(uniqTags.map(loadSkill));
+  return {
+    loadedAny: results.some(Boolean),
+    loadedTags: uniqTags,
+  };
+}
+
+function getLoadedSkillsByTag(tags) {
+  const wanted = new Set(tags.map(t => t.toLowerCase()));
+  return SKILLS.filter(skill => wanted.has(skill.tag?.toLowerCase()));
+}
+
+async function planSkillsForTurn(userText) {
+  const enabledSkills = await getEnabledSkills();
+  const { selectedTags, scored } = rankSkillsForPrompt(userText, enabledSkills);
+  await loadSkillsByTag(selectedTags);
+  return {
+    enabledSkills,
+    selectedTags,
+    activeSkills: getLoadedSkillsByTag(selectedTags),
+    scored,
+  };
+}
+
+function findInvokedSkillTags(text) {
+  const tags = new Set();
+  const re = /<([a-z0-9-]+)>([\s\S]*?)<\/\1>/gi;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const tag = m[1].toLowerCase();
+    if (knownSkillTags.has(tag)) tags.add(tag);
+  }
+  return [...tags];
+}
 
 async function getEnabledSkills() {
   const raw = await txGet('settings', 'enabledSkills');
@@ -27,13 +233,16 @@ async function setEnabledSkills(set) {
 }
 
 async function loadSkill(tag) {
-  if (SKILLS.some(s => s.tag === tag)) return;
+  const normalizedTag = tag.toLowerCase();
+  if (SKILLS.some(s => s.tag === normalizedTag)) return false;
   invalidateStaticSysPrompt();
   try {
-    const { default: skill } = await import(`./skills/${tag}/skill.js`);
+    const { default: skill } = await import(`./skills/${normalizedTag}/skill.js`);
     SKILLS.push(skill);
+    return true;
   } catch (e) {
-    console.error(`Failed to load skill "${tag}":`, e);
+    console.error(`Failed to load skill "${normalizedTag}":`, e);
+    return false;
   }
 }
 
@@ -44,25 +253,29 @@ function unloadSkill(tag) {
 
 async function initSkills() {
   manifest = await fetch('./skills/manifest.json').then(r => r.json());
+  manifest = manifest.map(entry => ({ ...entry, tag: entry.tag?.toLowerCase?.() ?? entry.tag }));
+  rebuildSkillIndexes();
   const enabled = await getEnabledSkills();
   await Promise.all([...enabled].map(loadSkill));
 }
 
 // ── System prompt ─────────────────────────────────────────────────────────────
-// The static prefix (soul + skill instructions) is cached across turns; only
-// live-context fetches and facts are re-evaluated each time they can change.
+// Stub so loadSkill/unloadSkill/save-soul calls don't throw; the per-turn
+// parameterized buildSystemPrompt below doesn't use caching.
 let _staticSysPrompt = null;
 function invalidateStaticSysPrompt() { _staticSysPrompt = null; }
 
-async function buildSystemPrompt() {
-  if (!_staticSysPrompt) {
-    const soul       = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
-    const skillBlock = SKILLS.filter(s => s.instruction).map(s => s.instruction).join('\n\n');
-    _staticSysPrompt = skillBlock ? soul + '\n\n' + skillBlock : soul;
-  }
-  const liveLines = (await Promise.all(SKILLS.filter(s => s.fetch).map(s => s.fetch()))).filter(Boolean);
-  const facts     = await getFacts();
-  let prompt = _staticSysPrompt;
+async function buildSystemPrompt(activeSkills = SKILLS, enabledSkills = null) {
+  const enabled = enabledSkills ?? await getEnabledSkills();
+  const soul      = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
+  const skillDirectory = buildSkillDirectoryPrompt(enabled);
+  const skillBlock = activeSkills.filter(s => s.instruction).map(s => s.instruction).join('\n\n');
+  const enabledSkillObjects = SKILLS.filter(s => enabled.has(s.tag));
+  const liveLines  = (await Promise.all(enabledSkillObjects.filter(s => s.fetch).map(s => s.fetch()))).filter(Boolean);
+  const facts      = await getFacts();
+  let prompt = soul;
+  if (skillDirectory) prompt += '\n\n' + skillDirectory;
+  if (skillBlock)    prompt += '\n\n## Loaded Skill Instructions (Current Turn)\n' + skillBlock;
   if (liveLines.length) prompt += '\n\n## Live context:\n' + liveLines.join('\n');
   if (facts.length)     prompt += '\n\n## Facts I recorded:\n' + facts.map(f => `- ${f.text}`).join('\n');
   return prompt;
@@ -405,6 +618,26 @@ let messages  = [];
 let chatId    = null;
 let generating = false;
 
+// ── Performance Metrics ───────────────────────────────────────────────────────
+let perfHistory = [];
+let currentPerf = null;
+
+function newPerfRecord() {
+  return {
+    ts: Date.now(),
+    backend: '',
+    tokensInSystem: 0,
+    tokensInSkills: 0,
+    tokensInUser: 0,
+    tokensOutSkillCalls: 0,
+    tokensOutUser: 0,
+    ttft: null,
+    itl: null,
+    genMs: 0,
+    passes: 1,
+  };
+}
+
 function clearWelcome() { const w = $('welcome'); if (w) w.remove(); }
 
 function appendBubble(role, text) {
@@ -424,6 +657,9 @@ async function send() {
   const input = $('user-input');
   const text  = input.value.trim();
   if (!text || generating) return;
+
+  const sendT0 = performance.now();
+  currentPerf = newPerfRecord();
 
   input.value = '';
   autoResize(input);
@@ -449,13 +685,9 @@ async function send() {
     });
   };
 
-  // Maximum characters that can appear between '<' and '>' of any skill tag opening.
-  // Used to detect when a '<' in the stream is definitely not a skill tag opener.
+  // O(|pending|) incremental skill-tag stripper; holds back text from the last
+  // '<' to avoid flushing a mid-stream tag opener into the bubble.
   const MAX_TAG_OVERHEAD = SKILLS.reduce((m, s) => Math.max(m, s.tag.length + 2), 32);
-
-  // Incrementally emit safe text into the bubble. Holds back content from the
-  // last '<' to guard against suppressing mid-stream skill tag openers.
-  // O(|pending| * m) per chunk rather than O(n * m) — pending stays small.
   function emitChunk(chunk) {
     pending += chunk;
     for (const skill of SKILLS) {
@@ -471,9 +703,6 @@ async function send() {
     if (lastLt === -1) {
       safe = pending; pending = '';
     } else {
-      // Check for a confirmed skill tag opener (e.g. '<fact>') in pending.
-      // If found, hold from that position regardless of buffer size — we cannot
-      // flush tag content until the closing tag arrives (regression guard).
       let openerAt = Infinity;
       for (const skill of SKILLS) {
         const idx = pending.indexOf('<' + skill.tag + '>');
@@ -482,7 +711,6 @@ async function send() {
       if (openerAt < Infinity) {
         safe = pending.slice(0, openerAt); pending = pending.slice(openerAt);
       } else if (pending.length - lastLt > MAX_TAG_OVERHEAD) {
-        // '<' too far back to be a tag opener — safe to flush
         safe = pending; pending = '';
       } else {
         safe = pending.slice(0, lastLt); pending = pending.slice(lastLt);
@@ -492,21 +720,86 @@ async function send() {
     scheduleScroll();
   }
 
+  // Helper: run a streaming pass, updating the bubble via emitChunk and
+  // collecting perf metrics (TTFT, ITL, genMs) into currentPerf.
+  async function streamPass(streamMessages, sysPrompt, isFirstPass) {
+    const t0 = performance.now();
+    let lastChunkTs = null;
+    const chunkDeltas = [];
+    for await (const chunk of streamAI(streamMessages, sysPrompt)) {
+      const now = performance.now();
+      if (currentPerf && chunk && isFirstPass) {
+        if (currentPerf.ttft === null) {
+          currentPerf.ttft = now - sendT0;
+          lastChunkTs = now;
+        } else if (lastChunkTs !== null) {
+          chunkDeltas.push(now - lastChunkTs);
+          lastChunkTs = now;
+        }
+      }
+      fullText += chunk;
+      emitChunk(chunk);
+    }
+    if (currentPerf) {
+      currentPerf.genMs += performance.now() - t0;
+      if (isFirstPass && chunkDeltas.length && currentPerf.itl === null) {
+        currentPerf.itl = chunkDeltas.reduce((a, b) => a + b) / chunkDeltas.length;
+      }
+    }
+  }
+
   let pending  = '';
   let fullText = '';
   try {
-    const sysPrompt = await buildSystemPrompt();
+    setStatus('Planning skills…');
+    const turnPlan = await planSkillsForTurn(text);
+    let activeTags = new Set(turnPlan.selectedTags);
+    let activeSkills = turnPlan.activeSkills;
+    let sysPrompt = await buildSystemPrompt(activeSkills, turnPlan.enabledSkills);
+
+    if (currentPerf) {
+      const soulText = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
+      const [sysTokens, soulTokens, userTokens] = await Promise.all([
+        estimateTokens(sysPrompt),
+        estimateTokens(soulText),
+        estimateTokens(text),
+      ]);
+      currentPerf.backend = backend;
+      currentPerf.tokensInSystem = soulTokens;
+      currentPerf.tokensInSkills = Math.max(0, sysTokens - soulTokens);
+      currentPerf.tokensInUser = userTokens;
+    }
+
+    session = null; // System prompt can now change per turn based on loaded skills.
 
     // Pass 1
-    for await (const chunk of streamAI(messages, sysPrompt)) {
-      fullText += chunk;
-      emitChunk(chunk);
+    await streamPass(messages, sysPrompt, true);
+
+    // Fallback: if the model emits a known skill tag that is enabled but wasn't
+    // preloaded, load it and rerun pass 1 once.
+    const emittedTags = findInvokedSkillTags(fullText);
+    const missingEnabledTags = emittedTags.filter(tag => turnPlan.enabledSkills.has(tag) && !activeTags.has(tag));
+    if (missingEnabledTags.length) {
+      setStatus(`Loading inferred skills: ${missingEnabledTags.join(', ')}…`);
+      const { loadedAny, loadedTags } = await loadSkillsByTag(missingEnabledTags);
+      if (loadedAny) {
+        loadedTags.forEach(tag => activeTags.add(tag));
+        activeSkills = getLoadedSkillsByTag([...activeTags]);
+        sysPrompt = await buildSystemPrompt(activeSkills, turnPlan.enabledSkills);
+        session = null;
+        while (bubble.firstChild) bubble.removeChild(bubble.firstChild);
+        bubble.appendChild(cursor);
+        pending = '';
+        fullText = '';
+        if (currentPerf) currentPerf.ttft = null;
+        await streamPass(messages, sysPrompt, true);
+      }
     }
 
     // Collect results from any call() skills the model invoked
     const toolResults  = [];
     const invokedTools = new Set();
-    for (const skill of SKILLS) {
+    for (const skill of activeSkills) {
       if (!skill.call) continue;
       const re = new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g');
       let m;
@@ -518,9 +811,9 @@ async function send() {
 
     if (toolResults.length) {
       // Pass 2: clear bubble, inject results, re-invoke so the model answers with real data
-      bubble.textContent = '';
-      bubble.appendChild(cursor); // textContent= removed cursor; restore it for pass 2
-      pending = '';               // reset incremental buffer for pass 2
+      while (bubble.firstChild) bubble.removeChild(bubble.firstChild);
+      bubble.appendChild(cursor);
+      pending = '';
       setStatus('Running tools…');
       const pass1Clean = stripSkillTags(fullText).trim();
       const augmented  = [
@@ -530,17 +823,25 @@ async function send() {
       ];
       fullText = '';
       session  = null; // force Chrome to rebuild session with augmented history
-      for await (const chunk of streamAI(augmented, sysPrompt)) {
-        fullText += chunk;
-        emitChunk(chunk);
-      }
+      if (currentPerf) currentPerf.passes = 2;
+      await streamPass(augmented, sysPrompt, false);
       session = null; // discard augmented session; next turn rebuilds from real messages
     }
 
-    const needsReset = await dispatchSkillCalls(fullText);
+    const needsReset = await dispatchSkillCalls(fullText, activeSkills);
     if (needsReset) session = null;
 
-    const cleanText = stripSkillTags(fullText);
+    const cleanText = stripSkillTags(fullText, activeSkills);
+    if (currentPerf) {
+      const [fullTokOut, cleanTokOut] = await Promise.all([
+        estimateTokens(fullText),
+        estimateTokens(cleanText),
+      ]);
+      currentPerf.tokensOutSkillCalls = Math.max(0, fullTokOut - cleanTokOut);
+      currentPerf.tokensOutUser = cleanTokOut;
+      perfHistory.push({ ...currentPerf });
+      currentPerf = null;
+    }
     bubble.textContent = cleanText;
     if (invokedTools.size) {
       const badge = document.createElement('span');
@@ -555,6 +856,7 @@ async function send() {
     chatId = await persistChat(chatId, messages, title);
     await renderHistory();
   } catch (e) {
+    currentPerf = null;
     bubble.textContent = `[Error: ${e.message}]`;
     console.error(e);
   }
@@ -567,22 +869,26 @@ async function send() {
 
 // Strip all skill tags from display text; also suppresses incomplete opening
 // tags that haven't closed yet (mid-stream).
-function stripSkillTags(text) {
-  let out = text;
-  for (const skill of SKILLS) {
-    const subst = skill.replace ?? (() => '');
-    out = out
-      .replace(new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g'),
-               (_, content) => subst(content.trim()))
-      .replace(new RegExp(`<${skill.tag}>[\\s\\S]*$`), '');
+function stripSkillTags(text, activeSkills = SKILLS) {
+  const replaceByTag = new Map(activeSkills.map(skill => [skill.tag?.toLowerCase(), skill.replace ?? (() => '')]));
+  let out = text.replace(/<([a-z0-9-]+)>([\s\S]*?)<\/\1>/gi, (full, rawTag, content) => {
+    const tag = rawTag.toLowerCase();
+    if (!knownSkillTags.has(tag)) return full;
+    return (replaceByTag.get(tag) ?? (() => ''))(content.trim());
+  });
+
+  const dangling = out.match(/<([a-z0-9-]+)>[\s\S]*$/i);
+  if (dangling?.index !== undefined) {
+    const tag = dangling[1].toLowerCase();
+    if (knownSkillTags.has(tag)) out = out.slice(0, dangling.index);
   }
   return out;
 }
 
 // Returns true if any skill handler signalled a session reset is needed.
-async function dispatchSkillCalls(text) {
+async function dispatchSkillCalls(text, activeSkills = SKILLS) {
   let needsReset = false;
-  for (const skill of SKILLS) {
+  for (const skill of activeSkills) {
     if (!skill.handle) continue;
     const re = new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g');
     let m;
@@ -672,42 +978,137 @@ async function renderMemory() {
 }
 
 // ── Skills UI ─────────────────────────────────────────────────────────────────
-async function renderSkills() {
+const SKILL_CATEGORY_ORDER = [
+  'Core',
+  'Productivity',
+  'Text, Data & Encoding',
+  'Developer & Identifier Tools',
+  'Math & Number Theory',
+  'Music & Audio',
+  'World & Science',
+  'Language & Writing',
+  'Fun & Culture'
+];
+
+async function applySkillToggles(tags, turnOn) {
   const enabled = await getEnabledSkills();
-  const el      = $('skills-list');
-  el.innerHTML  = '';
-  for (const entry of manifest) {
-    const isEnabled  = enabled.has(entry.tag);
-    const loaded     = SKILLS.find(s => s.tag === entry.tag);
-    const approxTokens = loaded?.instruction
-      ? Math.round(loaded.instruction.split(/\s+/).length * 1.33)
-      : 0;
-    const row = document.createElement('div');
-    row.className = 'skill-row';
-    row.innerHTML = `
-      <div class="skill-info">
-        <span class="skill-name">${esc(entry.label)}</span>
-        ${approxTokens ? `<small class="skill-tokens">~${approxTokens.toLocaleString()} tokens</small>` : ''}
-        <span class="skill-desc">${esc(entry.description)}</span>
-      </div>
-      <label class="toggle" title="${isEnabled ? 'Disable' : 'Enable'} ${esc(entry.label)}">
-        <input type="checkbox" data-tag="${entry.tag}"${isEnabled ? ' checked' : ''}>
-        <span class="toggle-track"></span>
-      </label>`;
-    row.querySelector('input').addEventListener('change', async e => {
-      const cur = await getEnabledSkills();
-      if (e.target.checked) {
-        await loadSkill(entry.tag);
-        cur.add(entry.tag);
-      } else {
-        unloadSkill(entry.tag);
-        cur.delete(entry.tag);
-      }
-      await setEnabledSkills(cur);
-      session = null;
-      await renderSkills(); // refresh token counts after load
+  if (turnOn) {
+    const toLoad = tags.filter(tag => !enabled.has(tag));
+    await Promise.all(toLoad.map(loadSkill));
+    toLoad.forEach(tag => enabled.add(tag));
+  } else {
+    tags.forEach(tag => {
+      unloadSkill(tag);
+      enabled.delete(tag);
     });
-    el.appendChild(row);
+  }
+  await setEnabledSkills(enabled);
+  session = null;
+}
+
+function slugifyCategory(label) {
+  return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function getOpenSkillsCategoryId() {
+  const open = document.querySelector('#skills-accordion .accordion-collapse.show');
+  if (!open?.id) return null;
+  return open.id.replace('skills-collapse-', '');
+}
+
+async function renderSkills(openCategoryId = null) {
+  const enabled = await getEnabledSkills();
+  const el      = $('skills-accordion');
+  el.innerHTML  = '';
+  let enabledSkillTokenTotal = 0;
+
+  const discovered = [...new Set(manifest.map(entry => entry.category).filter(Boolean))];
+  const categoryOrder = [
+    ...SKILL_CATEGORY_ORDER.filter(category => discovered.includes(category)),
+    ...discovered.filter(category => !SKILL_CATEGORY_ORDER.includes(category)).sort((a, b) => a.localeCompare(b)),
+  ];
+  const grouped = new Map(categoryOrder.map(label => [label, []]));
+  for (const entry of manifest) {
+    const category = entry.category || 'General Utilities';
+    if (!grouped.has(category)) grouped.set(category, []);
+    grouped.get(category).push(entry);
+  }
+
+  const validOpenCategoryId = openCategoryId && categoryOrder.some(
+    category => slugifyCategory(category) === openCategoryId
+  ) ? openCategoryId : null;
+  let firstCategory = true;
+  for (const category of categoryOrder) {
+    const entries = grouped.get(category);
+    if (!entries?.length) continue;
+
+    const total = entries.length;
+    const activeCount = entries.filter(entry => enabled.has(entry.tag)).length;
+    const catId = slugifyCategory(category);
+    const isOpen = validOpenCategoryId ? catId === validOpenCategoryId : firstCategory;
+
+    const item = document.createElement('div');
+    item.className = 'accordion-item';
+    item.innerHTML = `
+      <h2 class="accordion-header" id="skills-heading-${catId}">
+        <button class="accordion-button ${isOpen ? '' : 'collapsed'}" type="button"
+                data-bs-toggle="collapse" data-bs-target="#skills-collapse-${catId}"
+                aria-expanded="${isOpen ? 'true' : 'false'}" aria-controls="skills-collapse-${catId}">
+          <span class="skills-cat-title">${esc(category)}</span>
+          <span class="skills-cat-meta">${activeCount}/${total} enabled</span>
+        </button>
+        <label class="toggle category-toggle" title="Toggle all ${esc(category)} skills">
+          <input type="checkbox" data-category="${catId}">
+          <span class="toggle-track"></span>
+        </label>
+      </h2>
+      <div id="skills-collapse-${catId}" class="accordion-collapse collapse ${isOpen ? 'show' : ''}"
+           aria-labelledby="skills-heading-${catId}" data-bs-parent="#skills-accordion">
+        <div class="accordion-body"><div class="skills-category-list"></div></div>
+      </div>`;
+
+    const categoryToggle = item.querySelector('.category-toggle input');
+    categoryToggle.checked = activeCount === total;
+    categoryToggle.indeterminate = activeCount > 0 && activeCount < total;
+    categoryToggle.addEventListener('change', async e => {
+      const openId = getOpenSkillsCategoryId() || catId;
+      await applySkillToggles(entries.map(skill => skill.tag), e.target.checked);
+      await renderSkills(openId);
+    });
+
+    const list = item.querySelector('.skills-category-list');
+    for (const entry of entries) {
+      const isEnabled = enabled.has(entry.tag);
+      const loaded = SKILLS.find(s => s.tag === entry.tag);
+      const approxTokens = loaded?.instruction
+        ? await estimateTokens(loaded.instruction)
+        : 0;
+      if (isEnabled) enabledSkillTokenTotal += approxTokens;
+
+      const row = document.createElement('div');
+      row.className = 'skill-row';
+      row.innerHTML = `
+        <div class="skill-info">
+          <span class="skill-name">${esc(entry.label)}</span>
+          ${approxTokens ? `<small class="skill-tokens">~${approxTokens.toLocaleString()} tokens</small>` : ''}
+          <span class="skill-desc">${esc(entry.description)}</span>
+        </div>
+        <label class="toggle" title="${isEnabled ? 'Disable' : 'Enable'} ${esc(entry.label)}">
+          <input type="checkbox" data-tag="${entry.tag}"${isEnabled ? ' checked' : ''}>
+          <span class="toggle-track"></span>
+        </label>`;
+
+      row.querySelector('input').addEventListener('change', async e => {
+        const openId = getOpenSkillsCategoryId() || catId;
+        await applySkillToggles([entry.tag], e.target.checked);
+        await renderSkills(openId); // refresh token counts after load
+      });
+
+      list.appendChild(row);
+    }
+
+    el.appendChild(item);
+    firstCategory = false;
   }
 
   const maxTok = await computeMaxTokens();
@@ -715,7 +1116,7 @@ async function renderSkills() {
     ? 'estimated from WebGPU VRAM'
     : 'WebGPU unavailable — using minimum fallback';
   $('context-window-note').textContent =
-    `Context window on this device: ~${maxTok.toLocaleString()} tokens (${src}).`;
+    `Context window on this device: ~${maxTok.toLocaleString()} tokens (${src}). Enabled skills occupy ~${enabledSkillTokenTotal.toLocaleString()} tokens.`;
 }
 
 // ── Todos UI ──────────────────────────────────────────────────────────────────
@@ -771,6 +1172,177 @@ $('theme-toggle').addEventListener('click', () => {
   $('theme-toggle').querySelector('i').className = next === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
 });
 
+
+// ── Benchmark UI ─────────────────────────────────────────────────────────────
+function fmtMs(ms) {
+  if (ms === null || ms === undefined) return '—';
+  return ms < 1000 ? Math.round(ms) + 'ms' : (ms / 1000).toFixed(2) + 's';
+}
+
+function renderBenchmarkTab() {
+  const summaryEl = $('bench-summary');
+  const tbodyEl   = $('bench-tbody');
+  if (!summaryEl || !tbodyEl) return;
+
+  if (!perfHistory.length) {
+    summaryEl.innerHTML = '<p class="empty-state" style="grid-column:1/-1">No exchanges recorded yet — have a conversation to see metrics here.</p>';
+    tbodyEl.innerHTML = '';
+    return;
+  }
+
+  const totalExchanges = perfHistory.length;
+  const totalTokIn  = perfHistory.reduce((s, r) => s + r.tokensInSystem + r.tokensInSkills + r.tokensInUser, 0);
+  const totalTokOut = perfHistory.reduce((s, r) => s + r.tokensOutUser + r.tokensOutSkillCalls, 0);
+  const validTTFT   = perfHistory.filter(r => r.ttft !== null).map(r => r.ttft);
+  const avgTTFT     = validTTFT.length ? validTTFT.reduce((a, b) => a + b) / validTTFT.length : null;
+  const totalGenMs  = perfHistory.reduce((s, r) => s + r.genMs, 0);
+  const avgTPS      = totalGenMs > 0 && totalTokOut > 0 ? (totalTokOut / (totalGenMs / 1000)).toFixed(1) : '—';
+  const avgTPOT     = totalTokOut > 0 ? Math.round(totalGenMs / totalTokOut) : null;
+  const validITL    = perfHistory.filter(r => r.itl !== null).map(r => r.itl);
+  const avgITL      = validITL.length ? validITL.reduce((a, b) => a + b) / validITL.length : null;
+
+  summaryEl.innerHTML = `
+    <div class="bench-stat"><span class="bench-stat-value">${totalExchanges}</span><span class="bench-stat-label">Exchanges</span></div>
+    <div class="bench-stat"><span class="bench-stat-value">${totalTokIn.toLocaleString()}</span><span class="bench-stat-label">Total Tok In</span></div>
+    <div class="bench-stat"><span class="bench-stat-value">${totalTokOut.toLocaleString()}</span><span class="bench-stat-label">Total Tok Out</span></div>
+    <div class="bench-stat"><span class="bench-stat-value">${fmtMs(avgTTFT)}</span><span class="bench-stat-label">Avg TTFT</span></div>
+    <div class="bench-stat"><span class="bench-stat-value">${avgTPS}</span><span class="bench-stat-label">Avg TPS</span></div>
+    <div class="bench-stat"><span class="bench-stat-value">${avgTPOT !== null ? avgTPOT + 'ms' : '—'}</span><span class="bench-stat-label">Avg TPOT</span></div>
+    ${avgITL !== null ? `<div class="bench-stat"><span class="bench-stat-value">${Math.round(avgITL)}ms</span><span class="bench-stat-label">Avg ITL</span></div>` : ''}
+  `;
+
+  tbodyEl.innerHTML = '';
+  [...perfHistory].reverse().forEach((r, ri) => {
+    const idx    = perfHistory.length - ri;
+    const tokIn  = r.tokensInSystem + r.tokensInSkills + r.tokensInUser;
+    const tokOut = r.tokensOutUser + r.tokensOutSkillCalls;
+    const tps    = r.genMs > 0 && tokOut > 0 ? (tokOut / (r.genMs / 1000)).toFixed(1) : '—';
+    const tpot   = tokOut > 0 ? Math.round(r.genMs / tokOut) + 'ms' : '—';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${idx}</td>
+      <td>${esc(r.backend || '?')}</td>
+      <td title="System: ${r.tokensInSystem} | Skills: ${r.tokensInSkills} | User: ${r.tokensInUser}">
+        ${tokIn}<span class="bench-tok-detail">${r.tokensInSystem}+${r.tokensInSkills}+${r.tokensInUser}</span>
+      </td>
+      <td title="User output: ${r.tokensOutUser} | Skill calls: ${r.tokensOutSkillCalls}">
+        ${tokOut}<span class="bench-tok-detail">${r.tokensOutUser}+${r.tokensOutSkillCalls}</span>
+      </td>
+      <td>${fmtMs(r.ttft)}</td>
+      <td>${r.itl !== null ? Math.round(r.itl) + 'ms' : '—'}</td>
+      <td>${tps}</td>
+      <td>${tpot}</td>
+      <td>${r.passes}</td>`;
+    tbodyEl.appendChild(tr);
+  });
+}
+
+function renderBenchmarkResults(results, container) {
+  const valid = results.filter(r => !r.error);
+  if (!valid.length) {
+    container.innerHTML = '<p class="empty-state">All queries failed — check console for errors.</p>';
+    return;
+  }
+
+  const ttfts = valid.map(r => r.ttft).filter(x => x !== null);
+  const tpss  = valid.filter(r => r.tokens > 0 && r.genMs > 0).map(r => r.tokens / (r.genMs / 1000));
+  const tpots = valid.filter(r => r.tokens > 0 && r.genMs > 0).map(r => r.genMs / r.tokens);
+
+  function statRow(arr) {
+    if (!arr.length) return { min: '—', avg: '—', p95: '—', max: '—' };
+    const s   = [...arr].sort((a, b) => a - b);
+    const avg = s.reduce((a, b) => a + b) / s.length;
+    const p95 = s[Math.max(0, Math.ceil(s.length * 0.95) - 1)];
+    return { min: s[0].toFixed(1), avg: avg.toFixed(1), p95: p95.toFixed(1), max: s[s.length - 1].toFixed(1) };
+  }
+
+  const ttftStats = statRow(ttfts);
+  const tpsStats  = statRow(tpss);
+  const tpotStats = statRow(tpots);
+
+  container.innerHTML = `
+    <table class="bench-table" style="margin-bottom:0.75rem;">
+      <thead>
+        <tr><th>Metric</th><th>Min</th><th>Avg</th><th>p95</th><th>Max</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>TTFT (ms)</td><td>${ttftStats.min}</td><td>${ttftStats.avg}</td><td>${ttftStats.p95}</td><td>${ttftStats.max}</td></tr>
+        <tr><td>TPS (tok/s)</td><td>${tpsStats.min}</td><td>${tpsStats.avg}</td><td>${tpsStats.p95}</td><td>${tpsStats.max}</td></tr>
+        <tr><td>TPOT (ms/tok)</td><td>${tpotStats.min}</td><td>${tpotStats.avg}</td><td>${tpotStats.p95}</td><td>${tpotStats.max}</td></tr>
+      </tbody>
+    </table>
+    <details>
+      <summary class="f-hint" style="cursor:pointer;user-select:none;">Per-query details (${results.length} quer${results.length === 1 ? 'y' : 'ies'})</summary>
+      <table class="bench-table" style="margin-top:0.5rem;">
+        <thead><tr><th>#</th><th>Prompt</th><th>Tokens</th><th>TTFT</th><th>TPS</th><th>Status</th></tr></thead>
+        <tbody>
+          ${results.map((r, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td title="${esc(r.prompt)}">${esc(r.prompt.length > 32 ? r.prompt.slice(0, 32) + '…' : r.prompt)}</td>
+              ${r.error
+                ? `<td></td><td></td><td></td><td style="color:var(--danger)">${esc(r.error)}</td>`
+                : `<td>${r.tokens}</td>
+                   <td>${fmtMs(r.ttft)}</td>
+                   <td>${r.tokens > 0 && r.genMs > 0 ? (r.tokens / (r.genMs / 1000)).toFixed(1) : '—'}</td>
+                   <td style="color:var(--success)">OK</td>`
+              }
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </details>
+  `;
+}
+
+const BENCH_PROMPTS = [
+  'What is 7 times 8?',
+  'Name a primary color.',
+  'What is 2 + 2?',
+  'Say "hello" in Spanish.',
+  'Name a planet in our solar system.',
+  'What day comes after Tuesday?',
+  'Name a fruit.',
+  'What is the boiling point of water in Celsius?',
+  'Name an ocean.',
+  'What is the square root of 16?',
+];
+
+async function runBenchmark(n) {
+  if (backend === 'none') {
+    $('bench-run-status').textContent = 'No AI backend configured — open the Model tab to set one up.';
+    return;
+  }
+  const statusEl  = $('bench-run-status');
+  const resultsEl = $('bench-run-results');
+  resultsEl.innerHTML = '';
+
+  const results = [];
+  for (let i = 0; i < n; i++) {
+    statusEl.textContent = `Running query ${i + 1} / ${n}…`;
+    const prompt = BENCH_PROMPTS[i % BENCH_PROMPTS.length];
+    const msgs   = [{ role: 'user', content: prompt }];
+    const rec    = { prompt, ttft: null, genMs: 0, tokens: 0, error: null };
+    try {
+      session = null; // fresh session for each benchmark query
+      const t0 = performance.now();
+      let text = '';
+      let firstChunk = true;
+      for await (const chunk of streamAI(msgs, DEFAULT_SOUL)) {
+        if (firstChunk && chunk) { rec.ttft = performance.now() - t0; firstChunk = false; }
+        text += chunk;
+      }
+      rec.genMs  = performance.now() - t0;
+      rec.tokens = await estimateTokens(text);
+    } catch (e) {
+      rec.error = e.message;
+    }
+    results.push(rec);
+  }
+
+  session = null; // let next real conversation rebuild its own session
+  statusEl.textContent = `Done — ${n} quer${n === 1 ? 'y' : 'ies'} completed.`;
+  renderBenchmarkResults(results, resultsEl);
+}
 // ── Event listeners ───────────────────────────────────────────────────────────
 $('send-btn').addEventListener('click', send);
 
@@ -823,6 +1395,23 @@ $('new-todo').addEventListener('keydown', e => {
   if (e.key === 'Enter') $('add-todo-btn').click();
 });
 
+$('clear-bench-btn').addEventListener('click', () => {
+  perfHistory = [];
+  renderBenchmarkTab();
+});
+
+$('run-bench-btn').addEventListener('click', async () => {
+  const n   = Math.max(1, Math.min(50, parseInt($('bench-count').value, 10) || 5));
+  const btn = $('run-bench-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Running…';
+  $('bench-run-status').textContent = '';
+  $('bench-run-results').innerHTML = '';
+  await runBenchmark(n);
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-play-fill"></i> Run Benchmark';
+});
+
 $('save-soul-btn').addEventListener('click', async () => {
   await txPut('settings', $('soul-editor').value, 'soul');
   invalidateStaticSysPrompt();
@@ -871,6 +1460,7 @@ $('settingsModal').addEventListener('show.bs.modal', async () => {
   await renderMemory();
   await renderSkills();
   await renderTodos();
+  renderBenchmarkTab();
   $('soul-editor').value = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
 });
 

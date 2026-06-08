@@ -1,5 +1,10 @@
 # TODO
 
+## Architecture
+
+- [ ] Add manifest fields for triggers and risk level, then make the router deterministic-first per skill.
+- [ ] Add lightweight telemetry counters (selected skills, fallback reruns, added prompt tokens) to tune routing quality.
+
 ## New Skills
 
 ### Client-side only (Web APIs, zero external dependencies)
