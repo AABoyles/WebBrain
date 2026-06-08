@@ -257,6 +257,49 @@
   </div>
 </div>
 
+<!-- ── Context Limit Modal ─────────────────────────────────────────────────── -->
+<div class="modal fade" id="contextLimitModal" tabindex="-1"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">
+          <i class="bi bi-exclamation-triangle-fill me-2" style="color:var(--accent)"></i>Context Window Nearly Full
+        </span>
+      </div>
+      <div class="modal-body">
+        <p class="ctx-usage-info">
+          The conversation history is <strong id="ctx-usage-pct">95%</strong> of the
+          model's context limit. Choose how to continue:
+        </p>
+        <div class="ctx-strategy-list">
+          <button class="ctx-strategy-btn" id="ctx-btn-sliding">
+            <span class="ctx-strategy-icon"><i class="bi bi-arrows-collapse"></i></span>
+            <div>
+              <strong>Sliding Window</strong>
+              <span>Drop the oldest messages to make room. Recent context is kept; early history is lost.</span>
+            </div>
+          </button>
+          <button class="ctx-strategy-btn" id="ctx-btn-summarize">
+            <span class="ctx-strategy-icon"><i class="bi bi-card-text"></i></span>
+            <div>
+              <strong>Summarize</strong>
+              <span>Compress older messages into a brief summary, then continue. Requires one extra inference pass.</span>
+            </div>
+          </button>
+          <button class="ctx-strategy-btn" id="ctx-btn-yolo">
+            <span class="ctx-strategy-icon"><i class="bi bi-lightning-fill"></i></span>
+            <div>
+              <strong>YOLO</strong>
+              <span>Keep going until the context window overflows and live with the consequences.</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="js/script.js"></script>
 </body>

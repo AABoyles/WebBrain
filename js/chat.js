@@ -7,7 +7,7 @@ import {
   planSkillsForTurn, buildSystemPrompt,
   loadSkillsByTag, getLoadedSkillsByTag, findInvokedSkillTags,
 } from './skills.js';
-import { backend, streamAI, resetSession } from './ai.js';
+import { backend, streamAI, resetSession, contextMax } from './ai.js';
 import { txGet, txAdd, txPut, txAll, txDelete } from '../skills/db.js';
 
 // ── Chat storage ──────────────────────────────────────────────────────────────
@@ -48,6 +48,58 @@ function newPerfRecord() {
 export function clearPerfHistory() { perfHistory = []; }
 
 export function clearWelcome() { const w = $('welcome'); if (w) w.remove(); }
+
+// ── Context Window Management ─────────────────────────────────────────────────
+const CONTEXT_WARN_RATIO = 0.95;
+let _ctxStrategyResolve = null;
+
+export function resolveContextStrategy(strategy) {
+  _ctxStrategyResolve?.(strategy);
+  _ctxStrategyResolve = null;
+}
+
+function promptContextStrategy(ratio) {
+  return new Promise(resolve => {
+    _ctxStrategyResolve = resolve;
+    $('ctx-usage-pct').textContent = Math.round(ratio * 100) + '%';
+    bootstrap.Modal.getOrCreateInstance($('contextLimitModal')).show();
+  });
+}
+
+async function applyContextStrategy(strategy, sysPrompt) {
+  if (strategy === 'sliding') {
+    const keep = Math.max(2, Math.ceil(messages.length / 2));
+    messages = messages.slice(messages.length - keep);
+    resetSession();
+  } else if (strategy === 'summarize') {
+    const keep = Math.max(2, Math.ceil(messages.length / 2));
+    const toSummarize = messages.slice(0, messages.length - keep);
+    const recent = messages.slice(messages.length - keep);
+    if (toSummarize.length > 0) {
+      setStatus('Summarizing conversation history…');
+      const rawText = toSummarize
+        .map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`)
+        .join('\n');
+      const summaryMsgs = [{ role: 'user', content: `Summarize this conversation in 3-5 concise sentences:\n\n${rawText}` }];
+      let summary = '';
+      try {
+        for await (const chunk of streamAI(summaryMsgs, sysPrompt)) summary += chunk;
+      } catch (e) {
+        console.warn('Context summarization failed, falling back to sliding window:', e);
+        messages = messages.slice(messages.length - keep);
+        resetSession();
+        return;
+      }
+      messages = [
+        { role: 'user', content: `[Summary of earlier conversation: ${summary.trim()}]` },
+        { role: 'assistant', content: 'Understood.' },
+        ...recent,
+      ];
+    }
+    resetSession();
+  }
+  // 'yolo': do nothing
+}
 
 export function appendBubble(role, text) {
   clearWelcome();
@@ -173,6 +225,18 @@ export async function send() {
       currentPerf.tokensInSystem = soulTokens;
       currentPerf.tokensInSkills = Math.max(0, sysTokens - soulTokens);
       currentPerf.tokensInUser = userTokens;
+    }
+
+    if (contextMax > 0) {
+      const allText = [sysPrompt, ...messages.map(m => m.content)].join(' ');
+      const estimatedTokens = await estimateTokens(allText);
+      if (estimatedTokens / contextMax >= CONTEXT_WARN_RATIO) {
+        const strategy = await promptContextStrategy(estimatedTokens / contextMax);
+        if (strategy !== 'yolo') {
+          await applyContextStrategy(strategy, sysPrompt);
+          setStatus('Planning skills…');
+        }
+      }
     }
 
     resetSession();

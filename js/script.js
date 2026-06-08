@@ -6,7 +6,7 @@ import {
   addFact, clearFacts,
   addTodo, clearDoneTodos,
 } from '../skills/db.js';
-import { send, generating, newChat, renderHistory, clearPerfHistory } from './chat.js';
+import { send, generating, newChat, renderHistory, clearPerfHistory, resolveContextStrategy } from './chat.js';
 import {
   renderMemory, renderSkills, renderTodos,
   renderBenchmarkTab, runBenchmark,
@@ -101,6 +101,13 @@ $('run-bench-btn').addEventListener('click', async () => {
   await runBenchmark(n);
   btn.disabled = false;
   btn.innerHTML = '<i class="bi bi-play-fill"></i> Run Benchmark';
+});
+
+['sliding', 'summarize', 'yolo'].forEach(strategy => {
+  $(`ctx-btn-${strategy}`).addEventListener('click', () => {
+    bootstrap.Modal.getInstance($('contextLimitModal'))?.hide();
+    resolveContextStrategy(strategy);
+  });
 });
 
 $('save-soul-btn').addEventListener('click', async () => {

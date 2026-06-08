@@ -5,7 +5,8 @@ import { setStatus } from './utils.js';
 const DEFAULT_MODEL_URL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.task';
 
 // ── AI Backend ────────────────────────────────────────────────────────────────
-export let backend = 'none';
+export let backend    = 'none';
+export let contextMax = 0;
 let session = null;
 let llm     = null;
 let liteRtWarmup = null;
@@ -69,6 +70,9 @@ async function tryInitChrome() {
       const caps = await api.capabilities();
       if (caps.available === 'no') return false;
       if (caps.available === 'after-download') setStatus('Chrome AI: downloading model…');
+      contextMax = caps.defaultMaxTokens ?? caps.maxTokens ?? 4096;
+    } else {
+      contextMax = 4096;
     }
     backend = 'chrome';
     setStatus('Chrome Built-in AI ready.');
@@ -171,9 +175,11 @@ async function tryInitLitert() {
     const genai = await FilesetResolver.forGenAiTasks(
       'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@latest/wasm'
     );
+    const maxTokens = await computeMaxTokens();
+    contextMax = maxTokens;
     llm = await LlmInference.createFromOptions(genai, {
       baseOptions: { modelAssetPath: modelUrl },
-      maxTokens: await computeMaxTokens(),
+      maxTokens,
       topK: 20,
       temperature: 0.8,
     });
