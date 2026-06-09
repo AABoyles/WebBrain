@@ -10,17 +10,6 @@ All user data (chats, facts, todos, dreams, habits, gratitude) lives exclusively
 
 Add a full JSON dump (all stores) downloadable from the settings panel, and a corresponding restore/import flow. Export should be a single file with a version field so future schema changes can migrate it. This is the precondition for users trusting the app with anything they care about.
 
-## PWA / Installability
-
-No build step + local-first + offline model inference is a textbook PWA use case. A `manifest.webmanifest` and a minimal service worker (cache-first for static assets, network-first for the 57KB tool manifest) would make the app installable from Chrome and functional offline.
-
-Side benefit: the service worker cache means the tool manifest and JS modules don't re-fetch on every load. This should be straightforward given the no-bundler architecture — there's no asset pipeline to work around.
-
-## Tool Discoverability
-
-There are 150+ tools, but nothing in the UI that makes them browsable or searchable. A user who doesn't already know what's available will never find most of it. The manifest has `label`, `description`, `category`, and `triggers` for every tool — enough to build a proper explorer.
-
-The settings panel needs: search by keyword, filter by category, display of trigger phrases so users know how to invoke a tool naturally. Surfacing the `default` flag and `risk` level helps users make informed choices about what to enable. This is the lever that turns the tool library from impressive-to-developers into useful-to-users.
 
 ## Voice Input
 

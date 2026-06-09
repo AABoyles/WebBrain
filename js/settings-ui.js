@@ -33,7 +33,7 @@ export async function renderMemory() {
 }
 
 // ── Tools UI ─────────────────────────────────────────────────────────────────
-const SKILL_CATEGORY_ORDER = [
+const CATEGORY_ORDER = [
   'Core',
   'Productivity',
   'Text, Data & Encoding',
@@ -42,80 +42,113 @@ const SKILL_CATEGORY_ORDER = [
   'Music & Audio',
   'World & Science',
   'Language & Writing',
-  'Fun & Culture'
+  'Fun & Culture',
 ];
 
-function slugifyCategory(label) {
-  return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
+const RISK_META = {
+  side_effect:        { label: 'side effect',      cls: 'risk-side-effect' },
+  permission_required:{ label: 'needs permission', cls: 'risk-permission'  },
+};
 
-export async function renderTools(openCategoryId = null) {
-  const el = $('tools-accordion');
-  el.innerHTML = '';
-
+export async function renderTools() {
   const loadedTags = new Set(SKILLS.map(s => s.tag));
 
-  const discovered = [...new Set(manifest.map(entry => entry.category).filter(Boolean))];
+  const discovered = [...new Set(manifest.map(e => e.category).filter(Boolean))];
   const categoryOrder = [
-    ...SKILL_CATEGORY_ORDER.filter(c => discovered.includes(c)),
-    ...discovered.filter(c => !SKILL_CATEGORY_ORDER.includes(c)).sort((a, b) => a.localeCompare(b)),
+    ...CATEGORY_ORDER.filter(c => discovered.includes(c)),
+    ...discovered.filter(c => !CATEGORY_ORDER.includes(c)).sort((a, b) => a.localeCompare(b)),
   ];
-  const grouped = new Map(categoryOrder.map(label => [label, []]));
+
+  // Category filter pills
+  const filterEl = $('tools-cat-filters');
+  filterEl.innerHTML = '';
+  for (const cat of ['', ...categoryOrder]) {
+    const pill = document.createElement('button');
+    pill.className = 'tools-cat-pill' + (cat === '' ? ' active' : '');
+    pill.textContent = cat || 'All';
+    pill.dataset.cat = cat;
+    filterEl.appendChild(pill);
+  }
+
+  // Tool cards
+  const cardsEl = $('tools-cards');
+  cardsEl.innerHTML = '';
   for (const entry of manifest) {
-    const category = entry.category || 'General Utilities';
-    if (!grouped.has(category)) grouped.set(category, []);
-    grouped.get(category).push(entry);
+    const isLoaded   = loadedTags.has(entry.tag);
+    const loaded     = SKILLS.find(s => s.tag === entry.tag);
+    const approxTok  = loaded?.instruction ? await estimateTokens(loaded.instruction) : 0;
+    const risk       = RISK_META[entry.risk];
+    const triggers   = entry.triggers ?? [];
+
+    const card = document.createElement('div');
+    card.className = 'tool-card';
+    card.dataset.cat    = entry.category || '';
+    card.dataset.search = `${entry.label} ${entry.description} ${triggers.join(' ')}`.toLowerCase();
+
+    const statusBadge = entry.default
+      ? '<span class="tool-status-badge always">always-on</span>'
+      : isLoaded
+        ? `<span class="tool-status-badge loaded">loaded${approxTok ? ' · ~' + approxTok.toLocaleString() + ' tok' : ''}</span>`
+        : '';
+
+    const riskBadge = risk
+      ? `<span class="tool-risk-badge ${risk.cls}">${risk.label}</span>`
+      : '';
+
+    const triggersHtml = triggers.length
+      ? `<div class="tool-triggers">${
+          triggers.slice(0, 4).map(t => `<span class="tool-trigger-pill">${esc(t)}</span>`).join('')
+        }${triggers.length > 4 ? `<span class="tool-trigger-pill tool-trigger-more">+${triggers.length - 4} more</span>` : ''}</div>`
+      : '';
+
+    card.innerHTML = `
+      <div class="tool-card-header">
+        <span class="tool-name">${esc(entry.label)}</span>
+        <div class="tool-card-badges">${statusBadge}${riskBadge}</div>
+      </div>
+      <span class="tool-desc">${esc(entry.description)}</span>
+      ${triggersHtml}
+      <span class="tool-card-cat">${esc(entry.category || '')}</span>`;
+    cardsEl.appendChild(card);
   }
 
-  const validOpenCategoryId = openCategoryId && categoryOrder.some(
-    c => slugifyCategory(c) === openCategoryId
-  ) ? openCategoryId : null;
-  let firstCategory = true;
+  // Filter state
+  let activeCat = '';
+  let query     = '';
 
-  for (const category of categoryOrder) {
-    const entries = grouped.get(category);
-    if (!entries?.length) continue;
-
-    const catId  = slugifyCategory(category);
-    const isOpen = validOpenCategoryId ? catId === validOpenCategoryId : firstCategory;
-    const loadedCount = entries.filter(e => loadedTags.has(e.tag)).length;
-
-    const item = document.createElement('div');
-    item.className = 'accordion-item';
-    item.innerHTML = `
-      <h2 class="accordion-header" id="tools-heading-${catId}">
-        <button class="accordion-button ${isOpen ? '' : 'collapsed'}" type="button"
-                data-bs-toggle="collapse" data-bs-target="#tools-collapse-${catId}"
-                aria-expanded="${isOpen ? 'true' : 'false'}" aria-controls="tools-collapse-${catId}">
-          <span class="tools-cat-title">${esc(category)}</span>
-          <span class="tools-cat-meta">${loadedCount ? loadedCount + ' loaded' : entries.length + ' available'}</span>
-        </button>
-      </h2>
-      <div id="tools-collapse-${catId}" class="accordion-collapse collapse ${isOpen ? 'show' : ''}"
-           aria-labelledby="tools-heading-${catId}" data-bs-parent="#tools-accordion">
-        <div class="accordion-body"><div class="tools-category-list"></div></div>
-      </div>`;
-
-    const list = item.querySelector('.tools-category-list');
-    for (const entry of entries) {
-      const isLoaded = loadedTags.has(entry.tag);
-      const loaded   = SKILLS.find(s => s.tag === entry.tag);
-      const approxTokens = loaded?.instruction ? await estimateTokens(loaded.instruction) : 0;
-
-      const row = document.createElement('div');
-      row.className = 'tool-row';
-      row.innerHTML = `
-        <div class="tool-info">
-          <span class="tool-name">${esc(entry.label)}</span>
-          ${isLoaded ? `<small class="tool-tokens">${entry.default ? 'always-on' : 'loaded'}${approxTokens ? ' · ~' + approxTokens.toLocaleString() + ' tok' : ''}</small>` : ''}
-          <span class="tool-desc">${esc(entry.description)}</span>
-        </div>`;
-      list.appendChild(row);
+  function applyFilter() {
+    let visible = 0;
+    for (const card of cardsEl.querySelectorAll('.tool-card')) {
+      const show = (!activeCat || card.dataset.cat === activeCat)
+                && (!query     || card.dataset.search.includes(query));
+      card.hidden = !show;
+      if (show) visible++;
     }
-
-    el.appendChild(item);
-    firstCategory = false;
+    let empty = cardsEl.querySelector('.tools-empty');
+    if (!visible) {
+      if (!empty) {
+        empty = document.createElement('p');
+        empty.className = 'empty-state tools-empty';
+        cardsEl.appendChild(empty);
+      }
+      empty.textContent = `No tools match "${query || activeCat}".`;
+    } else {
+      empty?.remove();
+    }
   }
+
+  filterEl.addEventListener('click', e => {
+    const pill = e.target.closest('.tools-cat-pill');
+    if (!pill) return;
+    activeCat = pill.dataset.cat;
+    filterEl.querySelectorAll('.tools-cat-pill').forEach(p => p.classList.toggle('active', p === pill));
+    applyFilter();
+  });
+
+  $('tools-search').addEventListener('input', e => {
+    query = e.target.value.toLowerCase().trim();
+    applyFilter();
+  });
 
   const maxTok = await computeMaxTokens();
   const src    = navigator.gpu ? 'estimated from WebGPU VRAM' : 'WebGPU unavailable — using minimum fallback';

@@ -1107,99 +1107,149 @@ body.thinking #status-bar::before {
   margin-top: 0.75rem;
 }
 
-/* Tools accordion */
-.tools-accordion .accordion-item {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  margin-bottom: 0.45rem;
-  border-radius: var(--r-sm);
-  overflow: hidden;
+/* Tools explorer — search + filter + cards */
+.tools-search-row {
+  margin-bottom: 0.6rem;
 }
-.tools-accordion .accordion-header {
-  position: relative;
-}
-.tools-accordion .accordion-button {
-  background: var(--surface-2);
-  color: var(--text);
-  box-shadow: none;
-  padding: 0.6rem 3.3rem 0.6rem 0.8rem;
-  border: none;
+
+.tools-cat-filters {
   display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
 }
-.tools-accordion .accordion-button:not(.collapsed) {
+
+.tools-cat-pill {
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  line-height: 1.6;
+}
+.tools-cat-pill:hover {
   background: var(--surface-3);
   color: var(--text);
 }
-.tools-accordion .accordion-button::after {
-  filter: invert(80%) sepia(9%) saturate(381%) hue-rotate(356deg) brightness(98%) contrast(88%);
-}
-.tools-accordion .accordion-button:focus {
-  box-shadow: none;
-}
-.tools-cat-title {
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-}
-.tools-cat-meta {
-  font-size: 0.68rem;
-  color: var(--text-3);
-  font-family: "JetBrains Mono", monospace;
-}
-.tools-accordion .category-toggle {
-  position: absolute;
-  top: 50%;
-  right: 0.65rem;
-  transform: translateY(-50%);
-  z-index: 3;
-}
-.tools-accordion .accordion-body {
-  padding: 0.5rem;
-  background: var(--surface);
+.tools-cat-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
-.tools-category-list .tool-row:last-child {
-  margin-bottom: 0;
+.tools-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.55rem;
 }
 
-/* Tool rows */
-.tool-row {
+.tool-card {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.3rem;
   padding: 0.65rem 0.75rem;
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--r-sm);
-  margin-bottom: 0.3rem;
-  animation: rise 0.2s ease both;
+  animation: rise 0.15s ease both;
 }
 
-.tool-info {
-  flex: 1;
+.tool-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.tool-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  flex-shrink: 0;
 }
 
 .tool-name {
-  display: block;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 500;
   color: var(--text);
-  margin-bottom: 0.1rem;
-}
-
-.tool-tokens {
-  font-size: 0.68rem;
-  color: var(--text-3);
-  margin-left: 0.3rem;
-  font-family: "JetBrains Mono", monospace;
+  line-height: 1.3;
 }
 
 .tool-desc {
-  display: block;
-  font-size: 0.74rem;
-  color: var(--text-3);
+  font-size: 0.73rem;
+  color: var(--text-2);
   line-height: 1.4;
+  flex: 1;
+}
+
+.tool-status-badge {
+  font-size: 0.63rem;
+  font-family: "JetBrains Mono", monospace;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--r-xs);
+  white-space: nowrap;
+}
+.tool-status-badge.always {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-glow);
+}
+.tool-status-badge.loaded {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.tool-risk-badge {
+  font-size: 0.63rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--r-xs);
+  white-space: nowrap;
+}
+.tool-risk-badge.risk-side-effect {
+  background: rgba(202, 138, 4, 0.1);
+  color: #ca8a04;
+  border: 1px solid rgba(202, 138, 4, 0.2);
+}
+.tool-risk-badge.risk-permission {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+@media (prefers-color-scheme: dark) {
+  .tool-risk-badge.risk-side-effect { color: #fbbf24; }
+  .tool-risk-badge.risk-permission  { color: #60a5fa; }
+}
+
+.tool-triggers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-top: 0.1rem;
+}
+
+.tool-trigger-pill {
+  font-size: 0.64rem;
+  padding: 0.1rem 0.35rem;
+  background: var(--surface-3);
+  color: var(--text-3);
+  border-radius: var(--r-xs);
+  font-style: italic;
+}
+.tool-trigger-more {
+  color: var(--text-3);
+  font-style: normal;
+}
+
+.tool-card-cat {
+  font-size: 0.63rem;
+  color: var(--text-3);
+  margin-top: auto;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--border);
 }
 
 /* Toggle switch */

@@ -165,7 +165,13 @@
             <p class="f-hint" style="margin-bottom:0.85rem;">
               All tools are available on demand. When the model invokes a tool, its instructions load automatically for that turn. Always-on tools (date, location, memory) load every turn.
             </p>
-            <div id="tools-accordion" class="accordion tools-accordion"></div>
+            <div id="tools-explorer">
+              <div class="tools-search-row">
+                <input type="search" id="tools-search" class="f-input" placeholder="Search 150+ tools…" autocomplete="off">
+              </div>
+              <div id="tools-cat-filters" class="tools-cat-filters"></div>
+              <div id="tools-cards" class="tools-cards-grid"></div>
+            </div>
             <p id="context-window-note" class="f-hint" style="margin-top:0.75rem;"></p>
           </div>
 
