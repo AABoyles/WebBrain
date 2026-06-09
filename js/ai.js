@@ -1,5 +1,5 @@
 // Exports: backend, thinkingMode, setThinkingMode, initAI, streamAI, computeMaxTokens, resetSession, destroySession
-import { txGet } from '../skills/db.js';
+import { txGet } from '../tools/db.js';
 import { setStatus } from './utils.js';
 
 const DEFAULT_MODEL_URL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.task';

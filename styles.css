@@ -1024,18 +1024,18 @@ body.thinking #status-bar::before {
   margin-top: 0.75rem;
 }
 
-/* Skills accordion */
-.skills-accordion .accordion-item {
+/* Tools accordion */
+.tools-accordion .accordion-item {
   background: var(--surface-2);
   border: 1px solid var(--border);
   margin-bottom: 0.45rem;
   border-radius: var(--r-sm);
   overflow: hidden;
 }
-.skills-accordion .accordion-header {
+.tools-accordion .accordion-header {
   position: relative;
 }
-.skills-accordion .accordion-button {
+.tools-accordion .accordion-button {
   background: var(--surface-2);
   color: var(--text);
   box-shadow: none;
@@ -1045,43 +1045,43 @@ body.thinking #status-bar::before {
   align-items: baseline;
   gap: 0.45rem;
 }
-.skills-accordion .accordion-button:not(.collapsed) {
+.tools-accordion .accordion-button:not(.collapsed) {
   background: var(--surface-3);
   color: var(--text);
 }
-.skills-accordion .accordion-button::after {
+.tools-accordion .accordion-button::after {
   filter: invert(80%) sepia(9%) saturate(381%) hue-rotate(356deg) brightness(98%) contrast(88%);
 }
-.skills-accordion .accordion-button:focus {
+.tools-accordion .accordion-button:focus {
   box-shadow: none;
 }
-.skills-cat-title {
+.tools-cat-title {
   font-size: 0.82rem;
   letter-spacing: 0.02em;
 }
-.skills-cat-meta {
+.tools-cat-meta {
   font-size: 0.68rem;
   color: var(--text-3);
   font-family: "JetBrains Mono", monospace;
 }
-.skills-accordion .category-toggle {
+.tools-accordion .category-toggle {
   position: absolute;
   top: 50%;
   right: 0.65rem;
   transform: translateY(-50%);
   z-index: 3;
 }
-.skills-accordion .accordion-body {
+.tools-accordion .accordion-body {
   padding: 0.5rem;
   background: var(--surface);
 }
 
-.skills-category-list .skill-row:last-child {
+.tools-category-list .tool-row:last-child {
   margin-bottom: 0;
 }
 
-/* Skill rows */
-.skill-row {
+/* Tool rows */
+.tool-row {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -1093,11 +1093,11 @@ body.thinking #status-bar::before {
   animation: rise 0.2s ease both;
 }
 
-.skill-info {
+.tool-info {
   flex: 1;
 }
 
-.skill-name {
+.tool-name {
   display: block;
   font-size: 0.85rem;
   font-weight: 500;
@@ -1105,14 +1105,14 @@ body.thinking #status-bar::before {
   margin-bottom: 0.1rem;
 }
 
-.skill-tokens {
+.tool-tokens {
   font-size: 0.68rem;
   color: var(--text-3);
   margin-left: 0.3rem;
   font-family: "JetBrains Mono", monospace;
 }
 
-.skill-desc {
+.tool-desc {
   display: block;
   font-size: 0.74rem;
   color: var(--text-3);

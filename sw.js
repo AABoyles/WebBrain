@@ -4,13 +4,13 @@ const STATIC_SHELL = [
   './',
   './styles.css',
   './js/utils.js',
-  './js/skills.js',
+  './js/tools.js',
   './js/ai.js',
   './js/chat.js',
   './js/settings-ui.js',
   './js/script.js',
-  './skills/db.js',
-  './skills/manifest.json',
+  './tools/db.js',
+  './tools/manifest.json',
   './icons/icon.svg',
   './manifest.webmanifest',
 ];
@@ -36,8 +36,8 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(e.request.url);
 
-  // Network-first for skills/manifest.json so updates are picked up promptly
-  if (url.pathname.endsWith('/skills/manifest.json')) {
+  // Network-first for tools/manifest.json so updates are picked up promptly
+  if (url.pathname.endsWith('/tools/manifest.json')) {
     e.respondWith(networkFirst(e.request));
     return;
   }

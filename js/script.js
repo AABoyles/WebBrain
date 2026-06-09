@@ -1,14 +1,14 @@
 import { $, setSend, autoResize, DEFAULT_SOUL } from './utils.js';
-import { initSkills, invalidateStaticSysPrompt } from './skills.js';
+import { initTools, invalidateStaticSysPrompt } from './tools.js';
 import { initAI, backend, resetSession, setThinkingMode } from './ai.js';
 import {
   txGet, txPut,
   addFact, clearFacts,
   addTodo, clearDoneTodos,
-} from '../skills/db.js';
+} from '../tools/db.js';
 import { send, generating, newChat, renderHistory, clearPerfHistory, resolveContextStrategy } from './chat.js';
 import {
-  renderMemory, renderSkills, renderTodos,
+  renderMemory, renderTools, renderTodos,
   renderBenchmarkTab, runBenchmark,
 } from './settings-ui.js';
 
@@ -149,7 +149,7 @@ $('settingsModal').addEventListener('show.bs.modal', async () => {
   $('thinking-mode-toggle').checked = !!(await txGet('settings', 'thinkingMode'));
 
   await renderMemory();
-  await renderSkills();
+  await renderTools();
   await renderTodos();
   renderBenchmarkTab();
   $('soul-editor').value = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
@@ -161,7 +161,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
-await Promise.all([initAI(), initSkills()]);
+await Promise.all([initAI(), initTools()]);
 await renderHistory();
 setSend(false);
 $('user-input').dispatchEvent(new Event('input'));

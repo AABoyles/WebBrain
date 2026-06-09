@@ -1,15 +1,15 @@
 // Exports: messages, chatId, generating, perfHistory, clearPerfHistory, send,
-//          appendBubble, clearWelcome, stripSkillTags, dispatchSkillCalls,
+//          appendBubble, clearWelcome, stripToolTags, dispatchToolCalls,
 //          renderHistory, loadChat, newChat
 import { $, esc, setStatus, setSend, autoResize, estimateTokens, DEFAULT_SOUL } from './utils.js';
 import {
   SKILLS, manifest,
-  planSkillsForTurn, buildSystemPrompt,
-  loadSkillsByTag, getLoadedSkillsByTag, findInvokedSkillTags,
+  planToolsForTurn, buildSystemPrompt,
+  loadToolsByTag, getLoadedToolsByTag, findInvokedToolTags,
   extractToolCalls, buildToolResponse,
-} from './skills.js';
+} from './tools.js';
 import { backend, streamAI, resetSession, contextMax } from './ai.js';
-import { txGet, txAdd, txPut, txAll, txDelete } from '../skills/db.js';
+import { txGet, txAdd, txPut, txAll, txDelete } from '../tools/db.js';
 
 // ── Chat storage ──────────────────────────────────────────────────────────────
 async function persistChat(id, msgs, title) {
@@ -35,9 +35,9 @@ function newPerfRecord() {
     ts: Date.now(),
     backend: '',
     tokensInSystem: 0,
-    tokensInSkills: 0,
+    tokensInTools: 0,
     tokensInUser: 0,
-    tokensOutSkillCalls: 0,
+    tokensOutToolCalls: 0,
     tokensOutUser: 0,
     ttft: null,
     itl: null,
@@ -211,11 +211,11 @@ export async function send() {
   let pending  = '';
   let fullText = '';
   try {
-    setStatus('Planning skills…');
-    const turnPlan = await planSkillsForTurn(text);
+    setStatus('Planning tools…');
+    const turnPlan = await planToolsForTurn(text);
     let activeTags = new Set(turnPlan.defaultTags);
-    let activeSkills = turnPlan.activeSkills;
-    let sysPrompt = await buildSystemPrompt(activeSkills);
+    let activeTools = turnPlan.activeTools;
+    let sysPrompt = await buildSystemPrompt(activeTools);
 
     if (currentPerf) {
       const soulText = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
@@ -226,7 +226,7 @@ export async function send() {
       ]);
       currentPerf.backend = backend;
       currentPerf.tokensInSystem = soulTokens;
-      currentPerf.tokensInSkills = Math.max(0, sysTokens - soulTokens);
+      currentPerf.tokensInTools = Math.max(0, sysTokens - soulTokens);
       currentPerf.tokensInUser = userTokens;
     }
 
@@ -237,7 +237,7 @@ export async function send() {
         const strategy = await promptContextStrategy(estimatedTokens / contextMax);
         if (strategy !== 'yolo') {
           await applyContextStrategy(strategy, sysPrompt);
-          setStatus('Planning skills…');
+          setStatus('Planning tools…');
         }
       }
     }
@@ -247,15 +247,15 @@ export async function send() {
     // Pass 1
     await streamPass(messages, sysPrompt, true);
 
-    const emittedTags = findInvokedSkillTags(fullText);
+    const emittedTags = findInvokedToolTags(fullText);
     const missingTags = emittedTags.filter(tag => !activeTags.has(tag));
     if (missingTags.length) {
-      setStatus(`Loading skills: ${missingTags.join(', ')}…`);
-      const { loadedAny, loadedTags } = await loadSkillsByTag(missingTags);
+      setStatus(`Loading tools: ${missingTags.join(', ')}…`);
+      const { loadedAny, loadedTags } = await loadToolsByTag(missingTags);
       if (loadedAny) {
         loadedTags.forEach(tag => activeTags.add(tag));
-        activeSkills = getLoadedSkillsByTag([...activeTags]);
-        sysPrompt = await buildSystemPrompt(activeSkills);
+        activeTools = getLoadedToolsByTag([...activeTags]);
+        sysPrompt = await buildSystemPrompt(activeTools);
         resetSession();
         while (bubble.firstChild) bubble.removeChild(bubble.firstChild);
         bubble.appendChild(cursor);
@@ -270,9 +270,9 @@ export async function send() {
     const toolResponses = [];
     const invokedTools  = new Set();
     for (const { name, input } of extractToolCalls(fullText)) {
-      const skill = activeSkills.find(s => s.tag === name);
-      if (!skill?.call) continue;
-      const result = await skill.call(input);
+      const tool = activeTools.find(s => s.tag === name);
+      if (!tool?.call) continue;
+      const result = await tool.call(input);
       toolResponses.push(buildToolResponse(name, result));
       invokedTools.add(manifest.find(e => e.tag === name)?.label ?? name);
     }
@@ -282,7 +282,7 @@ export async function send() {
       bubble.appendChild(cursor);
       pending = '';
       setStatus('Running tools…');
-      const pass1Clean = stripSkillTags(fullText).trim();
+      const pass1Clean = stripToolTags(fullText).trim();
       // Native tool response injected as a 'tool' role turn; buildGemmaPrompt handles it.
       const augmented = [
         ...messages,
@@ -296,16 +296,16 @@ export async function send() {
       resetSession();
     }
 
-    const needsReset = await dispatchSkillCalls(fullText, activeSkills);
+    const needsReset = await dispatchToolCalls(fullText, activeTools);
     if (needsReset) resetSession();
 
-    const cleanText = stripSkillTags(fullText);
+    const cleanText = stripToolTags(fullText);
     if (currentPerf) {
       const [fullTokOut, cleanTokOut] = await Promise.all([
         estimateTokens(fullText),
         estimateTokens(cleanText),
       ]);
-      currentPerf.tokensOutSkillCalls = Math.max(0, fullTokOut - cleanTokOut);
+      currentPerf.tokensOutToolCalls = Math.max(0, fullTokOut - cleanTokOut);
       currentPerf.tokensOutUser = cleanTokOut;
       perfHistory.push({ ...currentPerf });
       currentPerf = null;
@@ -336,7 +336,7 @@ export async function send() {
 }
 
 // Strip native Gemma 4 tool tokens from display text.
-export function stripSkillTags(text) {
+export function stripToolTags(text) {
   let out = text
     // Complete tool calls: <|tool_call>call:name{...}<tool_call|>
     .replace(/<\|tool_call>call:[\s\S]*?<tool_call\|>/g, '')
@@ -348,13 +348,13 @@ export function stripSkillTags(text) {
   return out.trim();
 }
 
-// Returns true if any skill handler signalled a session reset is needed.
-export async function dispatchSkillCalls(text, activeSkills = SKILLS) {
+// Returns true if any tool handler signalled a session reset is needed.
+export async function dispatchToolCalls(text, activeTools = SKILLS) {
   let needsReset = false;
   for (const { name, input } of extractToolCalls(text)) {
-    const skill = activeSkills.find(s => s.tag === name);
-    if (!skill?.handle) continue;
-    const result = await skill.handle(input);
+    const tool = activeTools.find(s => s.tag === name);
+    if (!tool?.handle) continue;
+    const result = await tool.handle(input);
     if (result === true) needsReset = true;
   }
   return needsReset;

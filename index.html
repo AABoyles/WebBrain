@@ -103,7 +103,7 @@
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-memory">Memory</button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-skills">Skills</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tools">Tools</button>
           </li>
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-todos">Todos</button>
@@ -174,12 +174,12 @@
             </div>
           </div>
 
-          <!-- Skills tab -->
-          <div class="tab-pane fade" id="tab-skills">
+          <!-- Tools tab -->
+          <div class="tab-pane fade" id="tab-tools">
             <p class="f-hint" style="margin-bottom:0.85rem;">
-              All skills are available on demand. When the model invokes a skill, its instructions load automatically for that turn. Always-on skills (date, location, memory) load every turn.
+              All tools are available on demand. When the model invokes a tool, its instructions load automatically for that turn. Always-on tools (date, location, memory) load every turn.
             </p>
-            <div id="skills-accordion" class="accordion skills-accordion"></div>
+            <div id="tools-accordion" class="accordion tools-accordion"></div>
             <p id="context-window-note" class="f-hint" style="margin-top:0.75rem;"></p>
           </div>
 
@@ -217,8 +217,8 @@
                   <tr>
                     <th title="Exchange number">#</th>
                     <th title="AI backend">Backend</th>
-                    <th title="Tokens in: System + Skills + User">Tok In</th>
-                    <th title="Tokens out: User output + Skill calls">Tok Out</th>
+                    <th title="Tokens in: System + Tools + User">Tok In</th>
+                    <th title="Tokens out: User output + Tool calls">Tok Out</th>
                     <th title="Time to First Token">TTFT</th>
                     <th title="Inter-Token Latency — avg ms between tokens (Chrome streaming only)">ITL</th>
                     <th title="Tokens Per Second">TPS</th>

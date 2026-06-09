@@ -12,19 +12,19 @@ Add a full JSON dump (all stores) downloadable from the settings panel, and a co
 
 ## PWA / Installability
 
-No build step + local-first + offline model inference is a textbook PWA use case. A `manifest.webmanifest` and a minimal service worker (cache-first for static assets, network-first for the 57KB skill manifest) would make the app installable from Chrome and functional offline.
+No build step + local-first + offline model inference is a textbook PWA use case. A `manifest.webmanifest` and a minimal service worker (cache-first for static assets, network-first for the 57KB tool manifest) would make the app installable from Chrome and functional offline.
 
-Side benefit: the service worker cache means the skill manifest and JS modules don't re-fetch on every load. This should be straightforward given the no-bundler architecture — there's no asset pipeline to work around.
+Side benefit: the service worker cache means the tool manifest and JS modules don't re-fetch on every load. This should be straightforward given the no-bundler architecture — there's no asset pipeline to work around.
 
-## Skill Discoverability
+## Tool Discoverability
 
-There are 150+ skills, but nothing in the UI that makes them browsable or searchable. A user who doesn't already know what's available will never find most of it. The manifest has `label`, `description`, `category`, and `triggers` for every skill — enough to build a proper explorer.
+There are 150+ tools, but nothing in the UI that makes them browsable or searchable. A user who doesn't already know what's available will never find most of it. The manifest has `label`, `description`, `category`, and `triggers` for every tool — enough to build a proper explorer.
 
-The settings panel needs: search by keyword, filter by category, display of trigger phrases so users know how to invoke a skill naturally. Surfacing the `default` flag and `risk` level helps users make informed choices about what to enable. This is the lever that turns the skill library from impressive-to-developers into useful-to-users.
+The settings panel needs: search by keyword, filter by category, display of trigger phrases so users know how to invoke a tool naturally. Surfacing the `default` flag and `risk` level helps users make informed choices about what to enable. This is the lever that turns the tool library from impressive-to-developers into useful-to-users.
 
 ## Voice Input
 
-The `speak` skill handles TTS output. The Web Speech API (`SpeechRecognition`) adds mic input with zero external dependencies and completes the voice loop. A mic button on the input bar, with interim transcript display, is the whole feature.
+The `speak` tool handles TTS output. The Web Speech API (`SpeechRecognition`) adds mic input with zero external dependencies and completes the voice loop. A mic button on the input bar, with interim transcript display, is the whole feature.
 
 Edge cases to handle: browser support detection, permission denial gracefully (don't just silently fail), and whether to auto-submit on silence or require an explicit send.
 
@@ -32,7 +32,7 @@ Edge cases to handle: browser support detection, permission denial gracefully (d
 
 Gemma 4 is multimodal. Add the ability to attach files of compatible types (images, PDFs) and feed them into the model alongside the text prompt. The upload trigger should be a button in the input bar, with a preview chip showing the attached file. The model receives the file content on the same turn.
 
-File handling should go through the existing two-pass infrastructure — the attachment is part of pass 1 input, not a separate skill call.
+File handling should go through the existing two-pass infrastructure — the attachment is part of pass 1 input, not a separate tool call.
 
 ## Nerd Mode
 
@@ -42,7 +42,7 @@ Two sub-features that belong together:
 
 **Tuning controls** — TopK, Temperature, Max Tokens as adjustable settings. These could live in the main settings modal or as a collapsible panel above the input bar.
 
-**Routing telemetry** — Lightweight counters for selected skills, fallback reruns, and added prompt tokens per turn. This data is the feedback loop for improving `planSkillsForTurn()` and catching skills that fire too aggressively or not enough. Log to IndexedDB; expose in the settings panel.
+**Routing telemetry** — Lightweight counters for selected tools, fallback reruns, and added prompt tokens per turn. This data is the feedback loop for improving `planToolsForTurn()` and catching tools that fire too aggressively or not enough. Log to IndexedDB; expose in the settings panel.
 
 ## Per-message Model Swapping
 
@@ -65,7 +65,7 @@ The OPFS model cache in `ai.js` already handles download-once storage. The main 
 
 Reference implementation: [Building Semantic Search with Transformers.js](https://machinelearningmastery.com/building-semantic-search-with-transformers-js-and-sentence-embeddings/)
 
-The embedding model can be cached in OPFS alongside the chat model. The retrieval step fits naturally as a skill `fetch()` call — run the query against stored vectors each turn and append the top-k chunks.
+The embedding model can be cached in OPFS alongside the chat model. The retrieval step fits naturally as a tool `fetch()` call — run the query against stored vectors each turn and append the top-k chunks.
 
 ## RAG++ / Projects
 

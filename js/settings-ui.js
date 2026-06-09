@@ -1,12 +1,12 @@
-// Exports: renderMemory, renderSkills, renderTodos, renderBenchmarkTab, runBenchmark
+// Exports: renderMemory, renderTools, renderTodos, renderBenchmarkTab, runBenchmark
 import { $, esc, estimateTokens, DEFAULT_SOUL } from './utils.js';
-import { SKILLS, manifest } from './skills.js';
+import { SKILLS, manifest } from './tools.js';
 import { backend, computeMaxTokens, destroySession, streamAI, resetSession } from './ai.js';
 import { perfHistory } from './chat.js';
 import {
   getFacts, deleteFact,
   getTodos, setTodoDone, deleteTodo,
-} from '../skills/db.js';
+} from '../tools/db.js';
 
 // ── Memory UI ─────────────────────────────────────────────────────────────────
 export async function renderMemory() {
@@ -32,7 +32,7 @@ export async function renderMemory() {
   });
 }
 
-// ── Skills UI ─────────────────────────────────────────────────────────────────
+// ── Tools UI ─────────────────────────────────────────────────────────────────
 const SKILL_CATEGORY_ORDER = [
   'Core',
   'Productivity',
@@ -49,8 +49,8 @@ function slugifyCategory(label) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-export async function renderSkills(openCategoryId = null) {
-  const el = $('skills-accordion');
+export async function renderTools(openCategoryId = null) {
+  const el = $('tools-accordion');
   el.innerHTML = '';
 
   const loadedTags = new Set(SKILLS.map(s => s.tag));
@@ -83,32 +83,32 @@ export async function renderSkills(openCategoryId = null) {
     const item = document.createElement('div');
     item.className = 'accordion-item';
     item.innerHTML = `
-      <h2 class="accordion-header" id="skills-heading-${catId}">
+      <h2 class="accordion-header" id="tools-heading-${catId}">
         <button class="accordion-button ${isOpen ? '' : 'collapsed'}" type="button"
-                data-bs-toggle="collapse" data-bs-target="#skills-collapse-${catId}"
-                aria-expanded="${isOpen ? 'true' : 'false'}" aria-controls="skills-collapse-${catId}">
-          <span class="skills-cat-title">${esc(category)}</span>
-          <span class="skills-cat-meta">${loadedCount ? loadedCount + ' loaded' : entries.length + ' available'}</span>
+                data-bs-toggle="collapse" data-bs-target="#tools-collapse-${catId}"
+                aria-expanded="${isOpen ? 'true' : 'false'}" aria-controls="tools-collapse-${catId}">
+          <span class="tools-cat-title">${esc(category)}</span>
+          <span class="tools-cat-meta">${loadedCount ? loadedCount + ' loaded' : entries.length + ' available'}</span>
         </button>
       </h2>
-      <div id="skills-collapse-${catId}" class="accordion-collapse collapse ${isOpen ? 'show' : ''}"
-           aria-labelledby="skills-heading-${catId}" data-bs-parent="#skills-accordion">
-        <div class="accordion-body"><div class="skills-category-list"></div></div>
+      <div id="tools-collapse-${catId}" class="accordion-collapse collapse ${isOpen ? 'show' : ''}"
+           aria-labelledby="tools-heading-${catId}" data-bs-parent="#tools-accordion">
+        <div class="accordion-body"><div class="tools-category-list"></div></div>
       </div>`;
 
-    const list = item.querySelector('.skills-category-list');
+    const list = item.querySelector('.tools-category-list');
     for (const entry of entries) {
       const isLoaded = loadedTags.has(entry.tag);
       const loaded   = SKILLS.find(s => s.tag === entry.tag);
       const approxTokens = loaded?.instruction ? await estimateTokens(loaded.instruction) : 0;
 
       const row = document.createElement('div');
-      row.className = 'skill-row';
+      row.className = 'tool-row';
       row.innerHTML = `
-        <div class="skill-info">
-          <span class="skill-name">${esc(entry.label)}</span>
-          ${isLoaded ? `<small class="skill-tokens">${entry.default ? 'always-on' : 'loaded'}${approxTokens ? ' · ~' + approxTokens.toLocaleString() + ' tok' : ''}</small>` : ''}
-          <span class="skill-desc">${esc(entry.description)}</span>
+        <div class="tool-info">
+          <span class="tool-name">${esc(entry.label)}</span>
+          ${isLoaded ? `<small class="tool-tokens">${entry.default ? 'always-on' : 'loaded'}${approxTokens ? ' · ~' + approxTokens.toLocaleString() + ' tok' : ''}</small>` : ''}
+          <span class="tool-desc">${esc(entry.description)}</span>
         </div>`;
       list.appendChild(row);
     }
@@ -120,7 +120,7 @@ export async function renderSkills(openCategoryId = null) {
   const maxTok = await computeMaxTokens();
   const src    = navigator.gpu ? 'estimated from WebGPU VRAM' : 'WebGPU unavailable — using minimum fallback';
   $('context-window-note').textContent =
-    `Context window on this device: ~${maxTok.toLocaleString()} tokens (${src}). Skills load on demand when invoked.`;
+    `Context window on this device: ~${maxTok.toLocaleString()} tokens (${src}). Tools load on demand when invoked.`;
 }
 
 // ── Todos UI ──────────────────────────────────────────────────────────────────
@@ -172,8 +172,8 @@ export function renderBenchmarkTab() {
   }
 
   const totalExchanges = perfHistory.length;
-  const totalTokIn  = perfHistory.reduce((s, r) => s + r.tokensInSystem + r.tokensInSkills + r.tokensInUser, 0);
-  const totalTokOut = perfHistory.reduce((s, r) => s + r.tokensOutUser + r.tokensOutSkillCalls, 0);
+  const totalTokIn  = perfHistory.reduce((s, r) => s + r.tokensInSystem + r.tokensInTools + r.tokensInUser, 0);
+  const totalTokOut = perfHistory.reduce((s, r) => s + r.tokensOutUser + r.tokensOutToolCalls, 0);
   const validTTFT   = perfHistory.filter(r => r.ttft !== null).map(r => r.ttft);
   const avgTTFT     = validTTFT.length ? validTTFT.reduce((a, b) => a + b) / validTTFT.length : null;
   const totalGenMs  = perfHistory.reduce((s, r) => s + r.genMs, 0);
@@ -195,19 +195,19 @@ export function renderBenchmarkTab() {
   tbodyEl.innerHTML = '';
   [...perfHistory].reverse().forEach((r, ri) => {
     const idx    = perfHistory.length - ri;
-    const tokIn  = r.tokensInSystem + r.tokensInSkills + r.tokensInUser;
-    const tokOut = r.tokensOutUser + r.tokensOutSkillCalls;
+    const tokIn  = r.tokensInSystem + r.tokensInTools + r.tokensInUser;
+    const tokOut = r.tokensOutUser + r.tokensOutToolCalls;
     const tps    = r.genMs > 0 && tokOut > 0 ? (tokOut / (r.genMs / 1000)).toFixed(1) : '—';
     const tpot   = tokOut > 0 ? Math.round(r.genMs / tokOut) + 'ms' : '—';
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${idx}</td>
       <td>${esc(r.backend || '?')}</td>
-      <td title="System: ${r.tokensInSystem} | Skills: ${r.tokensInSkills} | User: ${r.tokensInUser}">
-        ${tokIn}<span class="bench-tok-detail">${r.tokensInSystem}+${r.tokensInSkills}+${r.tokensInUser}</span>
+      <td title="System: ${r.tokensInSystem} | Tools: ${r.tokensInTools} | User: ${r.tokensInUser}">
+        ${tokIn}<span class="bench-tok-detail">${r.tokensInSystem}+${r.tokensInTools}+${r.tokensInUser}</span>
       </td>
-      <td title="User output: ${r.tokensOutUser} | Skill calls: ${r.tokensOutSkillCalls}">
-        ${tokOut}<span class="bench-tok-detail">${r.tokensOutUser}+${r.tokensOutSkillCalls}</span>
+      <td title="User output: ${r.tokensOutUser} | Tool calls: ${r.tokensOutToolCalls}">
+        ${tokOut}<span class="bench-tok-detail">${r.tokensOutUser}+${r.tokensOutToolCalls}</span>
       </td>
       <td>${fmtMs(r.ttft)}</td>
       <td>${r.itl !== null ? Math.round(r.itl) + 'ms' : '—'}</td>
