@@ -56,11 +56,11 @@ const HOMOPHONES = {
 
 export default {
   tag: 'homophone',
-  instruction: `HOMOPHONE LOOKUP SKILL: To find homophones of a word, emit <homophone>word</homophone>.
+  instruction: `HOMOPHONE LOOKUP SKILL: To find homophones of a word, call <|tool_call>call:homophone{input:<|"|>word<|"|>}<tool_call|>.
 
 Examples:
-- "Homophones of 'there'" → <homophone>there</homophone>
-- "What sounds like 'break'?" → <homophone>break</homophone>`,
+- "Homophones of 'there'" → <|tool_call>call:homophone{input:<|"|>there<|"|>}<tool_call|>
+- "What sounds like 'break'?" → <|tool_call>call:homophone{input:<|"|>break<|"|>}<tool_call|>`,
   call(content) {
     const word = content.trim().toLowerCase();
     const homs = HOMOPHONES[word];

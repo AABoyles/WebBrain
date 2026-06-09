@@ -21,11 +21,11 @@ const RECORDS = {
 
 export default {
   tag: 'dns',
-  instruction: `DNS RECORD TYPES SKILL: To explain a DNS record type, emit <dns>type</dns>.
+  instruction: `DNS RECORD TYPES SKILL: To explain a DNS record type, call <|tool_call>call:dns{input:<|"|>type<|"|>}<tool_call|>.
 
 Examples:
-- "What is an MX record?" → <dns>MX</dns>
-- "Explain CNAME vs A" → call <dns>CNAME</dns> then <dns>A</dns>`,
+- "What is an MX record?" → <|tool_call>call:dns{input:<|"|>MX<|"|>}<tool_call|>
+- "Explain CNAME vs A" → call <|tool_call>call:dns{input:<|"|>CNAME<|"|>}<tool_call|> then <|tool_call>call:dns{input:<|"|>A<|"|>}<tool_call|>`,
   call(content) {
     const type = content.trim().toUpperCase();
     const desc = RECORDS[type];

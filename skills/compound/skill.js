@@ -1,10 +1,10 @@
 export default {
   tag: 'compound',
-  instruction: `COMPOUND INTEREST SKILL: For compound interest calculations, emit <compound>principal at rate% for years [compounded n/year]</compound>.
+  instruction: `COMPOUND INTEREST SKILL: For compound interest calculations, call <|tool_call>call:compound{input:<|"|>principal at rate% for years [compounded n/year]<|"|>}<tool_call|>.
 
 Examples:
-- "1000 at 7% for 20 years" → <compound>1000 at 7% for 20 years</compound>
-- "5000 at 5% for 10 years compounded 12" → <compound>5000 at 5% for 10 years compounded 12</compound>`,
+- "1000 at 7% for 20 years" → <|tool_call>call:compound{input:<|"|>1000 at 7% for 20 years<|"|>}<tool_call|>
+- "5000 at 5% for 10 years compounded 12" → <|tool_call>call:compound{input:<|"|>5000 at 5% for 10 years compounded 12<|"|>}<tool_call|>`,
   call(content) {
     const m = content.match(/([\d,.]+)\s+at\s+([\d.]+)%?\s+for\s+([\d.]+)\s+years?(?:\s+compounded\s+([\d.]+))?/i);
     if (!m) return 'Format: "1000 at 7% for 20 years" or add "compounded 12" for monthly.';

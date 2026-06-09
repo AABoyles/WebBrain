@@ -10,11 +10,11 @@ const SCORES = {
 
 export default {
   tag: 'scrabble',
-  instruction: `SCRABBLE SCORE SKILL: To calculate the Scrabble tile point value of a word, emit <scrabble>word</scrabble>. Does not account for board multipliers.
+  instruction: `SCRABBLE SCORE SKILL: To calculate the Scrabble tile point value of a word, call <|tool_call>call:scrabble{input:<|"|>word<|"|>}<tool_call|>. Does not account for board multipliers.
 
 Examples:
-- "Scrabble score for 'quartz'" → <scrabble>quartz</scrabble>
-- "How many points is 'jazz'?" → <scrabble>jazz</scrabble>`,
+- "Scrabble score for 'quartz'" → <|tool_call>call:scrabble{input:<|"|>quartz<|"|>}<tool_call|>
+- "How many points is 'jazz'?" → <|tool_call>call:scrabble{input:<|"|>jazz<|"|>}<tool_call|>`,
   call(word) {
     word = word.trim().toUpperCase().replace(/[^A-Z]/g, '');
     if (!word) return 'No letters found.';

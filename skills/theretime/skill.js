@@ -64,11 +64,11 @@ const CITY_TZ = {
 
 export default {
   tag: 'theretime',
-  instruction: `THERETIME SKILL: To find the current time in a city or country, emit <theretime>city or country name</theretime>.
+  instruction: `THERETIME SKILL: To find the current time in a city or country, call <|tool_call>call:theretime{input:<|"|>city or country name<|"|>}<tool_call|>.
 
 Examples:
-- "What time is it in Tokyo?" → <theretime>Tokyo</theretime>
-- "Current time in London" → <theretime>London</theretime>`,
+- "What time is it in Tokyo?" → <|tool_call>call:theretime{input:<|"|>Tokyo<|"|>}<tool_call|>
+- "Current time in London" → <|tool_call>call:theretime{input:<|"|>London<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toUpperCase();
     // Try city lookup first, then fall back to treating it as IANA timezone

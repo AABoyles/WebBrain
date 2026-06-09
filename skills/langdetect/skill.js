@@ -67,11 +67,11 @@ function detectScript(text) {
 
 export default {
   tag: 'langdetect',
-  instruction: `LANGUAGE DETECTION SKILL: Identify the language of a text. Emit <langdetect>text</langdetect>.
+  instruction: `LANGUAGE DETECTION SKILL: Identify the language of a text. call <|tool_call>call:langdetect{input:<|"|>text<|"|>}<tool_call|>.
 
 Examples:
-- "What language is 'Bonjour le monde'?" → <langdetect>Bonjour le monde</langdetect>
-- "Detect language of 'Hola mundo'" → <langdetect>Hola mundo</langdetect>`,
+- "What language is 'Bonjour le monde'?" → <|tool_call>call:langdetect{input:<|"|>Bonjour le monde<|"|>}<tool_call|>
+- "Detect language of 'Hola mundo'" → <|tool_call>call:langdetect{input:<|"|>Hola mundo<|"|>}<tool_call|>`,
   call(content) {
     if (!content.trim()) return 'Provide text to analyze.';
     if (content.trim().length < 5) return 'Text too short for reliable detection.';

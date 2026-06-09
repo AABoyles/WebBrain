@@ -20,12 +20,12 @@ const MODES = {
 
 export default {
   tag: 'scale',
-  instruction: `KEY & SCALE SKILL: To list the notes of a scale, emit <scale>root mode</scale>.
+  instruction: `KEY & SCALE SKILL: To list the notes of a scale, call <|tool_call>call:scale{input:<|"|>root mode<|"|>}<tool_call|>.
 Modes: major, minor, dorian, phrygian, lydian, mixolydian, locrian, pentatonic, blues, harmonic, melodic, chromatic, wholetone.
 
 Examples:
-- "C major scale" → <scale>C major</scale>
-- "F# phrygian" → <scale>F# phrygian</scale>`,
+- "C major scale" → <|tool_call>call:scale{input:<|"|>C major<|"|>}<tool_call|>
+- "F# phrygian" → <|tool_call>call:scale{input:<|"|>F# phrygian<|"|>}<tool_call|>`,
   call(content) {
     const parts = content.trim().split(/\s+/);
     const root  = parts[0].toUpperCase();

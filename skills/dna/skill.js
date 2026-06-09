@@ -70,14 +70,14 @@ function parseFasta(text) {
 
 export default {
   tag: 'dna',
-  instruction: `DNA/RNA SKILL: Perform DNA/RNA operations. Emit <dna>op:sequence</dna>.
+  instruction: `DNA/RNA SKILL: Perform DNA/RNA operations. call <|tool_call>call:dna{input:<|"|>op:sequence<|"|>}<tool_call|>.
 Operations: complement, revcomp, transcribe (DNA→mRNA), revtranscribe (mRNA→DNA), translate (RNA/DNA→protein), fasta (parse FASTA format), gc (GC content).
 
 Examples:
-- "Complement of ATCG" → <dna>complement:ATCG</dna>
-- "Transcribe ATGCTA" → <dna>transcribe:ATGCTA</dna>
-- "Translate AUG UUU UAA" → <dna>translate:AUGUUUUAA</dna>
-- "GC content of ATGCATGC" → <dna>gc:ATGCATGC</dna>`,
+- "Complement of ATCG" → <|tool_call>call:dna{input:<|"|>complement:ATCG<|"|>}<tool_call|>
+- "Transcribe ATGCTA" → <|tool_call>call:dna{input:<|"|>transcribe:ATGCTA<|"|>}<tool_call|>
+- "Translate AUG UUU UAA" → <|tool_call>call:dna{input:<|"|>translate:AUGUUUUAA<|"|>}<tool_call|>
+- "GC content of ATGCATGC" → <|tool_call>call:dna{input:<|"|>gc:ATGCATGC<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon === -1) return 'Format: op:sequence — ops: complement, revcomp, transcribe, revtranscribe, translate, gc, fasta';

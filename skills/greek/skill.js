@@ -29,11 +29,11 @@ const BY_SYMBOL = Object.fromEntries([...GREEK.flatMap(g => [[g.upper,g],[g.lowe
 
 export default {
   tag: 'greek',
-  instruction: `GREEK LETTERS SKILL: To look up a Greek letter's symbol and uses, emit <greek>name or symbol</greek>.
+  instruction: `GREEK LETTERS SKILL: To look up a Greek letter's symbol and uses, call <|tool_call>call:greek{input:<|"|>name or symbol<|"|>}<tool_call|>.
 
 Examples:
-- "What is the lambda symbol?" → <greek>lambda</greek>
-- "What does Σ mean?" → <greek>Σ</greek>`,
+- "What is the lambda symbol?" → <|tool_call>call:greek{input:<|"|>lambda<|"|>}<tool_call|>
+- "What does Σ mean?" → <|tool_call>call:greek{input:<|"|>Σ<|"|>}<tool_call|>`,
   call(content) {
     const q = content.trim();
     const g = GREEK.find(x => x.name.toLowerCase() === q.toLowerCase()) ?? BY_SYMBOL[q];

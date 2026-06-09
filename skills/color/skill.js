@@ -142,15 +142,15 @@ function parseColor(input) {
 
 export default {
   tag: 'color',
-  instruction: `COLOR SKILL: Convert colors or perform color operations. Emit <color>value</color>.
+  instruction: `COLOR SKILL: Convert colors or perform color operations. call <|tool_call>call:color{input:<|"|>value<|"|>}<tool_call|>.
 Supports: #rrggbb, rgb(), hsl(), hsv(), cmyk().
 Operations: darken(color, pct), lighten(color, pct), mix(color1, color2[, pct]), contrast(color1, color2).
 
 Examples:
-- "Convert #ff6600 to all formats" → <color>#ff6600</color>
-- "Darken #ff6600 by 20%" → <color>darken(#ff6600, 20)</color>
-- "Mix red and blue 50/50" → <color>mix(#ff0000, #0000ff)</color>
-- "WCAG contrast of black on white" → <color>contrast(#000000, #ffffff)</color>`,
+- "Convert #ff6600 to all formats" → <|tool_call>call:color{input:<|"|>#ff6600<|"|>}<tool_call|>
+- "Darken #ff6600 by 20%" → <|tool_call>call:color{input:<|"|>darken(#ff6600, 20)<|"|>}<tool_call|>
+- "Mix red and blue 50/50" → <|tool_call>call:color{input:<|"|>mix(#ff0000, #0000ff)<|"|>}<tool_call|>
+- "WCAG contrast of black on white" → <|tool_call>call:color{input:<|"|>contrast(#000000, #ffffff)<|"|>}<tool_call|>`,
   call(input) {
     input = input.trim();
     try {

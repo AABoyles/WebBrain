@@ -19,11 +19,11 @@ function pick() {
 
 export default {
   tag: '8ball',
-  instruction: `MAGIC 8-BALL SKILL: For any yes/no question the user wants to leave to chance, emit <8ball>question</8ball>.
+  instruction: `MAGIC 8-BALL SKILL: For any yes/no question the user wants to leave to chance, call <|tool_call>call:8ball{input:<|"|>question<|"|>}<tool_call|>.
 
 Examples:
-- "Magic 8-ball: will I get the job?" → <8ball>Will I get the job?</8ball>
-- "Ask the 8-ball about my chances" → <8ball>What are my chances?</8ball>`,
+- "Magic 8-ball: will I get the job?" → <|tool_call>call:8ball{input:<|"|>Will I get the job?<|"|>}<tool_call|>
+- "Ask the 8-ball about my chances" → <|tool_call>call:8ball{input:<|"|>What are my chances?<|"|>}<tool_call|>`,
   call: () => `🎱 ${pick()}`,
   async handle() {},
 };

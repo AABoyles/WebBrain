@@ -11,11 +11,11 @@ function formatOhms(n) {
 
 export default {
   tag: 'resistor',
-  instruction: `RESISTOR COLOR CODE SKILL: To decode a resistor color band sequence, emit <resistor>band1 band2 band3 multiplier [tolerance]</resistor>.
+  instruction: `RESISTOR COLOR CODE SKILL: To decode a resistor color band sequence, call <|tool_call>call:resistor{input:<|"|>band1 band2 band3 multiplier [tolerance]<|"|>}<tool_call|>.
 
 Examples:
-- "4-band: red red brown gold" → <resistor>red red brown gold</resistor>
-- "5-band: orange orange black brown gold" → <resistor>orange orange black brown gold</resistor>`,
+- "4-band: red red brown gold" → <|tool_call>call:resistor{input:<|"|>red red brown gold<|"|>}<tool_call|>
+- "5-band: orange orange black brown gold" → <|tool_call>call:resistor{input:<|"|>orange orange black brown gold<|"|>}<tool_call|>`,
   call(content) {
     const bands = content.trim().toLowerCase().split(/[\s,]+/).filter(Boolean);
     if (bands.length < 3) return 'Provide at least 3 color bands.';

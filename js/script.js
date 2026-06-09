@@ -1,6 +1,6 @@
 import { $, setSend, autoResize, DEFAULT_SOUL } from './utils.js';
 import { initSkills, invalidateStaticSysPrompt } from './skills.js';
-import { initAI, checkChromeAI, backend, resetSession } from './ai.js';
+import { initAI, backend, resetSession, setThinkingMode } from './ai.js';
 import {
   txGet, txPut,
   addFact, clearFacts,
@@ -124,35 +124,29 @@ $('reset-soul-btn').addEventListener('click', async () => {
 });
 
 $('apply-model-btn').addEventListener('click', async () => {
-  const sel = $('model-select').value;
   const url = $('model-url').value.trim();
   if (url) await txPut('settings', url, 'modelUrl');
-  await txPut('settings', sel, 'backend');
   $('model-apply-msg').textContent = 'Reinitializing…';
-  await initAI(sel);
+  await initAI();
   $('model-apply-msg').textContent = `Status: ${$('status-bar').textContent}`;
 });
 
-$('model-select').addEventListener('change', e => {
-  $('litert-options').style.display = e.target.value === 'litert' ? '' : 'none';
+$('thinking-mode-toggle').addEventListener('change', async e => {
+  await txPut('settings', e.target.checked, 'thinkingMode');
+  setThinkingMode(e.target.checked);
+  resetSession();
 });
 
 $('settingsModal').addEventListener('show.bs.modal', async () => {
-  const chromeOk = await checkChromeAI();
-  const gpuOk    = 'gpu' in navigator;
+  const gpuOk = 'gpu' in navigator;
   $('backend-badges').innerHTML = `
-    <span class="badge-pill ${chromeOk ? 'badge-ok' : 'badge-off'}">
-      <span class="dot"></span>Chrome AI: ${chromeOk ? 'available' : 'not detected'}
-    </span>
     <span class="badge-pill ${gpuOk ? 'badge-ok' : 'badge-off'}">
       <span class="dot"></span>WebGPU: ${gpuOk ? 'available' : 'not available'}
     </span>`;
 
-  const savedBackend = await txGet('settings', 'backend');
-  if (savedBackend) $('model-select').value = savedBackend;
-  $('litert-options').style.display = $('model-select').value === 'litert' ? '' : 'none';
   const savedUrl = await txGet('settings', 'modelUrl');
   $('model-url').value = savedUrl ?? '';
+  $('thinking-mode-toggle').checked = !!(await txGet('settings', 'thinkingMode'));
 
   await renderMemory();
   await renderSkills();
@@ -167,8 +161,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
-const savedBackend = await txGet('settings', 'backend');
-await Promise.all([initAI(savedBackend), initSkills()]);
+await Promise.all([initAI(), initSkills()]);
 await renderHistory();
 setSend(false);
 $('user-input').dispatchEvent(new Event('input'));

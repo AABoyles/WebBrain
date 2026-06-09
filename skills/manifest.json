@@ -174,10 +174,10 @@
     "default": false,
     "category": "Productivity",
     "triggers": [
+      "factor",
       "prime factor",
       "factorize",
-      "prime factorization",
-      "factor of"
+      "prime factorization"
     ],
     "risk": "passive"
   },
@@ -438,10 +438,11 @@
   {
     "tag": "hash",
     "label": "Hash",
-    "description": "Computes SHA-1, SHA-256, SHA-384, or SHA-512 digests via the Web Crypto API.",
+    "description": "Computes MD5, SHA-1, SHA-256, SHA-384, or SHA-512 digests.",
     "default": false,
     "category": "Text, Data & Encoding",
     "triggers": [
+      "md5",
       "sha256",
       "sha-256",
       "sha1",
@@ -1656,9 +1657,20 @@
     "category": "World & Science",
     "triggers": [
       "geo distance",
+      "geodist",
       "haversine distance",
       "lat lon distance",
-      "distance between coordinates"
+      "distance between coordinates",
+      "distance between",
+      "how far",
+      "how many miles",
+      "how many kilometers",
+      "how many km",
+      "distance from",
+      "distance to",
+      "miles from",
+      "km from",
+      "far from"
     ],
     "risk": "passive"
   },

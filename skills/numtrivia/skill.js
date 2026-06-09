@@ -1,10 +1,10 @@
 export default {
   tag: 'numtrivia',
-  instruction: `NUMBER TRIVIA SKILL: To get a fun fact about a number, emit <numtrivia>number</numtrivia> or <numtrivia>year:number</numtrivia> for a year fact.
+  instruction: `NUMBER TRIVIA SKILL: To get a fun fact about a number, call <|tool_call>call:numtrivia{input:<|"|>number<|"|>}<tool_call|> or <|tool_call>call:numtrivia{input:<|"|>year:number<|"|>}<tool_call|> for a year fact.
 
 Examples:
-- "Trivia about the number 42" → <numtrivia>42</numtrivia>
-- "What happened in 1969?" → <numtrivia>year:1969</numtrivia>`,
+- "Trivia about the number 42" → <|tool_call>call:numtrivia{input:<|"|>42<|"|>}<tool_call|>
+- "What happened in 1969?" → <|tool_call>call:numtrivia{input:<|"|>year:1969<|"|>}<tool_call|>`,
   async call(content) {
     content = content.trim();
     const yearMatch = content.match(/^year:(\d+)$/i);

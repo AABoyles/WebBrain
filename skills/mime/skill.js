@@ -40,11 +40,11 @@ for (const [ext, mime] of Object.entries(EXT_TO_MIME)) {
 
 export default {
   tag: 'mime',
-  instruction: `MIME TYPE SKILL: To look up a MIME type by file extension or find extensions by MIME type, emit <mime>value</mime>.
+  instruction: `MIME TYPE SKILL: To look up a MIME type by file extension or find extensions by MIME type, call <|tool_call>call:mime{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "What's the MIME type for .mp4?" → <mime>.mp4</mime>
-- "What extension does image/webp use?" → <mime>image/webp</mime>`,
+- "What's the MIME type for .mp4?" → <|tool_call>call:mime{input:<|"|>.mp4<|"|>}<tool_call|>
+- "What extension does image/webp use?" → <|tool_call>call:mime{input:<|"|>image/webp<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim().toLowerCase().replace(/^\./, '');
     // If it contains '/', treat as MIME type lookup

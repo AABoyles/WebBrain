@@ -26,11 +26,11 @@ function isbn13to10(d13) {
 
 export default {
   tag: 'isbn',
-  instruction: `ISBN DECODER SKILL: To validate and decode an ISBN-10 or ISBN-13, emit <isbn>number</isbn>.
+  instruction: `ISBN DECODER SKILL: To validate and decode an ISBN-10 or ISBN-13, call <|tool_call>call:isbn{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "Validate ISBN 978-0-306-40615-7" → <isbn>9780306406157</isbn>
-- "Decode this book code" → <isbn>0-306-40615-2</isbn>`,
+- "Validate ISBN 978-0-306-40615-7" → <|tool_call>call:isbn{input:<|"|>9780306406157<|"|>}<tool_call|>
+- "Decode this book code" → <|tool_call>call:isbn{input:<|"|>0-306-40615-2<|"|>}<tool_call|>`,
   call(content) {
     const raw = content.trim().replace(/[\s\-]/g, '').toUpperCase();
     if (raw.length === 10) {

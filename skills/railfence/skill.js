@@ -28,11 +28,11 @@ function decode(cipher, rails) {
 
 export default {
   tag: 'railfence',
-  instruction: `RAIL FENCE CIPHER SKILL: To encode or decode with the rail fence (zigzag) transposition cipher, emit <railfence>rails:text</railfence> to encode or <railfence>decode:rails:text</railfence> to decode.
+  instruction: `RAIL FENCE CIPHER SKILL: To encode or decode with the rail fence (zigzag) transposition cipher, call <|tool_call>call:railfence{input:<|"|>rails:text<|"|>}<tool_call|> to encode or <|tool_call>call:railfence{input:<|"|>decode:rails:text<|"|>}<tool_call|> to decode.
 
 Examples:
-- "Encode 'HELLO' on 3 rails" → <railfence>3:HELLO WORLD</railfence>
-- "Decode 'HOLELWRD' on 3 rails" → <railfence>decode:3:HOLELWRD</railfence>`,
+- "Encode 'HELLO' on 3 rails" → <|tool_call>call:railfence{input:<|"|>3:HELLO WORLD<|"|>}<tool_call|>
+- "Decode 'HOLELWRD' on 3 rails" → <|tool_call>call:railfence{input:<|"|>decode:3:HOLELWRD<|"|>}<tool_call|>`,
   call(content) {
     const dec = content.toLowerCase().startsWith('decode:');
     const rest = dec ? content.slice(7) : content;

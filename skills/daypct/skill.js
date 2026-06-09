@@ -5,9 +5,9 @@ function bar(pct, width = 20) {
 
 export default {
   tag: 'daypct',
-  instruction: `DAY PROGRESS SKILL: To show how much of the day, week, or year has elapsed, emit <daypct></daypct> (empty tag).
+  instruction: `DAY PROGRESS SKILL: To show how much of the day, week, or year has elapsed, call <|tool_call>call:daypct{input:<|"|><|"|>}<tool_call|> (empty tag).
 
-Example: "How far through the year are we?" → <daypct></daypct>`,
+Example: "How far through the year are we?" → <|tool_call>call:daypct{input:<|"|><|"|>}<tool_call|>`,
   call() {
     const now   = new Date();
     const dayMs  = now.getHours() * 3600000 + now.getMinutes() * 60000 + now.getSeconds() * 1000;

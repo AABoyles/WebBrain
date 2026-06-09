@@ -33,11 +33,11 @@ const ERRORS = {
 
 export default {
   tag: 'cbmerror',
-  instruction: `COMMODORE BASIC ERROR SKILL: To look up a Commodore BASIC error number, emit <cbmerror>number</cbmerror>.
+  instruction: `COMMODORE BASIC ERROR SKILL: To look up a Commodore BASIC error number, call <|tool_call>call:cbmerror{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "What is Commodore error 14?" → <cbmerror>14</cbmerror>
-- "C64 error 22" → <cbmerror>22</cbmerror>`,
+- "What is Commodore error 14?" → <|tool_call>call:cbmerror{input:<|"|>14<|"|>}<tool_call|>
+- "C64 error 22" → <|tool_call>call:cbmerror{input:<|"|>22<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim());
     const e = ERRORS[n];

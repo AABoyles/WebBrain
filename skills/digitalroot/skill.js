@@ -1,10 +1,10 @@
 export default {
   tag: 'digitalroot',
-  instruction: `DIGITAL ROOT SKILL: To compute the digital root (iterative digit sum) of a number, emit <digitalroot>n</digitalroot>.
+  instruction: `DIGITAL ROOT SKILL: To compute the digital root (iterative digit sum) of a number, call <|tool_call>call:digitalroot{input:<|"|>n<|"|>}<tool_call|>.
 
 Examples:
-- "Digital root of 9875" → <digitalroot>9875</digitalroot>
-- "Casting out nines for 12345" → <digitalroot>12345</digitalroot>`,
+- "Digital root of 9875" → <|tool_call>call:digitalroot{input:<|"|>9875<|"|>}<tool_call|>
+- "Casting out nines for 12345" → <|tool_call>call:digitalroot{input:<|"|>12345<|"|>}<tool_call|>`,
   call(content) {
     const n = content.trim().replace(/,/g,'');
     if (!/^\d+$/.test(n)) return 'Enter a positive integer.';

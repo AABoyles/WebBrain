@@ -22,11 +22,11 @@ function tapToLetter(tap) {
 
 export default {
   tag: 'tap',
-  instruction: `TAP CODE SKILL: To encode text as tap code or decode tap code, emit <tap>text</tap> or <tap>decode:pairs</tap>. Uses a 5×5 Polybius square (C=K).
+  instruction: `TAP CODE SKILL: To encode text as tap code or decode tap code, call <|tool_call>call:tap{input:<|"|>text<|"|>}<tool_call|> or <|tool_call>call:tap{input:<|"|>decode:pairs<|"|>}<tool_call|>. Uses a 5×5 Polybius square (C=K).
 
 Examples:
-- "Encode 'HELLO' as tap code" → <tap>HELLO</tap>
-- "Decode tap: 2-3 1-5 3-1 3-1 3-4" → <tap>decode:2-3 1-5 3-1 3-1 3-4</tap>`,
+- "Encode 'HELLO' as tap code" → <|tool_call>call:tap{input:<|"|>HELLO<|"|>}<tool_call|>
+- "Decode tap: 2-3 1-5 3-1 3-1 3-4" → <|tool_call>call:tap{input:<|"|>decode:2-3 1-5 3-1 3-1 3-4<|"|>}<tool_call|>`,
   call(content) {
     if (/^decode:/i.test(content)) {
       const pairs = content.slice(7).trim().split(/\s+/);

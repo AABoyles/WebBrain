@@ -95,12 +95,12 @@ const ROOTS = {
 
 export default {
   tag: 'root',
-  instruction: `WORD ROOTS SKILL: To look up the origin and meaning of a Latin or Greek root, emit <root>root</root>.
+  instruction: `WORD ROOTS SKILL: To look up the origin and meaning of a Latin or Greek root, call <|tool_call>call:root{input:<|"|>root<|"|>}<tool_call|>.
 
 Examples:
-- "What does 'photo' mean?" → <root>photo</root>
-- "Root meaning of 'graph'" → <root>graph</root>
-- "Latin root 'port'" → <root>port</root>`,
+- "What does 'photo' mean?" → <|tool_call>call:root{input:<|"|>photo<|"|>}<tool_call|>
+- "Root meaning of 'graph'" → <|tool_call>call:root{input:<|"|>graph<|"|>}<tool_call|>
+- "Latin root 'port'" → <|tool_call>call:root{input:<|"|>port<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toLowerCase();
     const r   = ROOTS[key];

@@ -15,14 +15,14 @@ function encodeOp(mode, text) {
 
 export default {
   tag: 'encode',
-  instruction: `ENCODE/DECODE SKILL: To encode or decode text, emit <encode>mode:text</encode>.
+  instruction: `ENCODE/DECODE SKILL: To encode or decode text, call <|tool_call>call:encode{input:<|"|>mode:text<|"|>}<tool_call|>.
 
 Modes: base64, decode:base64, url, decode:url, html, decode:html
 
 Examples:
-- "Base64 encode 'hello world'" → <encode>base64:hello world</encode>
-- "Decode aGVsbG8=" from base64 → <encode>decode:base64:aGVsbG8=</encode>
-- "URL-encode this: /my path?q=hi" → <encode>url:/my path?q=hi</encode>`,
+- "Base64 encode 'hello world'" → <|tool_call>call:encode{input:<|"|>base64:hello world<|"|>}<tool_call|>
+- "Decode aGVsbG8=" from base64 → <|tool_call>call:encode{input:<|"|>decode:base64:aGVsbG8=<|"|>}<tool_call|>
+- "URL-encode this: /my path?q=hi" → <|tool_call>call:encode{input:<|"|>url:/my path?q=hi<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon === -1) return 'Format: mode:text — e.g. base64:hello';

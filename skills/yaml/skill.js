@@ -9,12 +9,12 @@ async function getYaml() {
 
 export default {
   tag: 'yaml',
-  instruction: `YAML SKILL: Parse YAML to JSON, format JSON as YAML, or validate YAML. Emit <yaml>op:content</yaml>.
+  instruction: `YAML SKILL: Parse YAML to JSON, format JSON as YAML, or validate YAML. call <|tool_call>call:yaml{input:<|"|>op:content<|"|>}<tool_call|>.
 Operations: parse (YAML→JSON), format (JSON→YAML), validate (check YAML syntax).
 
 Examples:
-- "Parse this YAML: name: Alice\\nage: 30" → <yaml>parse:name: Alice\nage: 30</yaml>
-- "Convert JSON to YAML: {"name":"Alice"}" → <yaml>format:{"name":"Alice"}</yaml>`,
+- "Parse this YAML: name: Alice\\nage: 30" → <|tool_call>call:yaml{input:<|"|>parse:name: Alice\nage: 30<|"|>}<tool_call|>
+- "Convert JSON to YAML: {"name":"Alice"}" → <|tool_call>call:yaml{input:<|"|>format:{"name":"Alice"}<|"|>}<tool_call|>`,
   async call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: parse:… or format:… or validate:…';

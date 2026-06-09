@@ -32,12 +32,12 @@ const BINARY = [
 
 export default {
   tag: 'si',
-  instruction: `SI PREFIX SKILL: To look up an SI or binary prefix, emit <si>prefix</si>.
+  instruction: `SI PREFIX SKILL: To look up an SI or binary prefix, call <|tool_call>call:si{input:<|"|>prefix<|"|>}<tool_call|>.
 
 Examples:
-- "What does µ mean?" → <si>µ</si>
-- "What is giga?" → <si>giga</si>
-- "Binary prefix Mi" → <si>Mi</si>`,
+- "What does µ mean?" → <|tool_call>call:si{input:<|"|>µ<|"|>}<tool_call|>
+- "What is giga?" → <|tool_call>call:si{input:<|"|>giga<|"|>}<tool_call|>
+- "Binary prefix Mi" → <|tool_call>call:si{input:<|"|>Mi<|"|>}<tool_call|>`,
   call(content) {
     const q = content.trim();
     // Try SI symbol

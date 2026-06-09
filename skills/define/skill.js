@@ -1,10 +1,10 @@
 export default {
   tag: 'define',
-  instruction: `DICTIONARY SKILL: To look up a word definition, emit <define>word</define>. Uses the Free Dictionary API (no key required).
+  instruction: `DICTIONARY SKILL: To look up a word definition, call <|tool_call>call:define{input:<|"|>word<|"|>}<tool_call|>. Uses the Free Dictionary API (no key required).
 
 Examples:
-- "Define 'ephemeral'" → <define>ephemeral</define>
-- "What does 'serendipity' mean?" → <define>serendipity</define>`,
+- "Define 'ephemeral'" → <|tool_call>call:define{input:<|"|>ephemeral<|"|>}<tool_call|>
+- "What does 'serendipity' mean?" → <|tool_call>call:define{input:<|"|>serendipity<|"|>}<tool_call|>`,
   async call(word) {
     word = word.trim().toLowerCase();
     try {

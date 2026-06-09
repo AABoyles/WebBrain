@@ -2,11 +2,11 @@ const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 
 export default {
   tag: 'freq2note',
-  instruction: `FREQUENCY TO NOTE SKILL: To find the nearest musical note to a frequency in Hz, emit <freq2note>hz</freq2note>.
+  instruction: `FREQUENCY TO NOTE SKILL: To find the nearest musical note to a frequency in Hz, call <|tool_call>call:freq2note{input:<|"|>hz<|"|>}<tool_call|>.
 
 Examples:
-- "What note is 440 Hz?" → <freq2note>440</freq2note>
-- "Nearest note to 450 Hz" → <freq2note>450</freq2note>`,
+- "What note is 440 Hz?" → <|tool_call>call:freq2note{input:<|"|>440<|"|>}<tool_call|>
+- "Nearest note to 450 Hz" → <|tool_call>call:freq2note{input:<|"|>450<|"|>}<tool_call|>`,
   call(content) {
     const hz = parseFloat(content.trim());
     if (isNaN(hz) || hz <= 0) return 'Enter a positive frequency in Hz.';

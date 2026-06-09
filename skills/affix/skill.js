@@ -72,12 +72,12 @@ const AFFIXES = {
 
 export default {
   tag: 'affix',
-  instruction: `PREFIX/SUFFIX MEANINGS SKILL: To look up the meaning of a prefix or suffix, emit <affix>morpheme</affix>. Include the hyphen to indicate position.
+  instruction: `PREFIX/SUFFIX MEANINGS SKILL: To look up the meaning of a prefix or suffix, call <|tool_call>call:affix{input:<|"|>morpheme<|"|>}<tool_call|>. Include the hyphen to indicate position.
 
 Examples:
-- "What does 'un-' mean?" → <affix>un-</affix>
-- "Meaning of '-ology'" → <affix>-ology</affix>
-- "What is the '-ful' suffix?" → <affix>-ful</affix>`,
+- "What does 'un-' mean?" → <|tool_call>call:affix{input:<|"|>un-<|"|>}<tool_call|>
+- "Meaning of '-ology'" → <|tool_call>call:affix{input:<|"|>-ology<|"|>}<tool_call|>
+- "What is the '-ful' suffix?" → <|tool_call>call:affix{input:<|"|>-ful<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toLowerCase();
     const a   = AFFIXES[key];

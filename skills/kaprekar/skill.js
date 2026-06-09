@@ -1,10 +1,10 @@
 export default {
   tag: 'kaprekar',
-  instruction: `KAPREKAR ROUTINE SKILL: To apply the Kaprekar routine to a 4-digit number (always reaches 6174), emit <kaprekar>number</kaprekar>.
+  instruction: `KAPREKAR ROUTINE SKILL: To apply the Kaprekar routine to a 4-digit number (always reaches 6174), call <|tool_call>call:kaprekar{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "Kaprekar routine on 1234" → <kaprekar>1234</kaprekar>
-- "Apply Kaprekar to 3524" → <kaprekar>3524</kaprekar>`,
+- "Kaprekar routine on 1234" → <|tool_call>call:kaprekar{input:<|"|>1234<|"|>}<tool_call|>
+- "Apply Kaprekar to 3524" → <|tool_call>call:kaprekar{input:<|"|>3524<|"|>}<tool_call|>`,
   call(content) {
     let n = parseInt(content.trim().replace(/,/g,''));
     if (isNaN(n) || n < 0 || n > 9999) return 'Enter a 4-digit number (0000–9999).';

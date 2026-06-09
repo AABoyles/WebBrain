@@ -12,11 +12,11 @@ function parseDelay(str) {
 
 export default {
   tag: 'remind',
-  instruction: `REMINDER SKILL: When asked to be reminded of something, emit <remind>delay:message</remind> AFTER your natural reply. Delay uses h/m/s (e.g. "20m", "1h", "1h30m").
+  instruction: `REMINDER SKILL: When asked to be reminded of something, call <|tool_call>call:remind{input:<|"|>delay:message<|"|>}<tool_call|> AFTER your natural reply. Delay uses h/m/s (e.g. "20m", "1h", "1h30m").
 
 Examples:
-- "Remind me in 20 min to check the oven" → Sure! I'll alert you in 20 minutes. <remind>20m:Check the oven</remind>
-- "Set an alarm for 2 hours" → Done. <remind>2h:Your alarm</remind>`,
+- "Remind me in 20 min to check the oven" → Sure! I'll alert you in 20 minutes. <|tool_call>call:remind{input:<|"|>20m:Check the oven<|"|>}<tool_call|>
+- "Set an alarm for 2 hours" → Done. <|tool_call>call:remind{input:<|"|>2h:Your alarm<|"|>}<tool_call|>`,
   async handle(content) {
     const m = content.match(/^([^:]+):(.+)$/s);
     if (!m) return;

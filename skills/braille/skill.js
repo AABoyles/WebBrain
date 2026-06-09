@@ -9,9 +9,9 @@ const ALPHA = {
 
 export default {
   tag: 'braille',
-  instruction: `BRAILLE SKILL: To encode English text as Unicode Braille block characters (Grade 1), emit <braille>text</braille>.
+  instruction: `BRAILLE SKILL: To encode English text as Unicode Braille block characters (Grade 1), call <|tool_call>call:braille{input:<|"|>text<|"|>}<tool_call|>.
 
-Example: <braille>Hello</braille> → ⠓⠑⠇⠇⠕`,
+Example: <|tool_call>call:braille{input:<|"|>Hello<|"|>}<tool_call|> → ⠓⠑⠇⠇⠕`,
   call(text) {
     return text.toUpperCase().split('').map(c => {
       const mask = ALPHA[c];

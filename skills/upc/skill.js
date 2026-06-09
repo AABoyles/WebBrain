@@ -149,11 +149,11 @@ function getGS1Country(prefix3) {
 
 export default {
   tag: 'upc',
-  instruction: `UPC/EAN BARCODE SKILL: To validate a UPC-A (12 digits) or EAN-13 (13 digits) barcode, emit <upc>barcode number</upc>.
+  instruction: `UPC/EAN BARCODE SKILL: To validate a UPC-A (12 digits) or EAN-13 (13 digits) barcode, call <|tool_call>call:upc{input:<|"|>barcode number<|"|>}<tool_call|>.
 
 Examples:
-- "Validate barcode 036000291452" → <upc>036000291452</upc>
-- "Decode EAN-13: 5901234123457" → <upc>5901234123457</upc>`,
+- "Validate barcode 036000291452" → <|tool_call>call:upc{input:<|"|>036000291452<|"|>}<tool_call|>
+- "Decode EAN-13: 5901234123457" → <|tool_call>call:upc{input:<|"|>5901234123457<|"|>}<tool_call|>`,
   call(content) {
     const n = content.trim().replace(/\s/g, '');
     if (!/^\d{12,13}$/.test(n)) return 'Enter 12 digits (UPC-A) or 13 digits (EAN-13).';

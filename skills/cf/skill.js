@@ -22,12 +22,12 @@ function toCF(x, terms = 10) {
 
 export default {
   tag: 'cf',
-  instruction: `CONTINUED FRACTION SKILL: To expand a number as a continued fraction, emit <cf>value</cf>. Supports decimals, fractions (a/b), and named constants: pi, e, phi, sqrt2, sqrt3, sqrt5, ln2.
+  instruction: `CONTINUED FRACTION SKILL: To expand a number as a continued fraction, call <|tool_call>call:cf{input:<|"|>value<|"|>}<tool_call|>. Supports decimals, fractions (a/b), and named constants: pi, e, phi, sqrt2, sqrt3, sqrt5, ln2.
 
 Examples:
-- "Continued fraction of π" → <cf>pi</cf>
-- "CF expansion of 3/7" → <cf>3/7</cf>
-- "Expand 1.618" → <cf>1.618</cf>`,
+- "Continued fraction of π" → <|tool_call>call:cf{input:<|"|>pi<|"|>}<tool_call|>
+- "CF expansion of 3/7" → <|tool_call>call:cf{input:<|"|>3/7<|"|>}<tool_call|>
+- "Expand 1.618" → <|tool_call>call:cf{input:<|"|>1.618<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim().toLowerCase();
     let value, label;

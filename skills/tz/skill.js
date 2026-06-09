@@ -23,16 +23,16 @@ function parseTime(str) {
 
 export default {
   tag: 'tz',
-  instruction: `TIMEZONE CONVERTER SKILL: For timezone questions, emit <tz>expression</tz> using IANA timezone names.
+  instruction: `TIMEZONE CONVERTER SKILL: For timezone questions, call <|tool_call>call:tz{input:<|"|>expression<|"|>}<tool_call|> using IANA timezone names.
 
 Formats:
 - "now in Timezone" → current time in that zone
 - "3pm From/Zone to To/Zone" → convert a specific time
 
 Examples:
-- "What time is it in Tokyo?" → <tz>now in Asia/Tokyo</tz>
-- "3pm New York in London" → <tz>3pm America/New_York to Europe/London</tz>
-- "Convert 14:30 Berlin to LA" → <tz>14:30 Europe/Berlin to America/Los_Angeles</tz>`,
+- "What time is it in Tokyo?" → <|tool_call>call:tz{input:<|"|>now in Asia/Tokyo<|"|>}<tool_call|>
+- "3pm New York in London" → <|tool_call>call:tz{input:<|"|>3pm America/New_York to Europe/London<|"|>}<tool_call|>
+- "Convert 14:30 Berlin to LA" → <|tool_call>call:tz{input:<|"|>14:30 Europe/Berlin to America/Los_Angeles<|"|>}<tool_call|>`,
   call(input) {
     input = input.trim();
     try {

@@ -58,11 +58,11 @@ function convert(n) {
 
 export default {
   tag: 'n2w',
-  instruction: `NUMBER TO WORDS SKILL: To convert a number to English words, emit <n2w>number</n2w>. To convert English words to a number, emit <n2w>forty-two</n2w>. Supports integers up to quadrillions.
+  instruction: `NUMBER TO WORDS SKILL: To convert a number to English words, call <|tool_call>call:n2w{input:<|"|>number<|"|>}<tool_call|>. To convert English words to a number, call <|tool_call>call:n2w{input:<|"|>forty-two<|"|>}<tool_call|>. Supports integers up to quadrillions.
 
 Examples:
-- "How do you write 1234 in words?" → <n2w>1234</n2w>
-- "What number is 'two million three hundred thousand'?" → <n2w>two million three hundred thousand</n2w>`,
+- "How do you write 1234 in words?" → <|tool_call>call:n2w{input:<|"|>1234<|"|>}<tool_call|>
+- "What number is 'two million three hundred thousand'?" → <|tool_call>call:n2w{input:<|"|>two million three hundred thousand<|"|>}<tool_call|>`,
   call(content) {
     const trimmed = content.trim().replace(/,/g, '');
     // If it starts with a digit (or minus/negative followed by digit) → number to words

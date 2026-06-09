@@ -5,11 +5,11 @@ function initialConsonants(word) {
 
 export default {
   tag: 'spoonerism',
-  instruction: `SPOONERISM SKILL: To swap the initial consonant clusters of adjacent words, emit <spoonerism>phrase</spoonerism>.
+  instruction: `SPOONERISM SKILL: To swap the initial consonant clusters of adjacent words, call <|tool_call>call:spoonerism{input:<|"|>phrase<|"|>}<tool_call|>.
 
 Examples:
-- "Spoonerism of 'black bird'" → <spoonerism>black bird</spoonerism>
-- "Spoonerize 'crushing blow'" → <spoonerism>crushing blow</spoonerism>`,
+- "Spoonerism of 'black bird'" → <|tool_call>call:spoonerism{input:<|"|>black bird<|"|>}<tool_call|>
+- "Spoonerize 'crushing blow'" → <|tool_call>call:spoonerism{input:<|"|>crushing blow<|"|>}<tool_call|>`,
   call(text) {
     const words = text.trim().split(/\s+/);
     if (words.length < 2) return 'Need at least two words.';

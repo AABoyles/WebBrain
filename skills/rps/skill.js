@@ -9,11 +9,11 @@ function pick() {
 
 export default {
   tag: 'rps',
-  instruction: `ROCK PAPER SCISSORS SKILL: To play rock-paper-scissors against the browser, emit <rps>player_choice</rps>.
+  instruction: `ROCK PAPER SCISSORS SKILL: To play rock-paper-scissors against the browser, call <|tool_call>call:rps{input:<|"|>player_choice<|"|>}<tool_call|>.
 
 Examples:
-- "I choose rock" → <rps>rock</rps>
-- "Play paper" → <rps>paper</rps>`,
+- "I choose rock" → <|tool_call>call:rps{input:<|"|>rock<|"|>}<tool_call|>
+- "Play paper" → <|tool_call>call:rps{input:<|"|>paper<|"|>}<tool_call|>`,
   call(content) {
     const player = content.trim().toLowerCase();
     if (!CHOICES.includes(player)) return `Invalid choice. Pick rock, paper, or scissors.`;

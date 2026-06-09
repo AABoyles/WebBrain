@@ -57,12 +57,12 @@ function parseFormula(formula) {
 
 export default {
   tag: 'formula',
-  instruction: `CHEMICAL FORMULA SKILL: Parse a chemical formula to get molecular weight, element breakdown, and atom counts. Emit <formula>formula</formula>.
+  instruction: `CHEMICAL FORMULA SKILL: Parse a chemical formula to get molecular weight, element breakdown, and atom counts. call <|tool_call>call:formula{input:<|"|>formula<|"|>}<tool_call|>.
 
 Examples:
-- "Molecular weight of water" → <formula>H2O</formula>
-- "Analyze glucose C6H12O6" → <formula>C6H12O6</formula>
-- "Caffeine C8H10N4O2" → <formula>C8H10N4O2</formula>`,
+- "Molecular weight of water" → <|tool_call>call:formula{input:<|"|>H2O<|"|>}<tool_call|>
+- "Analyze glucose C6H12O6" → <|tool_call>call:formula{input:<|"|>C6H12O6<|"|>}<tool_call|>
+- "Caffeine C8H10N4O2" → <|tool_call>call:formula{input:<|"|>C8H10N4O2<|"|>}<tool_call|>`,
   call(content) {
     const formula = content.trim();
     if (!formula) return 'Provide a chemical formula.';

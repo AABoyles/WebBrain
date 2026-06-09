@@ -1,83 +1,28 @@
-// Exports: backend, initAI, checkChromeAI, streamAI, computeMaxTokens, resetSession, destroySession
+// Exports: backend, thinkingMode, setThinkingMode, initAI, streamAI, computeMaxTokens, resetSession, destroySession
 import { txGet } from '../skills/db.js';
 import { setStatus } from './utils.js';
 
 const DEFAULT_MODEL_URL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.task';
 
 // ── AI Backend ────────────────────────────────────────────────────────────────
-export let backend    = 'none';
-export let contextMax = 0;
-let session = null;
-let llm     = null;
-let liteRtWarmup = null;
+export let backend      = 'none';
+export let contextMax   = 0;
+export let thinkingMode = false;
+let llm             = null;
+let liteRtWarmup    = null;
+let litertGenPromise = null;
 
-// Call session.destroy() before nulling so Chrome AI releases its internal
-// resources immediately. Plain `session = null` only drops our JS reference
-// while Chrome considers the session live, causing "still ongoing" errors
-// when a new session is created right after.
-export function destroySession() {
-  if (session) {
-    try { session.destroy(); } catch {}
-    session = null;
-  }
-}
+export function setThinkingMode(v) { thinkingMode = !!v; }
 
-// Soft reset — forces a new session on the next turn without destroying the
-// current one (which may still be in use mid-stream).
-export function resetSession() { session = null; }
+// No-ops kept for call-site compatibility; session concept was Chrome AI only.
+export function destroySession() {}
+export function resetSession() {}
 
-export async function initAI(preferredBackend) {
-  session = null;
+export async function initAI() {
   llm     = null;
   backend = 'none';
-  if (!preferredBackend || preferredBackend === 'chrome') {
-    if (await tryInitChrome()) return;
-    if (preferredBackend === 'chrome') return;
-  }
-  if (preferredBackend === 'litert' || backend === 'none') {
-    await tryInitLitert();
-  }
-}
-
-function getChromeAIApi() {
-  return window.ai?.languageModel
-      ?? window.ai?.assistant
-      ?? window.LanguageModel
-      ?? null;
-}
-
-export async function checkChromeAI() {
-  try {
-    const api = getChromeAIApi();
-    if (!api) return false;
-    if (typeof api.capabilities === 'function') {
-      const caps = await api.capabilities();
-      return caps.available !== 'no';
-    }
-    if (typeof api.availability === 'function') {
-      const avail = await api.availability();
-      return avail !== 'unavailable';
-    }
-    return true;
-  } catch { return false; }
-}
-
-async function tryInitChrome() {
-  try {
-    const api = getChromeAIApi();
-    if (!api) return false;
-    if (typeof api.capabilities === 'function') {
-      const caps = await api.capabilities();
-      if (caps.available === 'no') return false;
-      if (caps.available === 'after-download') setStatus('Chrome AI: downloading model…');
-      contextMax = caps.defaultMaxTokens ?? caps.maxTokens ?? 4096;
-    } else {
-      contextMax = 4096;
-    }
-    backend = 'chrome';
-    setStatus('Chrome Built-in AI ready.');
-    return true;
-  } catch { return false; }
+  thinkingMode = !!(await txGet('settings', 'thinkingMode'));
+  await tryInitLitert();
 }
 
 // ── OPFS model cache ──────────────────────────────────────────────────────────
@@ -186,7 +131,7 @@ async function tryInitLitert() {
     backend = 'litert';
     setStatus('Litert-LM ready.');
     liteRtWarmup = llm.generateResponse(
-      '<start_of_turn>user\nhi<end_of_turn>\n<start_of_turn>model\n', () => {}
+      '<|turn>user\nhi<turn|>\n<|turn>model\n', () => {}
     ).catch(() => {}).finally(() => { liteRtWarmup = null; });
   } catch (e) {
     console.error('Litert-LM init failed:', e);
@@ -194,83 +139,106 @@ async function tryInitLitert() {
   }
 }
 
-async function getOrCreateSession(systemPrompt, history) {
-  if (backend !== 'chrome') return null;
-  if (session) return session;
-  const api = getChromeAIApi();
-  const opts = { systemPrompt };
-  const prior = history.slice(0, -1).map(m => ({ role: m.role, content: m.content }));
-  if (prior.length) opts.initialPrompts = prior;
-  try {
-    session = await api.create(opts);
-  } catch (e) {
-    session = null;
-    throw e;
-  }
-  return session;
+// Stop sequences: Gemma 4 uses <turn|> / <|turn> as turn delimiters. Old Gemma 1/2/3
+// tokens are kept as a fallback in case the compiled .task file uses them.
+const STOP_SEQS    = ['<turn|>', '<|turn>', '<end_of_turn>', '<start_of_turn>', '<|tool_response>'];
+const MAX_HOLD_LEN = Math.max(...STOP_SEQS.map(s => s.length)) - 1; // chars to hold back
+
+function findEarliestStop(text) {
+  return STOP_SEQS.reduce((min, s) => {
+    const i = text.indexOf(s);
+    return i !== -1 && i < min ? i : min;
+  }, Infinity);
 }
 
-// Build a Gemma instruction-tuned prompt.
+// Build a Gemma 4 instruction-tuned prompt matching the official chat_template.jinja.
+// System prompt gets its own <|turn>system block. Tool responses are appended inline
+// to the preceding model turn (per template), not emitted as a separate user turn.
 function buildGemmaPrompt(systemPrompt, messages) {
   let out = '';
+  if (systemPrompt) {
+    out += '<|turn>system\n' + systemPrompt + '<turn|>\n';
+  }
   for (let i = 0; i < messages.length; i++) {
     const { role, content } = messages[i];
+    const next = messages[i + 1];
     if (role === 'user') {
-      out += '<start_of_turn>user\n';
-      if (i === 0 && systemPrompt) out += systemPrompt + '\n\n';
-      out += content + '<end_of_turn>\n<start_of_turn>model\n';
-    } else {
-      out += content + '<end_of_turn>\n';
+      out += '<|turn>user\n' + content + '<turn|>\n<|turn>model\n';
+    } else if (role === 'assistant') {
+      // Keep the model turn open if a tool response immediately follows
+      if (next?.role === 'tool') {
+        out += content;
+      } else {
+        out += content + '<turn|>\n';
+      }
+    } else if (role === 'tool') {
+      // Close the model turn after the inline tool response, then open a new one
+      out += content + '<turn|>\n<|turn>model\n';
     }
   }
   return out;
 }
 
-export async function* streamAI(messages, systemPrompt) {
-  if (backend === 'chrome') {
-    const sess    = await getOrCreateSession(systemPrompt, messages);
-    const lastMsg = messages.at(-1).content;
-    if (typeof sess.promptStreaming === 'function') {
-      const EOT    = '<end_of_turn>';
-      const stream = sess.promptStreaming(lastMsg);
-      let held = '';
-      for await (const chunk of stream) {
-        if (!chunk) continue;
-        held += chunk;
-        const eotIdx = held.indexOf(EOT);
-        if (eotIdx !== -1) {
-          const clean = held.slice(0, eotIdx).trimEnd();
-          if (clean) yield clean;
-          return;
-        }
-        if (held.length >= EOT.length) {
-          yield held.slice(0, -(EOT.length - 1));
-          held = held.slice(-(EOT.length - 1));
-        }
-      }
-      if (held) yield held.replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
-    } else {
-      const raw = await sess.prompt(lastMsg);
-      yield (raw ?? '').replace(/<end_of_turn>[\s\S]*$/, '').trimEnd();
+// Wraps an async iterable and discards any leading Gemma 4 thinking channel block.
+// Gemma 4 wraps reasoning in <|channel>thought\n...\n<channel|>. Everything before
+// <channel|> is buffered and dropped; content after streams normally.
+// If <channel|> is never emitted the model didn't think — the full buffer is yielded
+// at the end so normal responses are never lost.
+async function* filterThinkingBlock(source) {
+  const CLOSE     = '<channel|>';
+  const CLOSE_LEN = CLOSE.length;
+  let buf  = '';
+  let past = false;
+  for await (const chunk of source) {
+    if (!chunk) continue;
+    if (past) { yield chunk; continue; }
+    buf += chunk;
+    const i = buf.indexOf(CLOSE);
+    if (i !== -1) {
+      past = true;
+      const after = buf.slice(i + CLOSE_LEN).trimStart();
+      if (after) yield after;
+      buf = '';
     }
-  } else if (backend === 'litert') {
+  }
+  if (!past && buf) yield buf;
+}
+
+export async function* streamAI(messages, systemPrompt) {
+  if (thinkingMode) {
+    yield* filterThinkingBlock(_coreStream(messages, systemPrompt));
+  } else {
+    yield* _coreStream(messages, systemPrompt);
+  }
+}
+
+async function* _coreStream(messages, systemPrompt) {
+  if (backend === 'litert') {
     if (liteRtWarmup) await liteRtWarmup;
+    if (litertGenPromise) await litertGenPromise.catch(() => {});
     const prompt = buildGemmaPrompt(systemPrompt, messages);
-    const EOT    = '<end_of_turn>';
+
+    // Hard cap on response length: rough 4 chars/token heuristic, min 4000 chars.
+    const MAX_RESPONSE_CHARS = Math.max(4000, contextMax * 4);
 
     const queue = [];
-    let finished = false;
+    let finished   = false;
     let streamError = null;
-    let wakeUp   = null;
+    let wakeUp      = null;
+    let totalChars  = 0;
 
-    llm.generateResponse(prompt, (partial, done) => {
+    const genPromise = llm.generateResponse(prompt, (partial, done) => {
       queue.push({ partial: partial ?? '', done });
       if (done) finished = true;
       wakeUp?.();
-    }).catch(e => {
+    });
+    litertGenPromise = genPromise;
+    genPromise.catch(e => {
       streamError = e;
       finished = true;
       wakeUp?.();
+    }).finally(() => {
+      if (litertGenPromise === genPromise) litertGenPromise = null;
     });
 
     let held = '';
@@ -283,16 +251,18 @@ export async function* streamAI(messages, systemPrompt) {
       while (queue.length) {
         const { partial, done } = queue.shift();
         held += partial;
-        const eotIdx = held.indexOf(EOT);
-        if (eotIdx !== -1 || done) {
-          const text  = eotIdx !== -1 ? held.slice(0, eotIdx) : held;
+        totalChars += partial.length;
+        const stopAt   = findEarliestStop(held);
+        const overlong = totalChars > MAX_RESPONSE_CHARS;
+        if (stopAt !== Infinity || done || overlong) {
+          const text  = stopAt !== Infinity ? held.slice(0, stopAt) : held;
           const clean = text.trimEnd();
           yield clean || '[No response — check console]';
           return;
         }
-        if (held.length >= EOT.length) {
-          yield held.slice(0, -(EOT.length - 1));
-          held = held.slice(-(EOT.length - 1));
+        if (held.length >= MAX_HOLD_LEN) {
+          yield held.slice(0, -MAX_HOLD_LEN);
+          held = held.slice(-MAX_HOLD_LEN);
         }
       }
     }

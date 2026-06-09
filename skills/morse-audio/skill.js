@@ -47,11 +47,11 @@ async function playMorse(morseStr, wpm = 15) {
 
 export default {
   tag: 'morse-audio',
-  instruction: `MORSE AUDIO SKILL: To play text as Morse code beeps, emit <morse-audio>text to transmit</morse-audio>. The browser will beep the message in proper Morse rhythm.
+  instruction: `MORSE AUDIO SKILL: To play text as Morse code beeps, call <|tool_call>call:morse-audio{input:<|"|>text to transmit<|"|>}<tool_call|>. The browser will beep the message in proper Morse rhythm.
 
 Examples:
-- "Send SOS in Morse audio" → <morse-audio>SOS</morse-audio>
-- "Beep out my name" → <morse-audio>Tony</morse-audio>`,
+- "Send SOS in Morse audio" → <|tool_call>call:morse-audio{input:<|"|>SOS<|"|>}<tool_call|>
+- "Beep out my name" → <|tool_call>call:morse-audio{input:<|"|>Tony<|"|>}<tool_call|>`,
   async handle(content) {
     const morse = textToMorse(content.trim());
     if (morse) await playMorse(morse);

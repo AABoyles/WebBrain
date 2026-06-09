@@ -22,11 +22,11 @@ function nameToMidi(name) {
 
 export default {
   tag: 'midi',
-  instruction: `MIDI NOTE SKILL: To decode a MIDI note number to note name and frequency, or convert a note name to MIDI, emit <midi>value</midi>.
+  instruction: `MIDI NOTE SKILL: To decode a MIDI note number to note name and frequency, or convert a note name to MIDI, call <|tool_call>call:midi{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "What MIDI note is 60?" → <midi>60</midi>
-- "What MIDI number is A4?" → <midi>A4</midi>`,
+- "What MIDI note is 60?" → <|tool_call>call:midi{input:<|"|>60<|"|>}<tool_call|>
+- "What MIDI number is A4?" → <|tool_call>call:midi{input:<|"|>A4<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const n = parseInt(content);

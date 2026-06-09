@@ -11,9 +11,9 @@ function rhymeKey(word) {
 
 export default {
   tag: 'rhymescheme',
-  instruction: `RHYME SCHEME SKILL: To label the rhyme scheme of a poem, emit <rhymescheme>line1 / line2 / line3 / …</rhymescheme> (lines separated by " / ").
+  instruction: `RHYME SCHEME SKILL: To label the rhyme scheme of a poem, call <|tool_call>call:rhymescheme{input:<|"|>line1 / line2 / line3 / …<|"|>}<tool_call|> (lines separated by " / ").
 
-Example: <rhymescheme>Shall I compare thee to a summer's day / Thou art more lovely and more temperate / Rough winds do shake the darling buds of May / And summer's lease hath all too short a date</rhymescheme>`,
+Example: <|tool_call>call:rhymescheme{input:<|"|>Shall I compare thee to a summer's day / Thou art more lovely and more temperate / Rough winds do shake the darling buds of May / And summer's lease hath all too short a date<|"|>}<tool_call|>`,
   call(content) {
     const lines = content.split('/').map(l => l.trim()).filter(Boolean);
     if (lines.length < 2) return 'Provide at least 2 lines separated by " / ".';

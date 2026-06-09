@@ -42,11 +42,11 @@ function decode(hash) {
 
 export default {
   tag: 'geohash',
-  instruction: `GEOHASH SKILL: Encode lat/lng to Geohash or decode a Geohash string. Emit <geohash>lat,lon</geohash> or <geohash>hashstring</geohash>. Optionally add precision: <geohash>lat,lon,precision</geohash>.
+  instruction: `GEOHASH SKILL: Encode lat/lng to Geohash or decode a Geohash string. call <|tool_call>call:geohash{input:<|"|>lat,lon<|"|>}<tool_call|> or <|tool_call>call:geohash{input:<|"|>hashstring<|"|>}<tool_call|>. Optionally add precision: <|tool_call>call:geohash{input:<|"|>lat,lon,precision<|"|>}<tool_call|>.
 
 Examples:
-- "Geohash of NYC" → <geohash>40.7128,-74.0060</geohash>
-- "Decode dr5regw3pg" → <geohash>dr5regw3pg</geohash>`,
+- "Geohash of NYC" → <|tool_call>call:geohash{input:<|"|>40.7128,-74.0060<|"|>}<tool_call|>
+- "Decode dr5regw3pg" → <|tool_call>call:geohash{input:<|"|>dr5regw3pg<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim().toLowerCase();
     // Check if it looks like a geohash (only base32 chars)

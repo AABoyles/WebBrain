@@ -1,10 +1,10 @@
 export default {
   tag: 'sternbrocot',
-  instruction: `STERN-BROCOT TREE SKILL: To find the path to a fraction in the Stern-Brocot tree, emit <sternbrocot>p/q</sternbrocot>.
+  instruction: `STERN-BROCOT TREE SKILL: To find the path to a fraction in the Stern-Brocot tree, call <|tool_call>call:sternbrocot{input:<|"|>p/q<|"|>}<tool_call|>.
 
 Examples:
-- "Path to 3/7 in Stern-Brocot tree" → <sternbrocot>3/7</sternbrocot>
-- "Stern-Brocot for 5/8" → <sternbrocot>5/8</sternbrocot>`,
+- "Path to 3/7 in Stern-Brocot tree" → <|tool_call>call:sternbrocot{input:<|"|>3/7<|"|>}<tool_call|>
+- "Stern-Brocot for 5/8" → <|tool_call>call:sternbrocot{input:<|"|>5/8<|"|>}<tool_call|>`,
   call(content) {
     const m = content.trim().match(/^(\d+)\/(\d+)$/);
     if (!m) return 'Format: p/q (e.g. 3/7). Must be a proper fraction.';

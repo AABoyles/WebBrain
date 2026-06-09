@@ -1,10 +1,10 @@
 export default {
   tag: 'regex',
-  instruction: `REGEX TESTER SKILL: To test a regex pattern against a string, emit <regex>pattern|||test string</regex> (three pipes as separator). Add flags after the pattern: /pattern/flags|||string.
+  instruction: `REGEX TESTER SKILL: To test a regex pattern against a string, call <|tool_call>call:regex{input:<|"|>pattern|||test string<|"|>}<tool_call|> (three pipes as separator). Add flags after the pattern: /pattern/flags|||string.
 
 Examples:
-- "Does /\\d+/ match 'abc123'?" → <regex>/\\d+/|||abc123</regex>
-- "Test /foo/i against 'FOO bar'" → <regex>/foo/i|||FOO bar</regex>`,
+- "Does /\\d+/ match 'abc123'?" → <|tool_call>call:regex{input:<|"|>/\\d+/|||abc123<|"|>}<tool_call|>
+- "Test /foo/i against 'FOO bar'" → <|tool_call>call:regex{input:<|"|>/foo/i|||FOO bar<|"|>}<tool_call|>`,
   call(content) {
     const sep = content.indexOf('|||');
     if (sep === -1) return 'Format: pattern|||test string — e.g. /\\d+/|||abc123';

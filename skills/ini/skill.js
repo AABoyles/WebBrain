@@ -52,11 +52,11 @@ function summarize(parsed) {
 
 export default {
   tag: 'ini',
-  instruction: `INI CONFIG SKILL: To parse an INI string emit <ini>parse:content</ini>. To convert JSON to INI emit <ini>format:{"section":{"key":"val"}}</ini>.
+  instruction: `INI CONFIG SKILL: To parse an INI string call <|tool_call>call:ini{input:<|"|>parse:content<|"|>}<tool_call|>. To convert JSON to INI call <|tool_call>call:ini{input:<|"|>format:{"section":{"key":"val"}}<|"|>}<tool_call|>.
 
 Examples:
-- "Parse this INI: [db]\\nhost=localhost" → <ini>parse:[db]\nhost=localhost</ini>
-- "Format as INI: {"server":{"port":"8080"}}" → <ini>format:{"server":{"port":"8080"}}</ini>`,
+- "Parse this INI: [db]\\nhost=localhost" → <|tool_call>call:ini{input:<|"|>parse:[db]\nhost=localhost<|"|>}<tool_call|>
+- "Format as INI: {"server":{"port":"8080"}}" → <|tool_call>call:ini{input:<|"|>format:{"server":{"port":"8080"}}<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: parse:… or format:…';

@@ -26,11 +26,11 @@ function parseTime(str) {
 
 export default {
   tag: 'sleep',
-  instruction: `SLEEP CYCLE SKILL: To calculate optimal sleep times based on 90-minute REM cycles, emit <sleep>bedtime HH:MM</sleep> or <sleep>wake HH:MM</sleep>.
+  instruction: `SLEEP CYCLE SKILL: To calculate optimal sleep times based on 90-minute REM cycles, call <|tool_call>call:sleep{input:<|"|>bedtime HH:MM<|"|>}<tool_call|> or <|tool_call>call:sleep{input:<|"|>wake HH:MM<|"|>}<tool_call|>.
 
 Examples:
-- "What time should I wake up if I sleep at 11pm?" → <sleep>bedtime 11pm</sleep>
-- "When should I go to bed to wake at 7am?" → <sleep>wake 7am</sleep>`,
+- "What time should I wake up if I sleep at 11pm?" → <|tool_call>call:sleep{input:<|"|>bedtime 11pm<|"|>}<tool_call|>
+- "When should I go to bed to wake at 7am?" → <|tool_call>call:sleep{input:<|"|>wake 7am<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const isWake = /^wake\s+/i.test(content);

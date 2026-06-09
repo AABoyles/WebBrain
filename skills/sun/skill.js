@@ -1,10 +1,10 @@
 export default {
   tag: 'sun',
-  instruction: `SUNRISE/SUNSET SKILL: To get sunrise and sunset times for a location, emit <sun>lat,lon</sun> or <sun>lat,lon YYYY-MM-DD</sun>.
+  instruction: `SUNRISE/SUNSET SKILL: To get sunrise and sunset times for a location, call <|tool_call>call:sun{input:<|"|>lat,lon<|"|>}<tool_call|> or <|tool_call>call:sun{input:<|"|>lat,lon YYYY-MM-DD<|"|>}<tool_call|>.
 
 Examples:
-- "Sunrise in NYC today" → <sun>40.71,-74.01</sun>
-- Use <location></location> first to get coordinates.`,
+- "Sunrise in NYC today" → <|tool_call>call:sun{input:<|"|>40.71,-74.01<|"|>}<tool_call|>
+- Use <|tool_call>call:location{input:<|"|><|"|>}<tool_call|> first to get coordinates.`,
   async call(content) {
     content = content.trim();
     const parts = content.split(/\s+/);

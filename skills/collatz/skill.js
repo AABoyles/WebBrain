@@ -1,10 +1,10 @@
 export default {
   tag: 'collatz',
-  instruction: `COLLATZ SEQUENCE SKILL: To run the Collatz (3n+1) sequence from any positive integer, emit <collatz>n</collatz>. Shows steps to reach 1.
+  instruction: `COLLATZ SEQUENCE SKILL: To run the Collatz (3n+1) sequence from any positive integer, call <|tool_call>call:collatz{input:<|"|>n<|"|>}<tool_call|>. Shows steps to reach 1.
 
 Examples:
-- "Collatz sequence for 27" → <collatz>27</collatz>
-- "How many steps for 6?" → <collatz>6</collatz>`,
+- "Collatz sequence for 27" → <|tool_call>call:collatz{input:<|"|>27<|"|>}<tool_call|>
+- "How many steps for 6?" → <|tool_call>call:collatz{input:<|"|>6<|"|>}<tool_call|>`,
   call(content) {
     let n = parseInt(content.trim());
     if (isNaN(n) || n < 1) return 'Enter a positive integer.';

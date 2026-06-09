@@ -1,9 +1,9 @@
 export default {
   tag: 'url',
-  instruction: `URL DISSECTOR SKILL: To break a URL into its components and explain each part, emit <url>the URL</url>.
+  instruction: `URL DISSECTOR SKILL: To break a URL into its components and explain each part, call <|tool_call>call:url{input:<|"|>the URL<|"|>}<tool_call|>.
 
 Examples:
-- "Explain this URL: https://example.com/path?q=1#section" → <url>https://example.com/path?q=1#section</url>`,
+- "Explain this URL: https://example.com/path?q=1#section" → <|tool_call>call:url{input:<|"|>https://example.com/path?q=1#section<|"|>}<tool_call|>`,
   call(content) {
     try {
       const u = new URL(content.trim());

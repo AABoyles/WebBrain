@@ -36,9 +36,9 @@ const POSITIONS = {
 
 export default {
   tag: 'pigpen',
-  instruction: `PIGPEN CIPHER SKILL: To encode text in the Masonic pigpen cipher, emit <pigpen>text</pigpen>. Returns grid-position descriptions for each letter since the symbols can't be fully rendered in text.
+  instruction: `PIGPEN CIPHER SKILL: To encode text in the Masonic pigpen cipher, call <|tool_call>call:pigpen{input:<|"|>text<|"|>}<tool_call|>. Returns grid-position descriptions for each letter since the symbols can't be fully rendered in text.
 
-Example: <pigpen>HELLO</pigpen>`,
+Example: <|tool_call>call:pigpen{input:<|"|>HELLO<|"|>}<tool_call|>`,
   call(text) {
     return text.toUpperCase().split('').map(c => {
       if (c === ' ') return '';

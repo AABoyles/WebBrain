@@ -22,11 +22,11 @@ function fromRoman(s) {
 
 export default {
   tag: 'roman',
-  instruction: `ROMAN NUMERAL SKILL: To convert to or from Roman numerals, emit <roman>value</roman>. Integers 1–3999 convert to Roman; Roman strings convert to integers.
+  instruction: `ROMAN NUMERAL SKILL: To convert to or from Roman numerals, call <|tool_call>call:roman{input:<|"|>value<|"|>}<tool_call|>. Integers 1–3999 convert to Roman; Roman strings convert to integers.
 
 Examples:
-- "2024 in Roman numerals" → <roman>2024</roman>
-- "What is MMXXIV?" → <roman>MMXXIV</roman>`,
+- "2024 in Roman numerals" → <|tool_call>call:roman{input:<|"|>2024<|"|>}<tool_call|>
+- "What is MMXXIV?" → <|tool_call>call:roman{input:<|"|>MMXXIV<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const n = parseInt(content, 10);

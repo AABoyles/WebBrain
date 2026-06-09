@@ -23,11 +23,11 @@ function stop() {
 
 export default {
   tag: 'metronome',
-  instruction: `METRONOME SKILL: To start a metronome, emit <metronome>BPM</metronome>. To stop it, emit <metronome>stop</metronome>.
+  instruction: `METRONOME SKILL: To start a metronome, call <|tool_call>call:metronome{input:<|"|>BPM<|"|>}<tool_call|>. To stop it, call <|tool_call>call:metronome{input:<|"|>stop<|"|>}<tool_call|>.
 
 Examples:
-- "Start a metronome at 120 BPM" → <metronome>120</metronome>
-- "Stop the metronome" → <metronome>stop</metronome>`,
+- "Start a metronome at 120 BPM" → <|tool_call>call:metronome{input:<|"|>120<|"|>}<tool_call|>
+- "Stop the metronome" → <|tool_call>call:metronome{input:<|"|>stop<|"|>}<tool_call|>`,
   async handle(content) {
     content = content.trim().toLowerCase();
     stop();

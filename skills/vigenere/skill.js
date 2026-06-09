@@ -12,11 +12,11 @@ function vigenere(text, key, decode) {
 
 export default {
   tag: 'vigenere',
-  instruction: `VIGENÈRE CIPHER SKILL: To encode or decode with the Vigenère polyalphabetic cipher, emit <vigenere>key:text</vigenere> to encode or <vigenere>decode:key:text</vigenere> to decode.
+  instruction: `VIGENÈRE CIPHER SKILL: To encode or decode with the Vigenère polyalphabetic cipher, call <|tool_call>call:vigenere{input:<|"|>key:text<|"|>}<tool_call|> to encode or <|tool_call>call:vigenere{input:<|"|>decode:key:text<|"|>}<tool_call|> to decode.
 
 Examples:
-- "Encode 'Hello' with key SECRET" → <vigenere>SECRET:Hello</vigenere>
-- "Decode 'Zincs' with key SECRET" → <vigenere>decode:SECRET:Zincs</vigenere>`,
+- "Encode 'Hello' with key SECRET" → <|tool_call>call:vigenere{input:<|"|>SECRET:Hello<|"|>}<tool_call|>
+- "Decode 'Zincs' with key SECRET" → <|tool_call>call:vigenere{input:<|"|>decode:SECRET:Zincs<|"|>}<tool_call|>`,
   call(content) {
     const decode = content.toLowerCase().startsWith('decode:');
     const rest = decode ? content.slice(7) : content;

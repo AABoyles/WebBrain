@@ -1,10 +1,10 @@
 export default {
   tag: 'bpm',
-  instruction: `BPM TO MS SKILL: To convert BPM to millisecond note durations, emit <bpm>number</bpm>.
+  instruction: `BPM TO MS SKILL: To convert BPM to millisecond note durations, call <|tool_call>call:bpm{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "What's 120 BPM in ms?" → <bpm>120</bpm>
-- "Note durations at 90 BPM" → <bpm>90</bpm>`,
+- "What's 120 BPM in ms?" → <|tool_call>call:bpm{input:<|"|>120<|"|>}<tool_call|>
+- "Note durations at 90 BPM" → <|tool_call>call:bpm{input:<|"|>90<|"|>}<tool_call|>`,
   call(content) {
     const bpm = parseFloat(content.trim());
     if (isNaN(bpm) || bpm <= 0) return 'Enter a positive BPM value.';

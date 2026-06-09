@@ -5,9 +5,9 @@ const LEET = {
 
 export default {
   tag: 'leet',
-  instruction: `LEET SPEAK SKILL: To translate text to 1337 5p34k, emit <leet>text</leet>.
+  instruction: `LEET SPEAK SKILL: To translate text to 1337 5p34k, call <|tool_call>call:leet{input:<|"|>text<|"|>}<tool_call|>.
 
-Example: <leet>elite hacker</leet> → 31173 h4ck3r`,
+Example: <|tool_call>call:leet{input:<|"|>elite hacker<|"|>}<tool_call|> → 31173 h4ck3r`,
   call: text => text.replace(/[aegilostzAEGILOSTZ]/g, c => LEET[c] ?? c),
   async handle() {},
 };

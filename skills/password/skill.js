@@ -18,13 +18,13 @@ function generate(spec) {
 
 export default {
   tag: 'password',
-  instruction: `PASSWORD GENERATOR SKILL: When asked to generate a password or passphrase, emit <password>spec</password> to get a cryptographically random result. Do NOT invent one yourself.
+  instruction: `PASSWORD GENERATOR SKILL: When asked to generate a password or passphrase, call <|tool_call>call:password{input:<|"|>spec<|"|>}<tool_call|> to get a cryptographically random result. Do NOT invent one yourself.
 Spec is plain English: length (default 16), optionally "upper", "digits", "symbols".
 
 Examples:
-- "Generate a strong password" → <password>16 upper digits symbols</password>
-- "I need a 24-char password" → <password>24 upper digits symbols</password>
-- "Simple 12-char password" → <password>12</password>`,
+- "Generate a strong password" → <|tool_call>call:password{input:<|"|>16 upper digits symbols<|"|>}<tool_call|>
+- "I need a 24-char password" → <|tool_call>call:password{input:<|"|>24 upper digits symbols<|"|>}<tool_call|>
+- "Simple 12-char password" → <|tool_call>call:password{input:<|"|>12<|"|>}<tool_call|>`,
   call: generate,
   async handle() {},
 };

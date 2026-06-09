@@ -48,11 +48,11 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 
 export default {
   tag: 'nameday',
-  instruction: `NAME DAY SKILL: To find the European feast day (name day) for a first name, emit <nameday>name</nameday>.
+  instruction: `NAME DAY SKILL: To find the European feast day (name day) for a first name, call <|tool_call>call:nameday{input:<|"|>name<|"|>}<tool_call|>.
 
 Examples:
-- "Name day for Patrick" → <nameday>Patrick</nameday>
-- "When is St. Nicholas Day?" → <nameday>Nicholas</nameday>`,
+- "Name day for Patrick" → <|tool_call>call:nameday{input:<|"|>Patrick<|"|>}<tool_call|>
+- "When is St. Nicholas Day?" → <|tool_call>call:nameday{input:<|"|>Nicholas<|"|>}<tool_call|>`,
   call(content) {
     const name = content.trim().toUpperCase().replace(/[^A-Z]/g,'');
     const date = NAME_DAYS[name];

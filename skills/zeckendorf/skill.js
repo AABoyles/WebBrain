@@ -6,11 +6,11 @@ function getFibs(max) {
 
 export default {
   tag: 'zeckendorf',
-  instruction: `ZECKENDORF REPRESENTATION SKILL: To express a positive integer as a sum of non-consecutive Fibonacci numbers (Zeckendorf's theorem), emit <zeckendorf>n</zeckendorf>.
+  instruction: `ZECKENDORF REPRESENTATION SKILL: To express a positive integer as a sum of non-consecutive Fibonacci numbers (Zeckendorf's theorem), call <|tool_call>call:zeckendorf{input:<|"|>n<|"|>}<tool_call|>.
 
 Examples:
-- "Zeckendorf of 100" → <zeckendorf>100</zeckendorf>
-- "Express 64 as Fibonacci sum" → <zeckendorf>64</zeckendorf>`,
+- "Zeckendorf of 100" → <|tool_call>call:zeckendorf{input:<|"|>100<|"|>}<tool_call|>
+- "Express 64 as Fibonacci sum" → <|tool_call>call:zeckendorf{input:<|"|>64<|"|>}<tool_call|>`,
   call(content) {
     let n = parseInt(content.trim().replace(/,/g,''));
     if (isNaN(n) || n < 1) return 'Enter a positive integer.';

@@ -24,12 +24,12 @@ function prevDay(dateStr) {
 
 export default {
   tag: 'habit',
-  instruction: `HABIT TRACKER SKILL: To log a habit as done today, emit <habit>log:habit name</habit>. To see streaks and history, emit <habit>stats:habit name</habit> or <habit>list</habit> for all habits.
+  instruction: `HABIT TRACKER SKILL: To log a habit as done today, call <|tool_call>call:habit{input:<|"|>log:habit name<|"|>}<tool_call|>. To see streaks and history, call <|tool_call>call:habit{input:<|"|>stats:habit name<|"|>}<tool_call|> or <|tool_call>call:habit{input:<|"|>list<|"|>}<tool_call|> for all habits.
 
 Examples:
-- "I exercised today" → <habit>log:exercise</habit>
-- "Did my morning meditation" → <habit>log:meditation</habit>
-- "Show my exercise streak" → <habit>stats:exercise</habit>`,
+- "I exercised today" → <|tool_call>call:habit{input:<|"|>log:exercise<|"|>}<tool_call|>
+- "Did my morning meditation" → <|tool_call>call:habit{input:<|"|>log:meditation<|"|>}<tool_call|>
+- "Show my exercise streak" → <|tool_call>call:habit{input:<|"|>stats:exercise<|"|>}<tool_call|>`,
   async call(content) {
     const cmd = content.trim();
 

@@ -12,12 +12,12 @@ function detect(s) {
 
 export default {
   tag: 'radix',
-  instruction: `RADIX CONVERTER SKILL: To convert a number between bases, emit <radix>value to base</radix> or just <radix>value</radix> (shows all bases). Prefix 0b=binary, 0o=octal, 0x=hex; bare digits = decimal.
+  instruction: `RADIX CONVERTER SKILL: To convert a number between bases, call <|tool_call>call:radix{input:<|"|>value to base<|"|>}<tool_call|> or just <|tool_call>call:radix{input:<|"|>value<|"|>}<tool_call|> (shows all bases). Prefix 0b=binary, 0o=octal, 0x=hex; bare digits = decimal.
 
 Examples:
-- "255 in hex" → <radix>255 to hex</radix>
-- "0xFF in binary" → <radix>0xFF to bin</radix>
-- "Show 42 in all bases" → <radix>42</radix>`,
+- "255 in hex" → <|tool_call>call:radix{input:<|"|>255 to hex<|"|>}<tool_call|>
+- "0xFF in binary" → <|tool_call>call:radix{input:<|"|>0xFF to bin<|"|>}<tool_call|>
+- "Show 42 in all bases" → <|tool_call>call:radix{input:<|"|>42<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const toMatch = content.match(/^(.+?)\s+to\s+(\w+)$/i);

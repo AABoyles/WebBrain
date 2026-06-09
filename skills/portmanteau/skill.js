@@ -16,11 +16,11 @@ function blend(a, b) {
 
 export default {
   tag: 'portmanteau',
-  instruction: `PORTMANTEAU BUILDER SKILL: To blend two words into a portmanteau, emit <portmanteau>word1 word2</portmanteau>.
+  instruction: `PORTMANTEAU BUILDER SKILL: To blend two words into a portmanteau, call <|tool_call>call:portmanteau{input:<|"|>word1 word2<|"|>}<tool_call|>.
 
 Examples:
-- "Blend 'brunch' etymology (breakfast + lunch)" → <portmanteau>breakfast lunch</portmanteau>
-- "Make a portmanteau of smoke and fog" → <portmanteau>smoke fog</portmanteau>`,
+- "Blend 'brunch' etymology (breakfast + lunch)" → <|tool_call>call:portmanteau{input:<|"|>breakfast lunch<|"|>}<tool_call|>
+- "Make a portmanteau of smoke and fog" → <|tool_call>call:portmanteau{input:<|"|>smoke fog<|"|>}<tool_call|>`,
   call(content) {
     const parts = content.trim().split(/\s+/);
     if (parts.length < 2) return 'Provide two words.';

@@ -125,12 +125,12 @@ const BY_NAME = Object.fromEntries(ELEMENTS.filter(Boolean).map((e,i) => [e.name
 
 export default {
   tag: 'element',
-  instruction: `PERIODIC TABLE SKILL: To look up an element by name, symbol, or atomic number, emit <element>value</element>.
+  instruction: `PERIODIC TABLE SKILL: To look up an element by name, symbol, or atomic number, call <|tool_call>call:element{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "Tell me about gold" → <element>gold</element>
-- "What is element 79?" → <element>79</element>
-- "Info on Fe" → <element>Fe</element>`,
+- "Tell me about gold" → <|tool_call>call:element{input:<|"|>gold<|"|>}<tool_call|>
+- "What is element 79?" → <|tool_call>call:element{input:<|"|>79<|"|>}<tool_call|>
+- "Info on Fe" → <|tool_call>call:element{input:<|"|>Fe<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const n = parseInt(content);

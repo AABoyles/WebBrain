@@ -77,11 +77,11 @@ function lookupOUI(mac) {
 
 export default {
   tag: 'mac',
-  instruction: `MAC ADDRESS SKILL: To decode a MAC address, emit <mac>address</mac>. Accepts any common format (colons, dashes, dots).
+  instruction: `MAC ADDRESS SKILL: To decode a MAC address, call <|tool_call>call:mac{input:<|"|>address<|"|>}<tool_call|>. Accepts any common format (colons, dashes, dots).
 
 Examples:
-- "Who made this NIC? 00:1A:2B:3C:4D:5E" → <mac>00:1A:2B:3C:4D:5E</mac>
-- "Decode MAC b8:27:eb:ab:cd:ef" → <mac>b8:27:eb:ab:cd:ef</mac>`,
+- "Who made this NIC? 00:1A:2B:3C:4D:5E" → <|tool_call>call:mac{input:<|"|>00:1A:2B:3C:4D:5E<|"|>}<tool_call|>
+- "Decode MAC b8:27:eb:ab:cd:ef" → <|tool_call>call:mac{input:<|"|>b8:27:eb:ab:cd:ef<|"|>}<tool_call|>`,
   call(content) {
     const raw = content.trim();
     const hex = raw.replace(/[:\-\.\s]/g, '').toUpperCase();

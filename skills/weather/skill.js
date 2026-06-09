@@ -11,11 +11,11 @@ const WMO = {
 
 export default {
   tag: 'weather',
-  instruction: `WEATHER SKILL: To get current weather at a location, emit <weather>lat,lon</weather> or <weather>city name</weather> (for city names, use with the Location skill to get coordinates first).
+  instruction: `WEATHER SKILL: To get current weather at a location, call <|tool_call>call:weather{input:<|"|>lat,lon<|"|>}<tool_call|> or <|tool_call>call:weather{input:<|"|>city name<|"|>}<tool_call|> (for city names, use with the Location skill to get coordinates first).
 
 Examples:
-- "Current weather at 40.71,-74.01" → <weather>40.71,-74.01</weather>
-- Use <location></location> first to get user's coordinates, then pass them here.`,
+- "Current weather at 40.71,-74.01" → <|tool_call>call:weather{input:<|"|>40.71,-74.01<|"|>}<tool_call|>
+- Use <|tool_call>call:location{input:<|"|><|"|>}<tool_call|> first to get user's coordinates, then pass them here.`,
   async call(content) {
     content = content.trim();
     // Try to parse lat,lon

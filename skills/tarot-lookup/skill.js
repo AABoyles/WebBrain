@@ -27,11 +27,11 @@ const BY_NAME = Object.fromEntries(MAJOR.map((c,i) => [c.name.toUpperCase(), i])
 
 export default {
   tag: 'tarot-lookup',
-  instruction: `TAROT MAJOR ARCANA SKILL: To look up a tarot card's upright and reversed meanings, emit <tarot-lookup>card name or number</tarot-lookup>.
+  instruction: `TAROT MAJOR ARCANA SKILL: To look up a tarot card's upright and reversed meanings, call <|tool_call>call:tarot-lookup{input:<|"|>card name or number<|"|>}<tool_call|>.
 
 Examples:
-- "What does The Tower mean?" → <tarot-lookup>The Tower</tarot-lookup>
-- "Tarot card 0" → <tarot-lookup>0</tarot-lookup>`,
+- "What does The Tower mean?" → <|tool_call>call:tarot-lookup{input:<|"|>The Tower<|"|>}<tool_call|>
+- "Tarot card 0" → <|tool_call>call:tarot-lookup{input:<|"|>0<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const n = parseInt(content);

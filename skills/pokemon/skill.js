@@ -1,10 +1,10 @@
 export default {
   tag: 'pokemon',
-  instruction: `POKÉDEX SKILL: To look up a Pokémon by name or number, emit <pokemon>name or number</pokemon>.
+  instruction: `POKÉDEX SKILL: To look up a Pokémon by name or number, call <|tool_call>call:pokemon{input:<|"|>name or number<|"|>}<tool_call|>.
 
 Examples:
-- "What is Pikachu?" → <pokemon>pikachu</pokemon>
-- "Look up Pokémon #1" → <pokemon>1</pokemon>`,
+- "What is Pikachu?" → <|tool_call>call:pokemon{input:<|"|>pikachu<|"|>}<tool_call|>
+- "Look up Pokémon #1" → <|tool_call>call:pokemon{input:<|"|>1<|"|>}<tool_call|>`,
   async call(content) {
     const query = content.trim().toLowerCase().replace(/\s+/g,'-');
     try {

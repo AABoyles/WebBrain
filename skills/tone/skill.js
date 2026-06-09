@@ -22,12 +22,12 @@ function noteToHz(note) {
 
 export default {
   tag: 'tone',
-  instruction: `TONE GENERATOR SKILL: To play or stop a continuous tone, emit <tone>value</tone>. Value can be a frequency in Hz, a note name (e.g. A4, C#5), or "stop".
+  instruction: `TONE GENERATOR SKILL: To play or stop a continuous tone, call <|tool_call>call:tone{input:<|"|>value<|"|>}<tool_call|>. Value can be a frequency in Hz, a note name (e.g. A4, C#5), or "stop".
 
 Examples:
-- "Play 440 Hz" → <tone>440</tone>
-- "Play A4" → <tone>A4</tone>
-- "Stop the tone" → <tone>stop</tone>`,
+- "Play 440 Hz" → <|tool_call>call:tone{input:<|"|>440<|"|>}<tool_call|>
+- "Play A4" → <|tool_call>call:tone{input:<|"|>A4<|"|>}<tool_call|>
+- "Stop the tone" → <|tool_call>call:tone{input:<|"|>stop<|"|>}<tool_call|>`,
   async handle(content) {
     content = content.trim().toLowerCase();
     if (content === 'stop') {

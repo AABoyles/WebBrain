@@ -26,11 +26,11 @@ function pigWord(word) {
 
 export default {
   tag: 'piglatin',
-  instruction: `PIG LATIN SKILL: To translate text to Pig Latin, emit <piglatin>text</piglatin>.
+  instruction: `PIG LATIN SKILL: To translate text to Pig Latin, call <|tool_call>call:piglatin{input:<|"|>text<|"|>}<tool_call|>.
 
 Examples:
-- "Say 'hello world' in Pig Latin" → <piglatin>hello world</piglatin>
-- "Pig Latin for 'first'" → <piglatin>first</piglatin>`,
+- "Say 'hello world' in Pig Latin" → <|tool_call>call:piglatin{input:<|"|>hello world<|"|>}<tool_call|>
+- "Pig Latin for 'first'" → <|tool_call>call:piglatin{input:<|"|>first<|"|>}<tool_call|>`,
   call: text => text.split(/\b/).map(pigWord).join(''),
   async handle() {},
 };

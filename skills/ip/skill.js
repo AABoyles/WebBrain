@@ -115,11 +115,11 @@ function analyzeV4(content) {
 
 export default {
   tag: 'ip',
-  instruction: `IP ADDRESS SKILL: Analyze an IPv4 or IPv6 address (with optional CIDR prefix). Emit <ip>address</ip> or <ip>address/prefix</ip>.
+  instruction: `IP ADDRESS SKILL: Analyze an IPv4 or IPv6 address (with optional CIDR prefix). call <|tool_call>call:ip{input:<|"|>address<|"|>}<tool_call|> or <|tool_call>call:ip{input:<|"|>address/prefix<|"|>}<tool_call|>.
 
 Examples:
-- "What subnet is 192.168.1.100/24?" → <ip>192.168.1.100/24</ip>
-- "Analyze 2001:db8::1/48" → <ip>2001:db8::1/48</ip>`,
+- "What subnet is 192.168.1.100/24?" → <|tool_call>call:ip{input:<|"|>192.168.1.100/24<|"|>}<tool_call|>
+- "Analyze 2001:db8::1/48" → <|tool_call>call:ip{input:<|"|>2001:db8::1/48<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     if (isV6(content)) return analyzeV6(content);

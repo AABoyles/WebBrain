@@ -2,12 +2,12 @@ import { getTodos, addTodo, setTodoDone, deleteTodo } from '../db.js';
 
 export default {
   tag: 'todo',
-  instruction: `TODO SKILL: Manage tasks with <todo>command</todo>. Commands: list, add:text, done:ID, delete:ID.
+  instruction: `TODO SKILL: Manage tasks. Commands: list, add:text, done:ID, delete:ID.
 
 Examples:
-- "Show my todos" → <todo>list</todo>
-- "Add 'buy milk'" → <todo>add:Buy milk</todo>
-- "Mark task 3 done" → <todo>done:3</todo>`,
+- "Show my todos" → <|tool_call>call:todo{input:<|"|>list<|"|>}<tool_call|>
+- "Add 'buy milk'" → <|tool_call>call:todo{input:<|"|>add:Buy milk<|"|>}<tool_call|>
+- "Mark task 3 done" → <|tool_call>call:todo{input:<|"|>done:3<|"|>}<tool_call|>`,
   async call(content) {
     const cmd = content.trim();
     if (cmd === 'list') {

@@ -37,11 +37,11 @@ function randomWordFor(letter) {
 
 export default {
   tag: 'acronym',
-  instruction: `ACRONYM BUILDER SKILL: To generate a backronym (a sentence where each letter spells out the given word), emit <acronym>WORD</acronym>.
+  instruction: `ACRONYM BUILDER SKILL: To generate a backronym (a sentence where each letter spells out the given word), call <|tool_call>call:acronym{input:<|"|>WORD<|"|>}<tool_call|>.
 
 Examples:
-- "Backronym for SMART" → <acronym>SMART</acronym>
-- "Make an acronym for FAST" → <acronym>FAST</acronym>`,
+- "Backronym for SMART" → <|tool_call>call:acronym{input:<|"|>SMART<|"|>}<tool_call|>
+- "Make an acronym for FAST" → <|tool_call>call:acronym{input:<|"|>FAST<|"|>}<tool_call|>`,
   call(content) {
     const word = content.trim().toUpperCase().replace(/[^A-Z]/g,'');
     if (!word) return 'Enter a word.';

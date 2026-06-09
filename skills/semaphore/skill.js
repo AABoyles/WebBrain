@@ -13,9 +13,9 @@ const SEMAPHORE = {
 
 export default {
   tag: 'semaphore',
-  instruction: `SEMAPHORE SKILL: To describe flag semaphore positions for letters, emit <semaphore>text</semaphore>. Positions are given as clock-face angles for left and right flags.
+  instruction: `SEMAPHORE SKILL: To describe flag semaphore positions for letters, call <|tool_call>call:semaphore{input:<|"|>text<|"|>}<tool_call|>. Positions are given as clock-face angles for left and right flags.
 
-Example: <semaphore>SOS</semaphore>`,
+Example: <|tool_call>call:semaphore{input:<|"|>SOS<|"|>}<tool_call|>`,
   call(text) {
     return text.toUpperCase().split('').filter(c => /[A-Z ]/.test(c)).map(c => {
       if (c === ' ') return '';

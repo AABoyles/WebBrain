@@ -24,11 +24,11 @@ const SOUNDS = {
 
 export default {
   tag: 'sound',
-  instruction: `ANIMAL SOUNDS SKILL: To find what sound an animal makes, emit <sound>animal</sound>.
+  instruction: `ANIMAL SOUNDS SKILL: To find what sound an animal makes, call <|tool_call>call:sound{input:<|"|>animal<|"|>}<tool_call|>.
 
 Examples:
-- "What sound does a fox make?" → <sound>fox</sound>
-- "Sound of a koala" → <sound>koala</sound>`,
+- "What sound does a fox make?" → <|tool_call>call:sound{input:<|"|>fox<|"|>}<tool_call|>
+- "Sound of a koala" → <|tool_call>call:sound{input:<|"|>koala<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toLowerCase();
     const s   = SOUNDS[key] ?? SOUNDS[key.replace(/s$/, '')];

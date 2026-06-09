@@ -137,11 +137,11 @@ function nextRuns(expr, count = 5, from = new Date()) {
 
 export default {
   tag: 'cron',
-  instruction: `CRON EXPRESSION SKILL: To explain a cron schedule and show next run times, emit <cron>expression</cron>. Optionally prefix with a count: <cron>10:0 9 * * 1</cron> to show next 10 runs. Supports 5-field cron (min hour dom month dow).
+  instruction: `CRON EXPRESSION SKILL: To explain a cron schedule and show next run times, call <|tool_call>call:cron{input:<|"|>expression<|"|>}<tool_call|>. Optionally prefix with a count: <|tool_call>call:cron{input:<|"|>10:0 9 * * 1<|"|>}<tool_call|> to show next 10 runs. Supports 5-field cron (min hour dom month dow).
 
 Examples:
-- "What does '0 9 * * 1' mean?" → <cron>0 9 * * 1</cron>
-- "Next 10 runs of '*/15 * * * *'" → <cron>10:*/15 * * * *</cron>`,
+- "What does '0 9 * * 1' mean?" → <|tool_call>call:cron{input:<|"|>0 9 * * 1<|"|>}<tool_call|>
+- "Next 10 runs of '*/15 * * * *'" → <|tool_call>call:cron{input:<|"|>10:*/15 * * * *<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     let count = 5;

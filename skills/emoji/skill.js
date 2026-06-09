@@ -437,12 +437,12 @@ function formatEntry(e) {
 
 export default {
   tag: 'emoji',
-  instruction: `EMOJI SKILL: Look up emoji by name, keyword, or Unicode codepoint. Emit <emoji>query</emoji>.
+  instruction: `EMOJI SKILL: Look up emoji by name, keyword, or Unicode codepoint. call <|tool_call>call:emoji{input:<|"|>query<|"|>}<tool_call|>.
 
 Examples:
-- "Find emoji for thumbs up" → <emoji>thumbs up</emoji>
-- "What is U+1F602?" → <emoji>1F602</emoji>
-- "Emoji for fire" → <emoji>fire</emoji>`,
+- "Find emoji for thumbs up" → <|tool_call>call:emoji{input:<|"|>thumbs up<|"|>}<tool_call|>
+- "What is U+1F602?" → <|tool_call>call:emoji{input:<|"|>1F602<|"|>}<tool_call|>
+- "Emoji for fire" → <|tool_call>call:emoji{input:<|"|>fire<|"|>}<tool_call|>`,
   call(content) {
     const q = content.trim().toLowerCase().replace(/^u\+/i, '');
 

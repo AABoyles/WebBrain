@@ -104,12 +104,12 @@ function decode(id, salt = DEFAULT_SALT) {
 
 export default {
   tag: 'hashid',
-  instruction: `HASHID SKILL: Encode integers to short YouTube-style IDs and decode back. Emit <hashid>encode:1,2,3</hashid> or <hashid>decode:aBcDeF</hashid>. Optionally prefix with a salt: <hashid>encode:salt=mysalt:42</hashid>.
+  instruction: `HASHID SKILL: Encode integers to short YouTube-style IDs and decode back. call <|tool_call>call:hashid{input:<|"|>encode:1,2,3<|"|>}<tool_call|> or <|tool_call>call:hashid{input:<|"|>decode:aBcDeF<|"|>}<tool_call|>. Optionally prefix with a salt: <|tool_call>call:hashid{input:<|"|>encode:salt=mysalt:42<|"|>}<tool_call|>.
 
 Examples:
-- "Encode 42" → <hashid>encode:42</hashid>
-- "Decode 'gY'" → <hashid>decode:gY</hashid>
-- "Encode with salt" → <hashid>encode:salt=abc:1,2,3</hashid>`,
+- "Encode 42" → <|tool_call>call:hashid{input:<|"|>encode:42<|"|>}<tool_call|>
+- "Decode 'gY'" → <|tool_call>call:hashid{input:<|"|>decode:gY<|"|>}<tool_call|>
+- "Encode with salt" → <|tool_call>call:hashid{input:<|"|>encode:salt=abc:1,2,3<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: encode:numbers or decode:id';

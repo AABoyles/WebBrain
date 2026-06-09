@@ -19,11 +19,11 @@ const BABIES = {
 
 export default {
   tag: 'babyname',
-  instruction: `BABY ANIMAL NAMES SKILL: To find what a baby animal is called, emit <babyname>animal</babyname>.
+  instruction: `BABY ANIMAL NAMES SKILL: To find what a baby animal is called, call <|tool_call>call:babyname{input:<|"|>animal<|"|>}<tool_call|>.
 
 Examples:
-- "What's a baby kangaroo called?" → <babyname>kangaroo</babyname>
-- "Baby platypus name" → <babyname>platypus</babyname>`,
+- "What's a baby kangaroo called?" → <|tool_call>call:babyname{input:<|"|>kangaroo<|"|>}<tool_call|>
+- "Baby platypus name" → <|tool_call>call:babyname{input:<|"|>platypus<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toLowerCase();
     const name = BABIES[key] ?? BABIES[key.replace(/s$/, '')];

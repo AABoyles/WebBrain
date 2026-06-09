@@ -19,11 +19,11 @@ const TRAITS = {
 
 export default {
   tag: 'zodiac-cn',
-  instruction: `CHINESE ZODIAC SKILL: To find someone's Chinese zodiac animal and element, emit <zodiac-cn>birth year</zodiac-cn>.
+  instruction: `CHINESE ZODIAC SKILL: To find someone's Chinese zodiac animal and element, call <|tool_call>call:zodiac-cn{input:<|"|>birth year<|"|>}<tool_call|>.
 
 Examples:
-- "Chinese zodiac for 1990" → <zodiac-cn>1990</zodiac-cn>
-- "What's the sign for 2000?" → <zodiac-cn>2000</zodiac-cn>`,
+- "Chinese zodiac for 1990" → <|tool_call>call:zodiac-cn{input:<|"|>1990<|"|>}<tool_call|>
+- "What's the sign for 2000?" → <|tool_call>call:zodiac-cn{input:<|"|>2000<|"|>}<tool_call|>`,
   call(content) {
     const year = parseInt(content.trim());
     if (isNaN(year) || year < 1) return 'Enter a year.';

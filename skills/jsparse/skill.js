@@ -41,12 +41,12 @@ function summarizeAst(node, depth = 0) {
 
 export default {
   tag: 'jsparse',
-  instruction: `JAVASCRIPT PARSER SKILL: Parse JavaScript and show its AST structure, or count tokens/nodes. Emit <jsparse>op:code</jsparse>.
+  instruction: `JAVASCRIPT PARSER SKILL: Parse JavaScript and show its AST structure, or count tokens/nodes. call <|tool_call>call:jsparse{input:<|"|>op:code<|"|>}<tool_call|>.
 Operations: ast (show tree), count (node/token summary), validate (syntax check only).
 
 Examples:
-- "Show AST of function" → <jsparse>ast:function add(a,b){return a+b}</jsparse>
-- "Validate syntax" → <jsparse>validate:const x = </jsparse>`,
+- "Show AST of function" → <|tool_call>call:jsparse{input:<|"|>ast:function add(a,b){return a+b}<|"|>}<tool_call|>
+- "Validate syntax" → <|tool_call>call:jsparse{input:<|"|>validate:const x = <|"|>}<tool_call|>`,
   async call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: op:code — ops: ast, count, validate';

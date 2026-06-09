@@ -17,11 +17,11 @@ function noteIdx(n) {
 
 export default {
   tag: 'interval',
-  instruction: `INTERVAL CALCULATOR SKILL: To find the interval between two notes, emit <interval>note1 note2</interval>.
+  instruction: `INTERVAL CALCULATOR SKILL: To find the interval between two notes, call <|tool_call>call:interval{input:<|"|>note1 note2<|"|>}<tool_call|>.
 
 Examples:
-- "Interval from C to G" → <interval>C G</interval>
-- "What is C to F#?" → <interval>C F#</interval>`,
+- "Interval from C to G" → <|tool_call>call:interval{input:<|"|>C G<|"|>}<tool_call|>
+- "What is C to F#?" → <|tool_call>call:interval{input:<|"|>C F#<|"|>}<tool_call|>`,
   call(content) {
     const parts = content.trim().split(/[\s,]+/);
     if (parts.length < 2) return 'Provide two notes: e.g. C G';

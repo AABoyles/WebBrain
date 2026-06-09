@@ -1,11 +1,11 @@
 export default {
   tag: 'countdown',
-  instruction: `COUNTDOWN SKILL: To calculate time remaining until a date or event, emit <countdown>target date</countdown>.
+  instruction: `COUNTDOWN SKILL: To calculate time remaining until a date or event, call <|tool_call>call:countdown{input:<|"|>target date<|"|>}<tool_call|>.
 
 Examples:
-- "How long until Christmas?" → <countdown>December 25, 2025</countdown>
-- "Days until New Year's" → <countdown>January 1, 2026</countdown>
-- "Countdown to July 4" → <countdown>July 4, 2025</countdown>`,
+- "How long until Christmas?" → <|tool_call>call:countdown{input:<|"|>December 25, 2025<|"|>}<tool_call|>
+- "Days until New Year's" → <|tool_call>call:countdown{input:<|"|>January 1, 2026<|"|>}<tool_call|>
+- "Countdown to July 4" → <|tool_call>call:countdown{input:<|"|>July 4, 2025<|"|>}<tool_call|>`,
   call(content) {
     const target = new Date(content.trim());
     if (isNaN(target.getTime())) return `Cannot parse date: "${content}"`;

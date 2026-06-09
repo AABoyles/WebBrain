@@ -1,8 +1,8 @@
 export default {
   tag: 'iss',
-  instruction: `ISS POSITION SKILL: To get the current position of the International Space Station, emit <iss></iss> (empty tag).
+  instruction: `ISS POSITION SKILL: To get the current position of the International Space Station, call <|tool_call>call:iss{input:<|"|><|"|>}<tool_call|> (empty tag).
 
-Example: "Where is the ISS right now?" → <iss></iss>`,
+Example: "Where is the ISS right now?" → <|tool_call>call:iss{input:<|"|><|"|>}<tool_call|>`,
   async call() {
     try {
       const res = await fetch('http://api.open-notify.org/iss-now.json');

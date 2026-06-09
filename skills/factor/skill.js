@@ -9,11 +9,11 @@ function primeFactors(n) {
 
 export default {
   tag: 'factor',
-  instruction: `PRIME FACTORIZER SKILL: To find the prime factorization of an integer, emit <factor>number</factor>.
+  instruction: `PRIME FACTORIZER SKILL: To find the prime factorization of an integer, call <|tool_call>call:factor{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "Prime factors of 360" → <factor>360</factor>
-- "Factor 1001" → <factor>1001</factor>`,
+- "Prime factors of 360" → <|tool_call>call:factor{input:<|"|>360<|"|>}<tool_call|>
+- "Factor 1001" → <|tool_call>call:factor{input:<|"|>1001<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim().replace(/,/g, ''), 10);
     if (isNaN(n) || n < 2) return 'Enter an integer ≥ 2.';

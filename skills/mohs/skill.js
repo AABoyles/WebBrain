@@ -18,11 +18,11 @@ const MOHS = [
 
 export default {
   tag: 'mohs',
-  instruction: `MOHS HARDNESS SKILL: To look up a Mohs hardness value, emit <mohs>value</mohs>.
+  instruction: `MOHS HARDNESS SKILL: To look up a Mohs hardness value, call <|tool_call>call:mohs{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "What is Mohs hardness 7?" → <mohs>7</mohs>
-- "What scratch test is Mohs 5?" → <mohs>5</mohs>`,
+- "What is Mohs hardness 7?" → <|tool_call>call:mohs{input:<|"|>7<|"|>}<tool_call|>
+- "What scratch test is Mohs 5?" → <|tool_call>call:mohs{input:<|"|>5<|"|>}<tool_call|>`,
   call(content) {
     const v = parseFloat(content.trim());
     if (isNaN(v) || v < 1 || v > 10) return 'Mohs scale is 1–10.';

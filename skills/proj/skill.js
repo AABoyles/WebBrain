@@ -67,11 +67,11 @@ function utmToLatLon(zone, hemi, easting, northing) {
 
 export default {
   tag: 'proj',
-  instruction: `COORDINATE PROJECTION SKILL: Convert between WGS84 (lat/lon) and UTM coordinates. Emit <proj>lat,lon</proj> or <proj>zone,hemi,easting,northing</proj>.
+  instruction: `COORDINATE PROJECTION SKILL: Convert between WGS84 (lat/lon) and UTM coordinates. call <|tool_call>call:proj{input:<|"|>lat,lon<|"|>}<tool_call|> or <|tool_call>call:proj{input:<|"|>zone,hemi,easting,northing<|"|>}<tool_call|>.
 
 Examples:
-- "Convert NYC to UTM" → <proj>40.7128,-74.0060</proj>
-- "UTM to lat/lon: 18N 583960 4507523" → <proj>18,N,583960,4507523</proj>`,
+- "Convert NYC to UTM" → <|tool_call>call:proj{input:<|"|>40.7128,-74.0060<|"|>}<tool_call|>
+- "UTM to lat/lon: 18N 583960 4507523" → <|tool_call>call:proj{input:<|"|>18,N,583960,4507523<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     // UTM → lat/lon: "zone,hemi,easting,northing" or "zone hemi easting northing"

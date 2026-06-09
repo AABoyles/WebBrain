@@ -41,12 +41,12 @@ function convertUnits(expr) {
 
 export default {
   tag: 'convert',
-  instruction: `UNIT CONVERTER SKILL: For unit conversions, emit <convert>VALUE UNIT to UNIT</convert>. Do not guess.
+  instruction: `UNIT CONVERTER SKILL: For unit conversions, call <|tool_call>call:convert{input:<|"|>VALUE UNIT to UNIT<|"|>}<tool_call|>. Do not guess.
 
 Examples:
-- "5 miles in km?" → <convert>5 mi to km</convert>
-- "100°F in Celsius?" → <convert>100 F to C</convert>
-- "2.5 kg to pounds?" → <convert>2.5 kg to lb</convert>`,
+- "5 miles in km?" → <|tool_call>call:convert{input:<|"|>5 mi to km<|"|>}<tool_call|>
+- "100°F in Celsius?" → <|tool_call>call:convert{input:<|"|>100 F to C<|"|>}<tool_call|>
+- "2.5 kg to pounds?" → <|tool_call>call:convert{input:<|"|>2.5 kg to lb<|"|>}<tool_call|>`,
   call: convertUnits,
   async handle() {},
 };

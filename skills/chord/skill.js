@@ -17,11 +17,11 @@ const CHORD_SHAPES = [
 
 export default {
   tag: 'chord',
-  instruction: `CHORD IDENTIFIER SKILL: To identify a chord from its notes, emit <chord>note1 note2 note3 ...</chord>.
+  instruction: `CHORD IDENTIFIER SKILL: To identify a chord from its notes, call <|tool_call>call:chord{input:<|"|>note1 note2 note3 ...<|"|>}<tool_call|>.
 
 Examples:
-- "What chord is C E G?" → <chord>C E G</chord>
-- "Identify C Eb G Bb" → <chord>C Eb G Bb</chord>`,
+- "What chord is C E G?" → <|tool_call>call:chord{input:<|"|>C E G<|"|>}<tool_call|>
+- "Identify C Eb G Bb" → <|tool_call>call:chord{input:<|"|>C Eb G Bb<|"|>}<tool_call|>`,
   call(content) {
     const FLATS = {'Db':1,'Eb':3,'Fb':4,'Gb':6,'Ab':8,'Bb':10,'Cb':11};
     const noteNums = content.trim().toUpperCase().split(/[\s,]+/).map(n => {

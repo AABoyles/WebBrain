@@ -1,10 +1,10 @@
 export default {
   tag: 'stats',
-  instruction: `STATISTICS SKILL: For descriptive stats on a list of numbers, emit <stats>n1, n2, n3, …</stats>.
+  instruction: `STATISTICS SKILL: For descriptive stats on a list of numbers, call <|tool_call>call:stats{input:<|"|>n1, n2, n3, …<|"|>}<tool_call|>.
 
 Examples:
-- "Stats on 4, 8, 15, 16, 23, 42" → <stats>4, 8, 15, 16, 23, 42</stats>
-- "Mean and std dev of 1 2 3 4 5" → <stats>1, 2, 3, 4, 5</stats>`,
+- "Stats on 4, 8, 15, 16, 23, 42" → <|tool_call>call:stats{input:<|"|>4, 8, 15, 16, 23, 42<|"|>}<tool_call|>
+- "Mean and std dev of 1 2 3 4 5" → <|tool_call>call:stats{input:<|"|>1, 2, 3, 4, 5<|"|>}<tool_call|>`,
   call(content) {
     const nums = content.split(/[\s,;]+/).map(Number).filter(n => !isNaN(n));
     if (nums.length < 2) return 'Need at least 2 numbers.';

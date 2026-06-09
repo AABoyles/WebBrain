@@ -27,11 +27,11 @@ for (const [cc,dial] of Object.entries(DIAL)) {
 
 export default {
   tag: 'dialcode',
-  instruction: `CALLING CODE SKILL: To look up a country's international dialing code, emit <dialcode>country code or name</dialcode>. Or reverse-lookup with the dial code.
+  instruction: `CALLING CODE SKILL: To look up a country's international dialing code, call <|tool_call>call:dialcode{input:<|"|>country code or name<|"|>}<tool_call|>. Or reverse-lookup with the dial code.
 
 Examples:
-- "Calling code for UK" → <dialcode>GB</dialcode>
-- "What country is +44?" → <dialcode>+44</dialcode>`,
+- "Calling code for UK" → <|tool_call>call:dialcode{input:<|"|>GB<|"|>}<tool_call|>
+- "What country is +44?" → <|tool_call>call:dialcode{input:<|"|>+44<|"|>}<tool_call|>`,
   call(content) {
     const input = content.trim().replace(/^\+/,'');
     // Try as dial code number

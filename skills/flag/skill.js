@@ -28,11 +28,11 @@ const NAMES = {
 
 export default {
   tag: 'flag',
-  instruction: `FLAG EMOJI SKILL: To get the flag emoji for a country, emit <flag>country name or ISO code</flag>.
+  instruction: `FLAG EMOJI SKILL: To get the flag emoji for a country, call <|tool_call>call:flag{input:<|"|>country name or ISO code<|"|>}<tool_call|>.
 
 Examples:
-- "Flag for France" → <flag>France</flag>
-- "US flag emoji" → <flag>US</flag>`,
+- "Flag for France" → <|tool_call>call:flag{input:<|"|>France<|"|>}<tool_call|>
+- "US flag emoji" → <|tool_call>call:flag{input:<|"|>US<|"|>}<tool_call|>`,
   call(content) {
     const input = content.trim().toUpperCase();
     // Try direct 2-letter code

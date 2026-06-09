@@ -18,9 +18,9 @@ function grade(score) {
 
 export default {
   tag: 'flesch',
-  instruction: `READABILITY SKILL: To score the reading ease of a passage, emit <flesch>text to analyze</flesch>. Returns the Flesch Reading Ease score (100=simplest, 0=hardest).
+  instruction: `READABILITY SKILL: To score the reading ease of a passage, call <|tool_call>call:flesch{input:<|"|>text to analyze<|"|>}<tool_call|>. Returns the Flesch Reading Ease score (100=simplest, 0=hardest).
 
-Example: <flesch>The quick brown fox jumps over the lazy dog.</flesch>`,
+Example: <|tool_call>call:flesch{input:<|"|>The quick brown fox jumps over the lazy dog.<|"|>}<tool_call|>`,
   call(text) {
     const words     = text.trim().split(/\s+/).filter(Boolean);
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);

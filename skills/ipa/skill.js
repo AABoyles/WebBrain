@@ -55,11 +55,11 @@ const IPA = {
 
 export default {
   tag: 'ipa',
-  instruction: `IPA DECODER SKILL: To look up what an IPA phonetic symbol represents, emit <ipa>symbol</ipa>.
+  instruction: `IPA DECODER SKILL: To look up what an IPA phonetic symbol represents, call <|tool_call>call:ipa{input:<|"|>symbol<|"|>}<tool_call|>.
 
 Examples:
-- "What is IPA ʃ?" → <ipa>ʃ</ipa>
-- "Describe the sound θ" → <ipa>θ</ipa>`,
+- "What is IPA ʃ?" → <|tool_call>call:ipa{input:<|"|>ʃ<|"|>}<tool_call|>
+- "Describe the sound θ" → <|tool_call>call:ipa{input:<|"|>θ<|"|>}<tool_call|>`,
   call(content) {
     const sym = content.trim();
     const desc = IPA[sym];

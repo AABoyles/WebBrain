@@ -22,11 +22,11 @@ function decode(text) {
 
 export default {
   tag: 'polybius',
-  instruction: `POLYBIUS SQUARE SKILL: To encode or decode with the Polybius square, emit <polybius>text</polybius> or <polybius>decode:coordinates</polybius>. I and J share a cell.
+  instruction: `POLYBIUS SQUARE SKILL: To encode or decode with the Polybius square, call <|tool_call>call:polybius{input:<|"|>text<|"|>}<tool_call|> or <|tool_call>call:polybius{input:<|"|>decode:coordinates<|"|>}<tool_call|>. I and J share a cell.
 
 Examples:
-- "Encode 'HELLO' in Polybius" → <polybius>HELLO</polybius>
-- "Decode 23 15 31 31 34" → <polybius>decode:2315313134</polybius>`,
+- "Encode 'HELLO' in Polybius" → <|tool_call>call:polybius{input:<|"|>HELLO<|"|>}<tool_call|>
+- "Decode 23 15 31 31 34" → <|tool_call>call:polybius{input:<|"|>decode:2315313134<|"|>}<tool_call|>`,
   call(content) {
     if (/^decode:/i.test(content)) return decode(content.slice(7));
     return encode(content);

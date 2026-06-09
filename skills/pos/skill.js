@@ -20,11 +20,11 @@ const TAG_LABELS = {
 
 export default {
   tag: 'pos',
-  instruction: `PART-OF-SPEECH SKILL: Tag words in a sentence with their grammatical roles, and extract named entities. Emit <pos>text</pos>.
+  instruction: `PART-OF-SPEECH SKILL: Tag words in a sentence with their grammatical roles, and extract named entities. call <|tool_call>call:pos{input:<|"|>text<|"|>}<tool_call|>.
 
 Examples:
-- "Tag 'The quick brown fox jumps'" → <pos>The quick brown fox jumps over the lazy dog</pos>
-- "Find entities in text" → <pos>Apple is headquartered in Cupertino, California</pos>`,
+- "Tag 'The quick brown fox jumps'" → <|tool_call>call:pos{input:<|"|>The quick brown fox jumps over the lazy dog<|"|>}<tool_call|>
+- "Find entities in text" → <|tool_call>call:pos{input:<|"|>Apple is headquartered in Cupertino, California<|"|>}<tool_call|>`,
   async call(content) {
     let n;
     try { n = await getNlp(); } catch (e) { return `Failed to load NLP library: ${e.message}`; }

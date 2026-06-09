@@ -33,12 +33,12 @@ function toCsv(rows, sep = ',') {
 
 export default {
   tag: 'csv',
-  instruction: `CSV SKILL: Parse or analyze CSV/TSV data. Emit <csv>op:data</csv>.
+  instruction: `CSV SKILL: Parse or analyze CSV/TSV data. call <|tool_call>call:csv{input:<|"|>op:data<|"|>}<tool_call|>.
 Operations: parse (summary + first few rows), tojson (CSV→JSON array), tocsv (JSON array→CSV), tsv (TSV input — like parse but tab-delimited).
 
 Examples:
-- "Parse this CSV: name,age\\nAlice,30\\nBob,25" → <csv>parse:name,age\nAlice,30\nBob,25</csv>
-- "CSV to JSON" → <csv>tojson:name,age\nAlice,30</csv>`,
+- "Parse this CSV: name,age\\nAlice,30\\nBob,25" → <|tool_call>call:csv{input:<|"|>parse:name,age\nAlice,30\nBob,25<|"|>}<tool_call|>
+- "CSV to JSON" → <|tool_call>call:csv{input:<|"|>tojson:name,age\nAlice,30<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: op:data — ops: parse, tojson, tocsv, tsv';

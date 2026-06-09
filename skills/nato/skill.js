@@ -9,11 +9,11 @@ const NATO = {
 
 export default {
   tag: 'nato',
-  instruction: `NATO PHONETIC SKILL: To spell something using the NATO phonetic alphabet, emit <nato>text</nato>.
+  instruction: `NATO PHONETIC SKILL: To spell something using the NATO phonetic alphabet, call <|tool_call>call:nato{input:<|"|>text<|"|>}<tool_call|>.
 
 Examples:
-- "Spell Tony in NATO" → <nato>Tony</nato>
-- "What's NATO for ABC?" → <nato>ABC</nato>`,
+- "Spell Tony in NATO" → <|tool_call>call:nato{input:<|"|>Tony<|"|>}<tool_call|>
+- "What's NATO for ABC?" → <|tool_call>call:nato{input:<|"|>ABC<|"|>}<tool_call|>`,
   call: text => text.toUpperCase().split('').map(c => NATO[c] ?? c).join(' · '),
   async handle() {},
 };

@@ -97,13 +97,13 @@ function preciseEval(expr) {
 
 export default {
   tag: 'calc',
-  instruction: `CALCULATOR SKILL: For any arithmetic or math, emit <calc>JS expression</calc>. For exact decimal precision (no float errors), prefix with precise: e.g. <calc>precise:0.1 + 0.2</calc>. Use Math.* for functions in normal mode.
+  instruction: `CALCULATOR SKILL: For any arithmetic or math, call <|tool_call>call:calc{input:<|"|>JS expression<|"|>}<tool_call|>. For exact decimal precision (no float errors), prefix with precise: e.g. <|tool_call>call:calc{input:<|"|>precise:0.1 + 0.2<|"|>}<tool_call|>. Use Math.* for functions in normal mode.
 
 Examples:
-- "17 × 23?" → <calc>17 * 23</calc>
-- "√144?" → <calc>Math.sqrt(144)</calc>
-- "0.1 + 0.2 exactly?" → <calc>precise:0.1 + 0.2</calc>
-- "1/7 as a decimal?" → <calc>precise:1/7</calc>`,
+- "17 × 23?" → <|tool_call>call:calc{input:<|"|>17 * 23<|"|>}<tool_call|>
+- "√144?" → <|tool_call>call:calc{input:<|"|>Math.sqrt(144)<|"|>}<tool_call|>
+- "0.1 + 0.2 exactly?" → <|tool_call>call:calc{input:<|"|>precise:0.1 + 0.2<|"|>}<tool_call|>
+- "1/7 as a decimal?" → <|tool_call>call:calc{input:<|"|>precise:1/7<|"|>}<tool_call|>`,
   call(expr) {
     if (expr.trimStart().startsWith('precise:')) {
       const inner = expr.trimStart().slice(8).trim();

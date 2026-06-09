@@ -36,11 +36,11 @@ const BY_NUMBER = Object.fromEntries(Object.entries(SIGNALS).map(([k,v]) => [v.n
 
 export default {
   tag: 'signal',
-  instruction: `UNIX SIGNAL SKILL: To look up a Unix signal by name or number, emit <signal>value</signal>.
+  instruction: `UNIX SIGNAL SKILL: To look up a Unix signal by name or number, call <|tool_call>call:signal{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "What is SIGTERM?" → <signal>SIGTERM</signal>
-- "What is signal 9?" → <signal>9</signal>`,
+- "What is SIGTERM?" → <|tool_call>call:signal{input:<|"|>SIGTERM<|"|>}<tool_call|>
+- "What is signal 9?" → <|tool_call>call:signal{input:<|"|>9<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim().toUpperCase();
     const byNum = BY_NUMBER[parseInt(content)];

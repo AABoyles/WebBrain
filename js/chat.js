@@ -3,9 +3,10 @@
 //          renderHistory, loadChat, newChat
 import { $, esc, setStatus, setSend, autoResize, estimateTokens, DEFAULT_SOUL } from './utils.js';
 import {
-  SKILLS, manifest, knownSkillTags,
+  SKILLS, manifest,
   planSkillsForTurn, buildSystemPrompt,
   loadSkillsByTag, getLoadedSkillsByTag, findInvokedSkillTags,
+  extractToolCalls, buildToolResponse,
 } from './skills.js';
 import { backend, streamAI, resetSession, contextMax } from './ai.js';
 import { txGet, txAdd, txPut, txAll, txDelete } from '../skills/db.js';
@@ -146,33 +147,35 @@ export async function send() {
     });
   };
 
-  const MAX_TAG_OVERHEAD = SKILLS.reduce((m, s) => Math.max(m, s.tag.length + 2), 32);
+  // Known Gemma 4 tool token prefixes. Used to decide whether a `<|` in the
+  // pending buffer is the start of a tool token (hold back) or safe to display.
+  const TOOL_TOKENS = ['<|tool_call>', '<|tool_response>'];
+
   function emitChunk(chunk) {
     pending += chunk;
-    for (const skill of SKILLS) {
-      if (!pending.includes('<' + skill.tag + '>')) continue;
-      const subst = skill.replace ?? (() => '');
-      pending = pending.replace(
-        new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g'),
-        (_, c) => subst(c.trim())
-      );
-    }
-    const lastLt = pending.lastIndexOf('<');
+    // Strip complete tool call / response sequences so they never reach the DOM.
+    pending = pending.replace(/<\|tool_call>call:[\s\S]*?<tool_call\|>/g, '');
+    pending = pending.replace(/<\|tool_response>[\s\S]*?<tool_response\|>/g, '');
+
+    // Find the first `<|` — it might be the start of a partial tool token.
+    const ltAt = pending.indexOf('<|');
     let safe;
-    if (lastLt === -1) {
-      safe = pending; pending = '';
+    if (ltAt === -1) {
+      safe = pending;
+      pending = '';
     } else {
-      let openerAt = Infinity;
-      for (const skill of SKILLS) {
-        const idx = pending.indexOf('<' + skill.tag + '>');
-        if (idx !== -1 && idx < openerAt) openerAt = idx;
-      }
-      if (openerAt < Infinity) {
-        safe = pending.slice(0, openerAt); pending = pending.slice(openerAt);
-      } else if (pending.length - lastLt > MAX_TAG_OVERHEAD) {
-        safe = pending; pending = '';
+      const tail = pending.slice(ltAt);
+      // Hold back if `tail` is a prefix OF a tool token, or starts WITH one
+      // (i.e. partial or full opening that hasn't closed yet).
+      const looksLikeToolToken = TOOL_TOKENS.some(
+        t => t.startsWith(tail) || tail.startsWith(t)
+      );
+      if (looksLikeToolToken) {
+        safe    = pending.slice(0, ltAt);
+        pending = tail;
       } else {
-        safe = pending.slice(0, lastLt); pending = pending.slice(lastLt);
+        safe    = pending;
+        pending = '';
       }
     }
     if (safe) bubble.insertBefore(document.createTextNode(safe), cursor);
@@ -210,9 +213,9 @@ export async function send() {
   try {
     setStatus('Planning skills…');
     const turnPlan = await planSkillsForTurn(text);
-    let activeTags = new Set(turnPlan.selectedTags);
+    let activeTags = new Set(turnPlan.defaultTags);
     let activeSkills = turnPlan.activeSkills;
-    let sysPrompt = await buildSystemPrompt(activeSkills, turnPlan.enabledSkills);
+    let sysPrompt = await buildSystemPrompt(activeSkills);
 
     if (currentPerf) {
       const soulText = (await txGet('settings', 'soul')) ?? DEFAULT_SOUL;
@@ -245,14 +248,14 @@ export async function send() {
     await streamPass(messages, sysPrompt, true);
 
     const emittedTags = findInvokedSkillTags(fullText);
-    const missingEnabledTags = emittedTags.filter(tag => turnPlan.enabledSkills.has(tag) && !activeTags.has(tag));
-    if (missingEnabledTags.length) {
-      setStatus(`Loading inferred skills: ${missingEnabledTags.join(', ')}…`);
-      const { loadedAny, loadedTags } = await loadSkillsByTag(missingEnabledTags);
+    const missingTags = emittedTags.filter(tag => !activeTags.has(tag));
+    if (missingTags.length) {
+      setStatus(`Loading skills: ${missingTags.join(', ')}…`);
+      const { loadedAny, loadedTags } = await loadSkillsByTag(missingTags);
       if (loadedAny) {
         loadedTags.forEach(tag => activeTags.add(tag));
         activeSkills = getLoadedSkillsByTag([...activeTags]);
-        sysPrompt = await buildSystemPrompt(activeSkills, turnPlan.enabledSkills);
+        sysPrompt = await buildSystemPrompt(activeSkills);
         resetSession();
         while (bubble.firstChild) bubble.removeChild(bubble.firstChild);
         bubble.appendChild(cursor);
@@ -263,28 +266,28 @@ export async function send() {
       }
     }
 
-    const toolResults  = [];
-    const invokedTools = new Set();
-    for (const skill of activeSkills) {
-      if (!skill.call) continue;
-      const re = new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g');
-      let m;
-      while ((m = re.exec(fullText)) !== null) {
-        toolResults.push(`${skill.tag}: ${await skill.call(m[1].trim())}`);
-        invokedTools.add(manifest.find(e => e.tag === skill.tag)?.label ?? skill.tag);
-      }
+    // Collect tool calls (native Gemma 4 format).
+    const toolResponses = [];
+    const invokedTools  = new Set();
+    for (const { name, input } of extractToolCalls(fullText)) {
+      const skill = activeSkills.find(s => s.tag === name);
+      if (!skill?.call) continue;
+      const result = await skill.call(input);
+      toolResponses.push(buildToolResponse(name, result));
+      invokedTools.add(manifest.find(e => e.tag === name)?.label ?? name);
     }
 
-    if (toolResults.length) {
+    if (toolResponses.length) {
       while (bubble.firstChild) bubble.removeChild(bubble.firstChild);
       bubble.appendChild(cursor);
       pending = '';
       setStatus('Running tools…');
       const pass1Clean = stripSkillTags(fullText).trim();
-      const augmented  = [
+      // Native tool response injected as a 'tool' role turn; buildGemmaPrompt handles it.
+      const augmented = [
         ...messages,
-        ...(pass1Clean ? [{ role: 'assistant', content: pass1Clean }] : []),
-        { role: 'user', content: `Tool results:\n${toolResults.join('\n')}\n\nNow answer using this data.` },
+        { role: 'assistant', content: pass1Clean || '…' },
+        { role: 'tool', content: toolResponses.join('\n') },
       ];
       fullText = '';
       resetSession();
@@ -296,7 +299,7 @@ export async function send() {
     const needsReset = await dispatchSkillCalls(fullText, activeSkills);
     if (needsReset) resetSession();
 
-    const cleanText = stripSkillTags(fullText, activeSkills);
+    const cleanText = stripSkillTags(fullText);
     if (currentPerf) {
       const [fullTokOut, cleanTokOut] = await Promise.all([
         estimateTokens(fullText),
@@ -332,35 +335,27 @@ export async function send() {
   setStatus(backend === 'none' ? 'No AI backend.' : `Ready · ${backend}`);
 }
 
-// Strip all skill tags from display text; also suppresses incomplete opening
-// tags that haven't closed yet (mid-stream).
-export function stripSkillTags(text, activeSkills = SKILLS) {
-  const replaceByTag = new Map(activeSkills.map(skill => [skill.tag?.toLowerCase(), skill.replace ?? (() => '')]));
-  let out = text.replace(/<([a-z0-9-]+)>([\s\S]*?)<\/\1>/gi, (full, rawTag, content) => {
-    const tag = rawTag.toLowerCase();
-    if (!knownSkillTags.has(tag)) return full;
-    return (replaceByTag.get(tag) ?? (() => ''))(content.trim());
-  });
-
-  const dangling = out.match(/<([a-z0-9-]+)>[\s\S]*$/i);
-  if (dangling?.index !== undefined) {
-    const tag = dangling[1].toLowerCase();
-    if (knownSkillTags.has(tag)) out = out.slice(0, dangling.index);
-  }
-  return out;
+// Strip native Gemma 4 tool tokens from display text.
+export function stripSkillTags(text) {
+  let out = text
+    // Complete tool calls: <|tool_call>call:name{...}<tool_call|>
+    .replace(/<\|tool_call>call:[\s\S]*?<tool_call\|>/g, '')
+    // Complete tool responses: <|tool_response>...<tool_response|>
+    .replace(/<\|tool_response>[\s\S]*?<tool_response\|>/g, '')
+    // Dangling partial tokens at end of stream
+    .replace(/<\|tool_call>[\s\S]*$/, '')
+    .replace(/<\|tool_response>[\s\S]*$/, '');
+  return out.trim();
 }
 
 // Returns true if any skill handler signalled a session reset is needed.
 export async function dispatchSkillCalls(text, activeSkills = SKILLS) {
   let needsReset = false;
-  for (const skill of activeSkills) {
-    if (!skill.handle) continue;
-    const re = new RegExp(`<${skill.tag}>([\\s\\S]*?)<\\/${skill.tag}>`, 'g');
-    let m;
-    while ((m = re.exec(text)) !== null) {
-      const result = await skill.handle(m[1].trim());
-      if (result === true) needsReset = true;
-    }
+  for (const { name, input } of extractToolCalls(text)) {
+    const skill = activeSkills.find(s => s.tag === name);
+    if (!skill?.handle) continue;
+    const result = await skill.handle(input);
+    if (result === true) needsReset = true;
   }
   return needsReset;
 }

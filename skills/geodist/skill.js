@@ -42,11 +42,12 @@ function parseCoord(s) {
 
 export default {
   tag: 'geodist',
-  instruction: `GEODISTANCE SKILL: Calculate distance, bearing, and midpoint between two coordinates. Emit <geodist>lat1,lon1 to lat2,lon2</geodist>.
+  instruction: `GEODISTANCE SKILL: Calculate distance, bearing, and midpoint between two locations. For named places (cities, landmarks, etc.), use your knowledge to convert to decimal lat/lon coordinates, then call <|tool_call>call:geodist{input:<|"|>lat1,lon1 to lat2,lon2<|"|>}<tool_call|>.
 
 Examples:
-- "Distance NYC to LA" → <geodist>40.7128,-74.0060 to 34.0522,-118.2437</geodist>
-- "Distance from 51.5,-0.1 to 48.8,2.3" → <geodist>51.5,-0.1 to 48.8,2.3</geodist>`,
+- "Distance NYC to LA" → <|tool_call>call:geodist{input:<|"|>40.7128,-74.0060 to 34.0522,-118.2437<|"|>}<tool_call|>
+- "Distance from Paris to Berlin" → <|tool_call>call:geodist{input:<|"|>48.8566,2.3522 to 52.5200,13.4050<|"|>}<tool_call|>
+- "Distance from 51.5,-0.1 to 48.8,2.3" → <|tool_call>call:geodist{input:<|"|>51.5,-0.1 to 48.8,2.3<|"|>}<tool_call|>`,
   call(content) {
     const toIdx = content.toLowerCase().indexOf(' to ');
     if (toIdx < 0) return 'Format: lat1,lon1 to lat2,lon2';

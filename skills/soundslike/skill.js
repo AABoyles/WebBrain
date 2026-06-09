@@ -58,12 +58,12 @@ function jaroWinkler(a, b) {
 
 export default {
   tag: 'soundslike',
-  instruction: `PHONETIC SIMILARITY SKILL: To compare two strings, emit <soundslike>word1 word2</soundslike>.
+  instruction: `PHONETIC SIMILARITY SKILL: To compare two strings, call <|tool_call>call:soundslike{input:<|"|>word1 word2<|"|>}<tool_call|>.
 Returns Soundex (phonetic), Dice coefficient (textual bigrams), and Jaro-Winkler similarity.
 
 Examples:
-- "Do Smith and Smythe sound alike?" → <soundslike>Smith Smythe</soundslike>
-- "Similarity of 'colour' and 'color'" → <soundslike>colour color</soundslike>`,
+- "Do Smith and Smythe sound alike?" → <|tool_call>call:soundslike{input:<|"|>Smith Smythe<|"|>}<tool_call|>
+- "Similarity of 'colour' and 'color'" → <|tool_call>call:soundslike{input:<|"|>colour color<|"|>}<tool_call|>`,
   call(content) {
     const parts = content.trim().split(/\s+/);
     if (parts.length < 2) return 'Provide two words.';

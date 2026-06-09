@@ -44,9 +44,9 @@ function validateIBAN(iban) {
 
 export default {
   tag: 'iban',
-  instruction: `IBAN DECODER SKILL: To decode and validate an International Bank Account Number, emit <iban>IBAN</iban>.
+  instruction: `IBAN DECODER SKILL: To decode and validate an International Bank Account Number, call <|tool_call>call:iban{input:<|"|>IBAN<|"|>}<tool_call|>.
 
-Example: <iban>GB82 WEST 1234 5698 7654 32</iban>`,
+Example: <|tool_call>call:iban{input:<|"|>GB82 WEST 1234 5698 7654 32<|"|>}<tool_call|>`,
   call(content) {
     const iban = content.trim().replace(/\s/g, '').toUpperCase();
     if (iban.length < 15 || iban.length > 34) return 'IBANs are 15–34 characters.';

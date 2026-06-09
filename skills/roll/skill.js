@@ -33,13 +33,13 @@ function parseDice(expr) {
 
 export default {
   tag: 'roll',
-  instruction: `DICE ROLLER SKILL: For any dice roll or coin flip, emit <roll>expression</roll> instead of guessing.
+  instruction: `DICE ROLLER SKILL: For any dice roll or coin flip, call <|tool_call>call:roll{input:<|"|>expression<|"|>}<tool_call|> instead of guessing.
 Supports: d20, 2d6, 3d8+5, d100, coin.
 
 Examples:
-- "Roll a d20" → <roll>d20</roll>
-- "Roll 2d6 plus 3 for damage" → <roll>2d6+3</roll>
-- "Flip a coin" → <roll>coin</roll>`,
+- "Roll a d20" → <|tool_call>call:roll{input:<|"|>d20<|"|>}<tool_call|>
+- "Roll 2d6 plus 3 for damage" → <|tool_call>call:roll{input:<|"|>2d6+3<|"|>}<tool_call|>
+- "Flip a coin" → <|tool_call>call:roll{input:<|"|>coin<|"|>}<tool_call|>`,
   call: parseDice,
   async handle() {},
 };

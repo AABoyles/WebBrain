@@ -92,11 +92,11 @@ function flagEmoji(code) {
 
 export default {
   tag: 'country',
-  instruction: `COUNTRY INFO SKILL: To get facts about a country, emit <country>ISO code or name</country>.
+  instruction: `COUNTRY INFO SKILL: To get facts about a country, call <|tool_call>call:country{input:<|"|>ISO code or name<|"|>}<tool_call|>.
 
 Examples:
-- "Tell me about Japan" → <country>Japan</country>
-- "Info on DE" → <country>DE</country>`,
+- "Tell me about Japan" → <|tool_call>call:country{input:<|"|>Japan<|"|>}<tool_call|>
+- "Info on DE" → <|tool_call>call:country{input:<|"|>DE<|"|>}<tool_call|>`,
   call(content) {
     const input = content.trim().toUpperCase();
     const code  = COUNTRIES[input] ? input : BY_NAME[input];

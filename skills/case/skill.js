@@ -37,13 +37,13 @@ const ALIASES = {
 
 export default {
   tag: 'case',
-  instruction: `CASE CONVERTER SKILL: To convert text between naming conventions, emit <case>format:text</case>.
+  instruction: `CASE CONVERTER SKILL: To convert text between naming conventions, call <|tool_call>call:case{input:<|"|>format:text<|"|>}<tool_call|>.
 Formats: camel, pascal, snake, screaming (SCREAMING_SNAKE), kebab, dot, title, lower, upper, slug.
 Omit format to see all conversions at once.
 
 Examples:
-- "Convert 'hello world' to camelCase" → <case>camel:hello world</case>
-- "All cases for 'getUserName'" → <case>getUserName</case>`,
+- "Convert 'hello world' to camelCase" → <|tool_call>call:case{input:<|"|>camel:hello world<|"|>}<tool_call|>
+- "All cases for 'getUserName'" → <|tool_call>call:case{input:<|"|>getUserName<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     let format = null, text = content;

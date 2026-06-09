@@ -12,12 +12,12 @@ const FROM_MORSE = Object.fromEntries(Object.entries(TO_MORSE).map(([k, v]) => [
 
 export default {
   tag: 'morse',
-  instruction: `MORSE CODE SKILL: To encode text to Morse code or decode Morse, emit <morse>text</morse> or <morse>decode:morse code</morse>. Words in Morse are separated by " / ".
+  instruction: `MORSE CODE SKILL: To encode text to Morse code or decode Morse, call <|tool_call>call:morse{input:<|"|>text<|"|>}<tool_call|> or <|tool_call>call:morse{input:<|"|>decode:morse code<|"|>}<tool_call|>. Words in Morse are separated by " / ".
 
 Examples:
-- "Morse for SOS" → <morse>SOS</morse>
-- "Decode ... --- ..." → <morse>decode:... --- ...</morse>
-- "Decode SOS in Morse" → <morse>decode:... --- .../</morse>`,
+- "Morse for SOS" → <|tool_call>call:morse{input:<|"|>SOS<|"|>}<tool_call|>
+- "Decode ... --- ..." → <|tool_call>call:morse{input:<|"|>decode:... --- ...<|"|>}<tool_call|>
+- "Decode SOS in Morse" → <|tool_call>call:morse{input:<|"|>decode:... --- .../<|"|>}<tool_call|>`,
   call(content) {
     if (/^decode:/i.test(content)) {
       const code = content.slice(7).trim();

@@ -124,12 +124,11 @@
               <div id="backend-badges" style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.85rem;"></div>
               <label class="f-label">Active Backend</label>
               <select class="f-select" id="model-select">
-                <option value="chrome">Chrome Built-in AI — Gemma (no download needed)</option>
                 <option value="litert">Litert-LM via WebGPU — self-hosted model</option>
               </select>
             </div>
 
-            <div id="litert-options" style="display:none;">
+            <div id="litert-options">
               <div class="f-group">
                 <label class="f-label">Model URL <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3);font-size:0.68rem;">(override optional)</span></label>
                 <input type="url" class="f-input mono" id="model-url"
@@ -140,6 +139,14 @@
                   (~2 GB, downloaded on first use). Paste a different URL to override.
                 </p>
               </div>
+            </div>
+
+            <div class="f-group">
+              <label class="f-label">Thinking Mode</label>
+              <label style="display:flex;align-items:flex-start;gap:0.5rem;cursor:pointer;">
+                <input type="checkbox" id="thinking-mode-toggle" style="margin-top:0.2rem;flex-shrink:0;">
+                <span class="f-hint" style="margin:0;">Enable extended thinking — the model reasons internally before responding. Improves quality on complex questions at the cost of latency. Requires a thinking-capable Litert-LM model (e.g. Gemma thinking variants).</span>
+              </label>
             </div>
 
             <div class="btn-row">
@@ -170,7 +177,7 @@
           <!-- Skills tab -->
           <div class="tab-pane fade" id="tab-skills">
             <p class="f-hint" style="margin-bottom:0.85rem;">
-              Skills are loaded on demand. Enabled skills inject their instruction into the system prompt — disable any you don't need to save context.
+              All skills are available on demand. When the model invokes a skill, its instructions load automatically for that turn. Always-on skills (date, location, memory) load every turn.
             </p>
             <div id="skills-accordion" class="accordion skills-accordion"></div>
             <p id="context-window-note" class="f-hint" style="margin-top:0.75rem;"></p>

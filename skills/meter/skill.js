@@ -41,11 +41,11 @@ function identifyFeet(pattern) {
 
 export default {
   tag: 'meter',
-  instruction: `METER CHECKER SKILL: To analyze the metrical pattern of a line of poetry, emit <meter>line of poetry</meter>.
+  instruction: `METER CHECKER SKILL: To analyze the metrical pattern of a line of poetry, call <|tool_call>call:meter{input:<|"|>line of poetry<|"|>}<tool_call|>.
 
 Examples:
-- "Scan 'Shall I compare thee to a summer's day'" → <meter>Shall I compare thee to a summer's day</meter>
-- "Meter of 'To be or not to be'" → <meter>To be or not to be</meter>`,
+- "Scan 'Shall I compare thee to a summer's day'" → <|tool_call>call:meter{input:<|"|>Shall I compare thee to a summer's day<|"|>}<tool_call|>
+- "Meter of 'To be or not to be'" → <|tool_call>call:meter{input:<|"|>To be or not to be<|"|>}<tool_call|>`,
   call(text) {
     const words = text.trim().split(/\s+/).filter(Boolean);
     const pattern = [];

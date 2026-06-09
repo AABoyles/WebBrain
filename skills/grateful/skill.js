@@ -2,11 +2,11 @@ import { getGratitude, addGratitude, deleteGratitude } from '../db.js';
 
 export default {
   tag: 'grateful',
-  instruction: `GRATITUDE LOG SKILL: To log something you're grateful for, emit <grateful>log:one-sentence entry</grateful>. To recall recent entries for reflection, emit <grateful>list</grateful>.
+  instruction: `GRATITUDE LOG SKILL: To log something you're grateful for, call <|tool_call>call:grateful{input:<|"|>log:one-sentence entry<|"|>}<tool_call|>. To recall recent entries for reflection, call <|tool_call>call:grateful{input:<|"|>list<|"|>}<tool_call|>.
 
 Examples:
-- "I'm grateful for a good morning run" → <grateful>log:Had a great morning run today.</grateful>
-- "Show my gratitude log" → <grateful>list</grateful>`,
+- "I'm grateful for a good morning run" → <|tool_call>call:grateful{input:<|"|>log:Had a great morning run today.<|"|>}<tool_call|>
+- "Show my gratitude log" → <|tool_call>call:grateful{input:<|"|>list<|"|>}<tool_call|>`,
   async call(content) {
     const cmd = content.trim();
     if (cmd === 'list') {

@@ -24,11 +24,11 @@ const PORTS = {
 
 export default {
   tag: 'port',
-  instruction: `TCP PORT SKILL: To look up a well-known TCP/UDP port number, emit <port>number</port>.
+  instruction: `TCP PORT SKILL: To look up a well-known TCP/UDP port number, call <|tool_call>call:port{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "What uses port 443?" → <port>443</port>
-- "Port 6379?" → <port>6379</port>`,
+- "What uses port 443?" → <|tool_call>call:port{input:<|"|>443<|"|>}<tool_call|>
+- "Port 6379?" → <|tool_call>call:port{input:<|"|>6379<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim());
     if (isNaN(n) || n < 0 || n > 65535) return 'Enter a port number (0–65535).';

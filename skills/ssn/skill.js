@@ -36,9 +36,9 @@ function getState(area) {
 
 export default {
   tag: 'ssn',
-  instruction: `SSN DECODER SKILL: To analyze the structure of a US Social Security Number, emit <ssn>number</ssn>. Only structure/format is analyzed — nothing is stored.
+  instruction: `SSN DECODER SKILL: To analyze the structure of a US Social Security Number, call <|tool_call>call:ssn{input:<|"|>number<|"|>}<tool_call|>. Only structure/format is analyzed — nothing is stored.
 
-Example: <ssn>123-45-6789</ssn>`,
+Example: <|tool_call>call:ssn{input:<|"|>123-45-6789<|"|>}<tool_call|>`,
   call(content) {
     const n = content.trim().replace(/[\s\-]/g, '');
     if (!/^\d{9}$/.test(n)) return 'SSNs are 9 digits (dashes optional).';

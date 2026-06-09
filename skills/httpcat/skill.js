@@ -35,11 +35,11 @@ const HTTP_NAMES = {
 
 export default {
   tag: 'httpcat',
-  instruction: `HTTP CATS SKILL: For a fun cat-based description of an HTTP status code, emit <httpcat>code</httpcat>.
+  instruction: `HTTP CATS SKILL: For a fun cat-based description of an HTTP status code, call <|tool_call>call:httpcat{input:<|"|>code<|"|>}<tool_call|>.
 
 Examples:
-- "HTTP cat for 404" → <httpcat>404</httpcat>
-- "418 cat" → <httpcat>418</httpcat>`,
+- "HTTP cat for 404" → <|tool_call>call:httpcat{input:<|"|>404<|"|>}<tool_call|>
+- "418 cat" → <|tool_call>call:httpcat{input:<|"|>418<|"|>}<tool_call|>`,
   call(content) {
     const code = parseInt(content.trim());
     const name = HTTP_NAMES[code];

@@ -24,11 +24,11 @@ function fromSignal(code) {
 
 export default {
   tag: 'exit',
-  instruction: `EXIT CODE SKILL: To explain a shell or program exit code, emit <exit>code</exit>.
+  instruction: `EXIT CODE SKILL: To explain a shell or program exit code, call <|tool_call>call:exit{input:<|"|>code<|"|>}<tool_call|>.
 
 Examples:
-- "What does exit code 137 mean?" → <exit>137</exit>
-- "Explain exit 0" → <exit>0</exit>`,
+- "What does exit code 137 mean?" → <|tool_call>call:exit{input:<|"|>137<|"|>}<tool_call|>
+- "Explain exit 0" → <|tool_call>call:exit{input:<|"|>0<|"|>}<tool_call|>`,
   call(content) {
     const code = parseInt(content.trim());
     if (isNaN(code) || code < 0 || code > 255) return 'Exit codes are 0–255.';

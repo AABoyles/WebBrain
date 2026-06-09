@@ -20,11 +20,11 @@ function compare(a, b) {
 
 export default {
   tag: 'semver',
-  instruction: `SEMVER PARSER SKILL: To parse or compare semantic versions, emit <semver>version</semver> to decode one version, or <semver>v1 vs v2</semver> to compare two.
+  instruction: `SEMVER PARSER SKILL: To parse or compare semantic versions, call <|tool_call>call:semver{input:<|"|>version<|"|>}<tool_call|> to decode one version, or <|tool_call>call:semver{input:<|"|>v1 vs v2<|"|>}<tool_call|> to compare two.
 
 Examples:
-- "Parse 1.2.3-beta.4+build.5" → <semver>1.2.3-beta.4+build.5</semver>
-- "Is 2.0.0 newer than 1.9.9?" → <semver>2.0.0 vs 1.9.9</semver>`,
+- "Parse 1.2.3-beta.4+build.5" → <|tool_call>call:semver{input:<|"|>1.2.3-beta.4+build.5<|"|>}<tool_call|>
+- "Is 2.0.0 newer than 1.9.9?" → <|tool_call>call:semver{input:<|"|>2.0.0 vs 1.9.9<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const vsMatch = content.match(/^(.+?)\s+vs\s+(.+)$/i);

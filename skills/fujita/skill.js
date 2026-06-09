@@ -9,11 +9,11 @@ const EF = [
 
 export default {
   tag: 'fujita',
-  instruction: `FUJITA SCALE SKILL: To look up an Enhanced Fujita (EF) tornado rating, emit <fujita>EF0 through EF5</fujita> or just a number.
+  instruction: `FUJITA SCALE SKILL: To look up an Enhanced Fujita (EF) tornado rating, call <|tool_call>call:fujita{input:<|"|>EF0 through EF5<|"|>}<tool_call|> or just a number.
 
 Examples:
-- "What is an EF3 tornado?" → <fujita>3</fujita>
-- "Describe EF5 damage" → <fujita>5</fujita>`,
+- "What is an EF3 tornado?" → <|tool_call>call:fujita{input:<|"|>3<|"|>}<tool_call|>
+- "Describe EF5 damage" → <|tool_call>call:fujita{input:<|"|>5<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim().replace(/^EF/i,''));
     if (isNaN(n) || n < 0 || n > 5) return 'Enhanced Fujita scale is EF0–EF5.';

@@ -41,11 +41,11 @@ function sumDivisors(n) {
 
 export default {
   tag: 'numprop',
-  instruction: `NUMBER PROPERTIES SKILL: To analyze the mathematical properties of a positive integer, emit <numprop>n</numprop>.
+  instruction: `NUMBER PROPERTIES SKILL: To analyze the mathematical properties of a positive integer, call <|tool_call>call:numprop{input:<|"|>n<|"|>}<tool_call|>.
 
 Examples:
-- "Is 28 perfect?" → <numprop>28</numprop>
-- "Properties of 153" → <numprop>153</numprop>`,
+- "Is 28 perfect?" → <|tool_call>call:numprop{input:<|"|>28<|"|>}<tool_call|>
+- "Properties of 153" → <|tool_call>call:numprop{input:<|"|>153<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim().replace(/,/g,''));
     if (isNaN(n) || n < 1) return 'Enter a positive integer.';

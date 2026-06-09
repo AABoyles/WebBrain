@@ -42,11 +42,11 @@ function pickCards(n) {
 
 export default {
   tag: 'tarot',
-  instruction: `TAROT DRAW SKILL: To draw tarot cards, emit <tarot>1</tarot> for a single card or <tarot>3</tarot> for a past/present/future spread. Do NOT interpret — just draw.
+  instruction: `TAROT DRAW SKILL: To draw tarot cards, call <|tool_call>call:tarot{input:<|"|>1<|"|>}<tool_call|> for a single card or <|tool_call>call:tarot{input:<|"|>3<|"|>}<tool_call|> for a past/present/future spread. Do NOT interpret — just draw.
 
 Examples:
-- "Draw a tarot card" → <tarot>1</tarot>
-- "Do a three-card tarot spread" → <tarot>3</tarot>`,
+- "Draw a tarot card" → <|tool_call>call:tarot{input:<|"|>1<|"|>}<tool_call|>
+- "Do a three-card tarot spread" → <|tool_call>call:tarot{input:<|"|>3<|"|>}<tool_call|>`,
   call(content) {
     const n = Math.min(Math.max(parseInt(content.trim()) || 1, 1), 10);
     const cards = pickCards(n);

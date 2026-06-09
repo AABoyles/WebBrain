@@ -7,11 +7,11 @@ const FROM_CODE = Object.fromEntries(CODES.map((c,i) => [c, LETTERS[i]]));
 
 export default {
   tag: 'bacon',
-  instruction: `BACONIAN CIPHER SKILL: To encode text with Francis Bacon's biliteral cipher or decode it, emit <bacon>text</bacon> or <bacon>decode:AAAAB AAABB...</bacon>.
+  instruction: `BACONIAN CIPHER SKILL: To encode text with Francis Bacon's biliteral cipher or decode it, call <|tool_call>call:bacon{input:<|"|>text<|"|>}<tool_call|> or <|tool_call>call:bacon{input:<|"|>decode:AAAAB AAABB...<|"|>}<tool_call|>.
 
 Examples:
-- "Encode 'HELLO' in Bacon cipher" → <bacon>HELLO</bacon>
-- "Decode Baconian: AABBB AABAA ABABB ABABB ABBBA" → <bacon>decode:AABBB AABAA ABABB ABABB ABBBA</bacon>`,
+- "Encode 'HELLO' in Bacon cipher" → <|tool_call>call:bacon{input:<|"|>HELLO<|"|>}<tool_call|>
+- "Decode Baconian: AABBB AABAA ABABB ABABB ABBBA" → <|tool_call>call:bacon{input:<|"|>decode:AABBB AABAA ABABB ABABB ABBBA<|"|>}<tool_call|>`,
   call(content) {
     if (/^decode:/i.test(content)) {
       const groups = content.slice(7).trim().toUpperCase().split(/\s+/);

@@ -10,12 +10,12 @@ const CTRL = {
 
 export default {
   tag: 'ascii-table',
-  instruction: `ASCII TABLE SKILL: To look up a character by ASCII code or find the code for a character, emit <ascii-table>value</ascii-table>.
+  instruction: `ASCII TABLE SKILL: To look up a character by ASCII code or find the code for a character, call <|tool_call>call:ascii-table{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "ASCII code for A" → <ascii-table>A</ascii-table>
-- "What is ASCII 65?" → <ascii-table>65</ascii-table>
-- "ASCII control code 10" → <ascii-table>10</ascii-table>`,
+- "ASCII code for A" → <|tool_call>call:ascii-table{input:<|"|>A<|"|>}<tool_call|>
+- "What is ASCII 65?" → <|tool_call>call:ascii-table{input:<|"|>65<|"|>}<tool_call|>
+- "ASCII control code 10" → <|tool_call>call:ascii-table{input:<|"|>10<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     const n = parseInt(content);

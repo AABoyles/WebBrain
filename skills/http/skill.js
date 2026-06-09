@@ -29,11 +29,11 @@ const CLASSES = {1:'Informational',2:'Success',3:'Redirection',4:'Client Error',
 
 export default {
   tag: 'http',
-  instruction: `HTTP STATUS SKILL: To look up an HTTP status code, emit <http>code</http>.
+  instruction: `HTTP STATUS SKILL: To look up an HTTP status code, call <|tool_call>call:http{input:<|"|>code<|"|>}<tool_call|>.
 
 Examples:
-- "What is HTTP 418?" → <http>418</http>
-- "Explain 503" → <http>503</http>`,
+- "What is HTTP 418?" → <|tool_call>call:http{input:<|"|>418<|"|>}<tool_call|>
+- "Explain 503" → <|tool_call>call:http{input:<|"|>503<|"|>}<tool_call|>`,
   call(content) {
     const code = parseInt(content.trim());
     if (isNaN(code) || code < 100 || code > 599) return 'Enter an HTTP status code (100–599).';

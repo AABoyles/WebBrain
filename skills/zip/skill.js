@@ -248,11 +248,11 @@ const ZIP3 = {
 
 export default {
   tag: 'zip',
-  instruction: `US ZIP PREFIX SKILL: To find the rough geographic area for a US ZIP code prefix, emit <zip>first 3 digits</zip> or a full 5-digit ZIP.
+  instruction: `US ZIP PREFIX SKILL: To find the rough geographic area for a US ZIP code prefix, call <|tool_call>call:zip{input:<|"|>first 3 digits<|"|>}<tool_call|> or a full 5-digit ZIP.
 
 Examples:
-- "Where is ZIP 90210?" → <zip>90210</zip>
-- "What area is 021?" → <zip>021</zip>`,
+- "Where is ZIP 90210?" → <|tool_call>call:zip{input:<|"|>90210<|"|>}<tool_call|>
+- "What area is 021?" → <|tool_call>call:zip{input:<|"|>021<|"|>}<tool_call|>`,
   call(content) {
     const digits = content.trim().replace(/\D/g, '').slice(0, 5);
     if (!digits) return 'Enter a ZIP code or first 3 digits.';

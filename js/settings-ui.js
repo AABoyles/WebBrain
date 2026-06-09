@@ -1,10 +1,6 @@
 // Exports: renderMemory, renderSkills, renderTodos, renderBenchmarkTab, runBenchmark
 import { $, esc, estimateTokens, DEFAULT_SOUL } from './utils.js';
-import {
-  SKILLS, manifest,
-  getEnabledSkills, setEnabledSkills,
-  loadSkill, unloadSkill,
-} from './skills.js';
+import { SKILLS, manifest } from './skills.js';
 import { backend, computeMaxTokens, destroySession, streamAI, resetSession } from './ai.js';
 import { perfHistory } from './chat.js';
 import {
@@ -49,42 +45,20 @@ const SKILL_CATEGORY_ORDER = [
   'Fun & Culture'
 ];
 
-async function applySkillToggles(tags, turnOn) {
-  const enabled = await getEnabledSkills();
-  if (turnOn) {
-    const toLoad = tags.filter(tag => !enabled.has(tag));
-    await Promise.all(toLoad.map(loadSkill));
-    toLoad.forEach(tag => enabled.add(tag));
-  } else {
-    tags.forEach(tag => {
-      unloadSkill(tag);
-      enabled.delete(tag);
-    });
-  }
-  await setEnabledSkills(enabled);
-  resetSession();
-}
-
 function slugifyCategory(label) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-function getOpenSkillsCategoryId() {
-  const open = document.querySelector('#skills-accordion .accordion-collapse.show');
-  if (!open?.id) return null;
-  return open.id.replace('skills-collapse-', '');
-}
-
 export async function renderSkills(openCategoryId = null) {
-  const enabled = await getEnabledSkills();
-  const el      = $('skills-accordion');
-  el.innerHTML  = '';
-  let enabledSkillTokenTotal = 0;
+  const el = $('skills-accordion');
+  el.innerHTML = '';
+
+  const loadedTags = new Set(SKILLS.map(s => s.tag));
 
   const discovered = [...new Set(manifest.map(entry => entry.category).filter(Boolean))];
   const categoryOrder = [
-    ...SKILL_CATEGORY_ORDER.filter(category => discovered.includes(category)),
-    ...discovered.filter(category => !SKILL_CATEGORY_ORDER.includes(category)).sort((a, b) => a.localeCompare(b)),
+    ...SKILL_CATEGORY_ORDER.filter(c => discovered.includes(c)),
+    ...discovered.filter(c => !SKILL_CATEGORY_ORDER.includes(c)).sort((a, b) => a.localeCompare(b)),
   ];
   const grouped = new Map(categoryOrder.map(label => [label, []]));
   for (const entry of manifest) {
@@ -94,17 +68,17 @@ export async function renderSkills(openCategoryId = null) {
   }
 
   const validOpenCategoryId = openCategoryId && categoryOrder.some(
-    category => slugifyCategory(category) === openCategoryId
+    c => slugifyCategory(c) === openCategoryId
   ) ? openCategoryId : null;
   let firstCategory = true;
+
   for (const category of categoryOrder) {
     const entries = grouped.get(category);
     if (!entries?.length) continue;
 
-    const total = entries.length;
-    const activeCount = entries.filter(entry => enabled.has(entry.tag)).length;
-    const catId = slugifyCategory(category);
+    const catId  = slugifyCategory(category);
     const isOpen = validOpenCategoryId ? catId === validOpenCategoryId : firstCategory;
+    const loadedCount = entries.filter(e => loadedTags.has(e.tag)).length;
 
     const item = document.createElement('div');
     item.className = 'accordion-item';
@@ -114,55 +88,28 @@ export async function renderSkills(openCategoryId = null) {
                 data-bs-toggle="collapse" data-bs-target="#skills-collapse-${catId}"
                 aria-expanded="${isOpen ? 'true' : 'false'}" aria-controls="skills-collapse-${catId}">
           <span class="skills-cat-title">${esc(category)}</span>
-          <span class="skills-cat-meta">${activeCount}/${total} enabled</span>
+          <span class="skills-cat-meta">${loadedCount ? loadedCount + ' loaded' : entries.length + ' available'}</span>
         </button>
-        <label class="toggle category-toggle" title="Toggle all ${esc(category)} skills">
-          <input type="checkbox" data-category="${catId}">
-          <span class="toggle-track"></span>
-        </label>
       </h2>
       <div id="skills-collapse-${catId}" class="accordion-collapse collapse ${isOpen ? 'show' : ''}"
            aria-labelledby="skills-heading-${catId}" data-bs-parent="#skills-accordion">
         <div class="accordion-body"><div class="skills-category-list"></div></div>
       </div>`;
 
-    const categoryToggle = item.querySelector('.category-toggle input');
-    categoryToggle.checked = activeCount === total;
-    categoryToggle.indeterminate = activeCount > 0 && activeCount < total;
-    categoryToggle.addEventListener('change', async e => {
-      const openId = getOpenSkillsCategoryId() || catId;
-      await applySkillToggles(entries.map(skill => skill.tag), e.target.checked);
-      await renderSkills(openId);
-    });
-
     const list = item.querySelector('.skills-category-list');
     for (const entry of entries) {
-      const isEnabled = enabled.has(entry.tag);
-      const loaded = SKILLS.find(s => s.tag === entry.tag);
-      const approxTokens = loaded?.instruction
-        ? await estimateTokens(loaded.instruction)
-        : 0;
-      if (isEnabled) enabledSkillTokenTotal += approxTokens;
+      const isLoaded = loadedTags.has(entry.tag);
+      const loaded   = SKILLS.find(s => s.tag === entry.tag);
+      const approxTokens = loaded?.instruction ? await estimateTokens(loaded.instruction) : 0;
 
       const row = document.createElement('div');
       row.className = 'skill-row';
       row.innerHTML = `
         <div class="skill-info">
           <span class="skill-name">${esc(entry.label)}</span>
-          ${approxTokens ? `<small class="skill-tokens">~${approxTokens.toLocaleString()} tokens</small>` : ''}
+          ${isLoaded ? `<small class="skill-tokens">${entry.default ? 'always-on' : 'loaded'}${approxTokens ? ' · ~' + approxTokens.toLocaleString() + ' tok' : ''}</small>` : ''}
           <span class="skill-desc">${esc(entry.description)}</span>
-        </div>
-        <label class="toggle" title="${isEnabled ? 'Disable' : 'Enable'} ${esc(entry.label)}">
-          <input type="checkbox" data-tag="${entry.tag}"${isEnabled ? ' checked' : ''}>
-          <span class="toggle-track"></span>
-        </label>`;
-
-      row.querySelector('input').addEventListener('change', async e => {
-        const openId = getOpenSkillsCategoryId() || catId;
-        await applySkillToggles([entry.tag], e.target.checked);
-        await renderSkills(openId);
-      });
-
+        </div>`;
       list.appendChild(row);
     }
 
@@ -171,11 +118,9 @@ export async function renderSkills(openCategoryId = null) {
   }
 
   const maxTok = await computeMaxTokens();
-  const src    = navigator.gpu
-    ? 'estimated from WebGPU VRAM'
-    : 'WebGPU unavailable — using minimum fallback';
+  const src    = navigator.gpu ? 'estimated from WebGPU VRAM' : 'WebGPU unavailable — using minimum fallback';
   $('context-window-note').textContent =
-    `Context window on this device: ~${maxTok.toLocaleString()} tokens (${src}). Enabled skills occupy ~${enabledSkillTokenTotal.toLocaleString()} tokens.`;
+    `Context window on this device: ~${maxTok.toLocaleString()} tokens (${src}). Skills load on demand when invoked.`;
 }
 
 // ── Todos UI ──────────────────────────────────────────────────────────────────

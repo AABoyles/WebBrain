@@ -11,11 +11,11 @@ function nameHash(name) {
 
 export default {
   tag: 'elfname',
-  instruction: `ELF NAME GENERATOR SKILL: To generate a whimsical elf name from a real name, emit <elfname>your name</elfname>.
+  instruction: `ELF NAME GENERATOR SKILL: To generate a whimsical elf name from a real name, call <|tool_call>call:elfname{input:<|"|>your name<|"|>}<tool_call|>.
 
 Examples:
-- "What's my elf name?" → <elfname>Tony</elfname>
-- "Generate elf name for Sarah" → <elfname>Sarah</elfname>`,
+- "What's my elf name?" → <|tool_call>call:elfname{input:<|"|>Tony<|"|>}<tool_call|>
+- "Generate elf name for Sarah" → <|tool_call>call:elfname{input:<|"|>Sarah<|"|>}<tool_call|>`,
   call(content) {
     const name  = content.trim();
     const hash  = nameHash(name);

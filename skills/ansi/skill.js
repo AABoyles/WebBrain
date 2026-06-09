@@ -15,12 +15,12 @@ function stripAnsi(str) {
 
 export default {
   tag: 'ansi',
-  instruction: `ANSI COLOR CODE SKILL: To decode an ANSI escape code, emit <ansi>code</ansi>. To strip ANSI codes from text, emit <ansi>strip:text</ansi>.
+  instruction: `ANSI COLOR CODE SKILL: To decode an ANSI escape code, call <|tool_call>call:ansi{input:<|"|>code<|"|>}<tool_call|>. To strip ANSI codes from text, call <|tool_call>call:ansi{input:<|"|>strip:text<|"|>}<tool_call|>.
 
 Examples:
-- "What is \\e[31m?" → <ansi>31</ansi>
-- "Decode ANSI 1;32" → <ansi>1;32</ansi>
-- "Strip ANSI from '\\e[32mhello\\e[0m'" → <ansi>strip:\x1b[32mhello\x1b[0m</ansi>`,
+- "What is \\e[31m?" → <|tool_call>call:ansi{input:<|"|>31<|"|>}<tool_call|>
+- "Decode ANSI 1;32" → <|tool_call>call:ansi{input:<|"|>1;32<|"|>}<tool_call|>
+- "Strip ANSI from '\\e[32mhello\\e[0m'" → <|tool_call>call:ansi{input:<|"|>strip:\x1b[32mhello\x1b[0m<|"|>}<tool_call|>`,
   call(content) {
     if (content.startsWith('strip:')) {
       const text    = content.slice(6);

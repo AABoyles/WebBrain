@@ -16,11 +16,11 @@ const CLOUDS = {
 
 export default {
   tag: 'cloud',
-  instruction: `CLOUD TYPES SKILL: To look up a cloud type's altitude, description, and weather association, emit <cloud>type</cloud>.
+  instruction: `CLOUD TYPES SKILL: To look up a cloud type's altitude, description, and weather association, call <|tool_call>call:cloud{input:<|"|>type<|"|>}<tool_call|>.
 
 Examples:
-- "What is cumulonimbus?" → <cloud>cumulonimbus</cloud>
-- "Tell me about lenticular clouds" → <cloud>lenticular</cloud>`,
+- "What is cumulonimbus?" → <|tool_call>call:cloud{input:<|"|>cumulonimbus<|"|>}<tool_call|>
+- "Tell me about lenticular clouds" → <|tool_call>call:cloud{input:<|"|>lenticular<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toLowerCase();
     const c   = CLOUDS[key];

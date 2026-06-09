@@ -48,11 +48,11 @@ const ALGOS = {
 
 export default {
   tag: 'hash',
-  instruction: `HASH SKILL: To compute a cryptographic hash, emit <hash>algorithm:text</hash>. Supported algorithms: md5, sha-1, sha-256, sha-384, sha-512.
+  instruction: `HASH SKILL: To compute a cryptographic hash, call <|tool_call>call:hash{input:<|"|>algorithm:text<|"|>}<tool_call|>. Supported algorithms: md5, sha-1, sha-256, sha-384, sha-512.
 
 Examples:
-- "SHA-256 of 'hello world'" → <hash>sha-256:hello world</hash>
-- "MD5 of 'hello'" → <hash>md5:hello</hash>`,
+- "SHA-256 of 'hello world'" → <|tool_call>call:hash{input:<|"|>sha-256:hello world<|"|>}<tool_call|>
+- "MD5 of 'hello'" → <|tool_call>call:hash{input:<|"|>md5:hello<|"|>}<tool_call|>`,
   async call(content) {
     const colon = content.indexOf(':');
     if (colon === -1) return 'Format: algorithm:text — e.g. sha-256:hello';

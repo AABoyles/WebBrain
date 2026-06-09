@@ -44,13 +44,13 @@ function levenshtein(a, b) {
 
 export default {
   tag: 'diff',
-  instruction: `DIFF SKILL: To compare two texts, emit <diff>mode:text A|||text B</diff>.
+  instruction: `DIFF SKILL: To compare two texts, call <|tool_call>call:diff{input:<|"|>mode:text A|||text B<|"|>}<tool_call|>.
 Modes: line (default), word, edit (Levenshtein distance only).
 
 Examples:
-- Line diff: <diff>hello\nworld|||hello\nearth</diff>
-- Word diff: <diff>word:the quick fox|||the slow fox</diff>
-- Edit distance: <diff>edit:kitten|||sitting</diff>`,
+- Line diff: <|tool_call>call:diff{input:<|"|>hello\nworld|||hello\nearth<|"|>}<tool_call|>
+- Word diff: <|tool_call>call:diff{input:<|"|>word:the quick fox|||the slow fox<|"|>}<tool_call|>
+- Edit distance: <|tool_call>call:diff{input:<|"|>edit:kitten|||sitting<|"|>}<tool_call|>`,
   call(content) {
     // Check for mode prefix
     let mode = 'line';

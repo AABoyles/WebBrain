@@ -104,12 +104,12 @@ function calcCurrency(a, op, b) {
 
 export default {
   tag: 'currency',
-  instruction: `CURRENCY SKILL: To look up a currency, emit <currency>USD</currency>. To do precise currency arithmetic, emit <currency>USD 10.20 + 0.10</currency> (use ISO code or symbol). Supports +, -, *, /.
+  instruction: `CURRENCY SKILL: To look up a currency, call <|tool_call>call:currency{input:<|"|>USD<|"|>}<tool_call|>. To do precise currency arithmetic, call <|tool_call>call:currency{input:<|"|>USD 10.20 + 0.10<|"|>}<tool_call|> (use ISO code or symbol). Supports +, -, *, /.
 
 Examples:
-- "What is JPY?" → <currency>JPY</currency>
-- "$10.20 + $0.10 precisely" → <currency>USD 10.20 + 0.10</currency>
-- "Split £37.50 among 4" → <currency>GBP 37.50 / 4</currency>`,
+- "What is JPY?" → <|tool_call>call:currency{input:<|"|>JPY<|"|>}<tool_call|>
+- "$10.20 + $0.10 precisely" → <|tool_call>call:currency{input:<|"|>USD 10.20 + 0.10<|"|>}<tool_call|>
+- "Split £37.50 among 4" → <|tool_call>call:currency{input:<|"|>GBP 37.50 / 4<|"|>}<tool_call|>`,
   call(content) {
     // Try arithmetic: optional CODE/symbol, then: number OP number
     const mathMatch = content.trim().match(/^([A-Z]{3}|[$€£¥₹₿Ξ]|\S{2,4})?\s*([\d.,]+)\s*([+\-*/])\s*([\d.,]+)$/i);

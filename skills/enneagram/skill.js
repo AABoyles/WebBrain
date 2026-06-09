@@ -13,11 +13,11 @@ const TYPES = [
 
 export default {
   tag: 'enneagram',
-  instruction: `ENNEAGRAM SKILL: To look up an Enneagram personality type, emit <enneagram>number</enneagram>.
+  instruction: `ENNEAGRAM SKILL: To look up an Enneagram personality type, call <|tool_call>call:enneagram{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "Tell me about Enneagram type 4" → <enneagram>4</enneagram>
-- "What is type 9?" → <enneagram>9</enneagram>`,
+- "Tell me about Enneagram type 4" → <|tool_call>call:enneagram{input:<|"|>4<|"|>}<tool_call|>
+- "What is type 9?" → <|tool_call>call:enneagram{input:<|"|>9<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim());
     const t = TYPES[n];

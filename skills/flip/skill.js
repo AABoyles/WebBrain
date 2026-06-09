@@ -10,9 +10,9 @@ const FLIP_MAP = {
 
 export default {
   tag: 'flip',
-  instruction: `FLIP TEXT SKILL: To render text upside-down using Unicode look-alike characters, emit <flip>text</flip>.
+  instruction: `FLIP TEXT SKILL: To render text upside-down using Unicode look-alike characters, call <|tool_call>call:flip{input:<|"|>text<|"|>}<tool_call|>.
 
-Example: <flip>Hello World</flip> → ploM ollǝH`,
+Example: <|tool_call>call:flip{input:<|"|>Hello World<|"|>}<tool_call|> → ploM ollǝH`,
   call: text => text.split('').map(c => FLIP_MAP[c] ?? c).reverse().join(''),
   async handle() {},
 };

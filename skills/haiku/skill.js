@@ -15,10 +15,10 @@ function lineSyllables(line) {
 
 export default {
   tag: 'haiku',
-  instruction: `HAIKU CHECKER SKILL: To verify whether a poem follows the 5-7-5 haiku structure, emit <haiku>line1 / line2 / line3</haiku>. Separate lines with " / ".
+  instruction: `HAIKU CHECKER SKILL: To verify whether a poem follows the 5-7-5 haiku structure, call <|tool_call>call:haiku{input:<|"|>line1 / line2 / line3<|"|>}<tool_call|>. Separate lines with " / ".
 
 Examples:
-- "Is this a haiku?" → <haiku>An old silent pond / A frog jumps into the pond / Splash silence again</haiku>`,
+- "Is this a haiku?" → <|tool_call>call:haiku{input:<|"|>An old silent pond / A frog jumps into the pond / Splash silence again<|"|>}<tool_call|>`,
   call(content) {
     const lines = content.split('/').map(l => l.trim()).filter(Boolean);
     if (lines.length !== 3) return 'A haiku needs exactly 3 lines separated by " / ".';

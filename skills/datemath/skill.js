@@ -51,7 +51,7 @@ function humanDiff(days) {
 
 export default {
   tag: 'datemath',
-  instruction: `DATE ARITHMETIC SKILL: Perform date calculations. Emit <datemath>expression</datemath>.
+  instruction: `DATE ARITHMETIC SKILL: Perform date calculations. call <|tool_call>call:datemath{input:<|"|>expression<|"|>}<tool_call|>.
 Expressions:
  - "today + 3 weeks"
  - "2024-01-15 + 6 months"
@@ -59,8 +59,8 @@ Expressions:
  - "2025-12-25 - today"
 
 Examples:
-- "What date is 90 days from now?" → <datemath>today + 90 days</datemath>
-- "Days until Christmas 2025" → <datemath>days between today and 2025-12-25</datemath>`,
+- "What date is 90 days from now?" → <|tool_call>call:datemath{input:<|"|>today + 90 days<|"|>}<tool_call|>
+- "Days until Christmas 2025" → <|tool_call>call:datemath{input:<|"|>days between today and 2025-12-25<|"|>}<tool_call|>`,
   call(content) {
     const s = content.trim();
 

@@ -16,11 +16,11 @@ const BEAUFORT = [
 
 export default {
   tag: 'beaufort',
-  instruction: `BEAUFORT SCALE SKILL: To look up a Beaufort wind force number, emit <beaufort>number</beaufort>.
+  instruction: `BEAUFORT SCALE SKILL: To look up a Beaufort wind force number, call <|tool_call>call:beaufort{input:<|"|>number<|"|>}<tool_call|>.
 
 Examples:
-- "What is Beaufort 7?" → <beaufort>7</beaufort>
-- "Describe force 10 wind" → <beaufort>10</beaufort>`,
+- "What is Beaufort 7?" → <|tool_call>call:beaufort{input:<|"|>7<|"|>}<tool_call|>
+- "Describe force 10 wind" → <|tool_call>call:beaufort{input:<|"|>10<|"|>}<tool_call|>`,
   call(content) {
     const n = parseInt(content.trim());
     if (isNaN(n) || n < 0 || n > 12) return 'Beaufort scale is 0–12.';

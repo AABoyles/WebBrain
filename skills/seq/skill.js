@@ -28,13 +28,13 @@ const ALIASES = {
 
 export default {
   tag: 'seq',
-  instruction: `SEQUENCE SKILL: To generate terms of a mathematical sequence, emit <seq>name count</seq>.
+  instruction: `SEQUENCE SKILL: To generate terms of a mathematical sequence, call <|tool_call>call:seq{input:<|"|>name count<|"|>}<tool_call|>.
 Supported: fibonacci, primes, triangular, square, cube, factorial, powers2.
 
 Examples:
-- "First 10 Fibonacci numbers" → <seq>fibonacci 10</seq>
-- "First 8 primes" → <seq>primes 8</seq>
-- "First 6 factorials" → <seq>factorial 6</seq>`,
+- "First 10 Fibonacci numbers" → <|tool_call>call:seq{input:<|"|>fibonacci 10<|"|>}<tool_call|>
+- "First 8 primes" → <|tool_call>call:seq{input:<|"|>primes 8<|"|>}<tool_call|>
+- "First 6 factorials" → <|tool_call>call:seq{input:<|"|>factorial 6<|"|>}<tool_call|>`,
   call(content) {
     const parts = content.trim().split(/\s+/);
     const name  = ALIASES[parts[0]?.toLowerCase()];

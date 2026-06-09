@@ -65,13 +65,13 @@ function objToXml(obj, tag = 'root', indent = '') {
 
 export default {
   tag: 'xml',
-  instruction: `XML SKILL: Parse, format, or convert XML. Emit <xml>op:content</xml>.
+  instruction: `XML SKILL: Parse, format, or convert XML. call <|tool_call>call:xml{input:<|"|>op:content<|"|>}<tool_call|>.
 Operations: parse (summarize), format (pretty-print), tojson (XML→JSON object), toxml (JSON→XML), strip (remove tags).
 
 Examples:
-- "Format this XML: <a><b>hi</b></a>" → <xml>format:<a><b>hi</b></a></xml>
-- "Convert XML to JSON" → <xml>tojson:<person><name>Alice</name><age>30</age></person></xml>
-- "Strip tags from HTML" → <xml>strip:<p>Hello <b>world</b></p></xml>`,
+- "Format this XML: <a><b>hi</b></a>" → <|tool_call>call:xml{input:<|"|>format:<a><b>hi</b></a><|"|>}<tool_call|>
+- "Convert XML to JSON" → <|tool_call>call:xml{input:<|"|>tojson:<person><name>Alice</name><age>30</age></person><|"|>}<tool_call|>
+- "Strip tags from HTML" → <|tool_call>call:xml{input:<|"|>strip:<p>Hello <b>world</b></p><|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: op:content — ops: parse, format, tojson, toxml, strip';

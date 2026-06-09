@@ -17,9 +17,9 @@ const RBI = {
 
 export default {
   tag: 'imei',
-  instruction: `IMEI DECODER SKILL: To validate and decode an IMEI (International Mobile Equipment Identity), emit <imei>number</imei>.
+  instruction: `IMEI DECODER SKILL: To validate and decode an IMEI (International Mobile Equipment Identity), call <|tool_call>call:imei{input:<|"|>number<|"|>}<tool_call|>.
 
-Example: <imei>490154203237518</imei>`,
+Example: <|tool_call>call:imei{input:<|"|>490154203237518<|"|>}<tool_call|>`,
   call(content) {
     const n = content.trim().replace(/[\s\-]/g, '');
     if (!/^\d{15}$/.test(n)) return 'IMEIs are exactly 15 digits.';

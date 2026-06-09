@@ -22,9 +22,9 @@ const WMI_REGIONS = {
 
 export default {
   tag: 'vin',
-  instruction: `VIN DECODER SKILL: To decode a Vehicle Identification Number, emit <vin>VIN</vin>.
+  instruction: `VIN DECODER SKILL: To decode a Vehicle Identification Number, call <|tool_call>call:vin{input:<|"|>VIN<|"|>}<tool_call|>.
 
-Example: <vin>1HGCM82633A004352</vin>`,
+Example: <|tool_call>call:vin{input:<|"|>1HGCM82633A004352<|"|>}<tool_call|>`,
   call(content) {
     const vin = content.trim().toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, '');
     if (vin.length !== 17) return `VINs are exactly 17 characters (got ${vin.length}).`;

@@ -28,9 +28,9 @@ const MAP = [
 
 export default {
   tag: 'pirate',
-  instruction: `PIRATE SPEAK SKILL: To translate text into pirate dialect, emit <pirate>text</pirate>.
+  instruction: `PIRATE SPEAK SKILL: To translate text into pirate dialect, call <|tool_call>call:pirate{input:<|"|>text<|"|>}<tool_call|>.
 
-Example: <pirate>Hello friend, this is good</pirate> → Ahoy matey, this be fine`,
+Example: <|tool_call>call:pirate{input:<|"|>Hello friend, this is good<|"|>}<tool_call|> → Ahoy matey, this be fine`,
   call(text) {
     let result = text;
     for (const [pattern, replacement] of MAP) result = result.replace(pattern, replacement);

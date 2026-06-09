@@ -18,9 +18,9 @@ function fmtTime(ts) {
 
 export default {
   tag: 'jwt',
-  instruction: `JWT DECODER SKILL: To decode a JSON Web Token, emit <jwt>token</jwt>. The header and payload are decoded and displayed; the signature is NOT verified.
+  instruction: `JWT DECODER SKILL: To decode a JSON Web Token, call <|tool_call>call:jwt{input:<|"|>token<|"|>}<tool_call|>. The header and payload are decoded and displayed; the signature is NOT verified.
 
-Example: <jwt>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSJ9.sig</jwt>`,
+Example: <|tool_call>call:jwt{input:<|"|>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSJ9.sig<|"|>}<tool_call|>`,
   call(content) {
     const parts = content.trim().split('.');
     if (parts.length !== 3) return 'JWTs have three dot-separated parts.';

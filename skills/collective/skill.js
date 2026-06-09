@@ -25,11 +25,11 @@ const NOUNS = {
 
 export default {
   tag: 'collective',
-  instruction: `COLLECTIVE NOUNS SKILL: To find the collective noun for a group of animals, emit <collective>animal</collective>.
+  instruction: `COLLECTIVE NOUNS SKILL: To find the collective noun for a group of animals, call <|tool_call>call:collective{input:<|"|>animal<|"|>}<tool_call|>.
 
 Examples:
-- "Collective noun for crows" → <collective>crows</collective>
-- "What's a group of flamingos called?" → <collective>flamingos</collective>`,
+- "Collective noun for crows" → <|tool_call>call:collective{input:<|"|>crows<|"|>}<tool_call|>
+- "What's a group of flamingos called?" → <|tool_call>call:collective{input:<|"|>flamingos<|"|>}<tool_call|>`,
   call(content) {
     const key = content.trim().toLowerCase().replace(/^a?\s+group\s+of\s+/,'');
     const noun = NOUNS[key] ?? NOUNS[key.replace(/s$/, '')] ?? NOUNS[key + 's'];

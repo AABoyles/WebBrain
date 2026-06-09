@@ -31,11 +31,11 @@ async function playTones(digits) {
 
 export default {
   tag: 'dtmf',
-  instruction: `DTMF TONES SKILL: To play phone keypad tones for a sequence of digits, emit <dtmf>digits</dtmf>. Supports 0–9, *, #, A–D.
+  instruction: `DTMF TONES SKILL: To play phone keypad tones for a sequence of digits, call <|tool_call>call:dtmf{input:<|"|>digits<|"|>}<tool_call|>. Supports 0–9, *, #, A–D.
 
 Examples:
-- "Play touch tones for 555-1234" → <dtmf>5551234</dtmf>
-- "What does # sound like?" → <dtmf>#</dtmf>`,
+- "Play touch tones for 555-1234" → <|tool_call>call:dtmf{input:<|"|>5551234<|"|>}<tool_call|>
+- "What does # sound like?" → <|tool_call>call:dtmf{input:<|"|>#<|"|>}<tool_call|>`,
   async handle(content) {
     const digits = content.replace(/[\s\-().]/g, '');
     if (digits) await playTones(digits);

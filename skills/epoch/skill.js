@@ -15,12 +15,12 @@ function relTime(diffMs) {
 
 export default {
   tag: 'epoch',
-  instruction: `UNIX TIMESTAMP SKILL: To convert a Unix timestamp to a human date, or a date to a Unix timestamp, emit <epoch>value</epoch>. Also shows relative time.
+  instruction: `UNIX TIMESTAMP SKILL: To convert a Unix timestamp to a human date, or a date to a Unix timestamp, call <|tool_call>call:epoch{input:<|"|>value<|"|>}<tool_call|>. Also shows relative time.
 
 Examples:
-- "What date is timestamp 1700000000?" → <epoch>1700000000</epoch>
-- "What's the Unix timestamp for Jan 1, 2030?" → <epoch>January 1, 2030</epoch>
-- "Current timestamp" → <epoch>now</epoch>`,
+- "What date is timestamp 1700000000?" → <|tool_call>call:epoch{input:<|"|>1700000000<|"|>}<tool_call|>
+- "What's the Unix timestamp for Jan 1, 2030?" → <|tool_call>call:epoch{input:<|"|>January 1, 2030<|"|>}<tool_call|>
+- "Current timestamp" → <|tool_call>call:epoch{input:<|"|>now<|"|>}<tool_call|>`,
   call(content) {
     content = content.trim();
     if (/^now$/i.test(content)) {

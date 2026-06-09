@@ -56,11 +56,11 @@ const BY_NAME = Object.fromEntries(Object.entries(STATES).map(([k,v]) => [v.name
 
 export default {
   tag: 'state',
-  instruction: `US STATE SKILL: To look up a US state by abbreviation or full name, emit <state>value</state>.
+  instruction: `US STATE SKILL: To look up a US state by abbreviation or full name, call <|tool_call>call:state{input:<|"|>value<|"|>}<tool_call|>.
 
 Examples:
-- "Info on California" → <state>California</state>
-- "What state is TX?" → <state>TX</state>`,
+- "Info on California" → <|tool_call>call:state{input:<|"|>California<|"|>}<tool_call|>
+- "What state is TX?" → <|tool_call>call:state{input:<|"|>TX<|"|>}<tool_call|>`,
   call(content) {
     const input = content.trim().toUpperCase();
     const data  = STATES[input] ?? STATES[BY_NAME[input]];

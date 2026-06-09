@@ -4,11 +4,11 @@ const REL_MIN = ['Am','Em','Bm','F#m','C#m','G#m','D#m/Ebm','Bbm','Fm','Cm','Gm'
 
 export default {
   tag: 'fifths',
-  instruction: `CIRCLE OF FIFTHS SKILL: To look up a key's position on the circle of fifths, emit <fifths>key</fifths>.
+  instruction: `CIRCLE OF FIFTHS SKILL: To look up a key's position on the circle of fifths, call <|tool_call>call:fifths{input:<|"|>key<|"|>}<tool_call|>.
 
 Examples:
-- "Circle of fifths for G major" → <fifths>G</fifths>
-- "What key is 3 sharps?" → <fifths>A</fifths>`,
+- "Circle of fifths for G major" → <|tool_call>call:fifths{input:<|"|>G<|"|>}<tool_call|>
+- "What key is 3 sharps?" → <|tool_call>call:fifths{input:<|"|>A<|"|>}<tool_call|>`,
   call(content) {
     const key  = content.trim().toUpperCase().replace(/\s+MAJOR/, '').replace(/\s+MINOR/, '');
     const idx  = CIRCLE.findIndex(k => k.split('/').includes(key));

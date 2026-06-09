@@ -9,11 +9,11 @@ async function getMarked() {
 
 export default {
   tag: 'md',
-  instruction: `MARKDOWN RENDER SKILL: To render Markdown as formatted HTML in the chat, emit <md>markdown text</md>.
+  instruction: `MARKDOWN RENDER SKILL: To render Markdown as formatted HTML in the chat, call <|tool_call>call:md{input:<|"|>markdown text<|"|>}<tool_call|>.
 The rendered HTML is injected directly into the response area.
 
 Examples:
-- "Render this markdown: # Hello\\n**bold** text" → <md># Hello\n**bold** text</md>`,
+- "Render this markdown: # Hello\\n**bold** text" → <|tool_call>call:md{input:<|"|># Hello\n**bold** text<|"|>}<tool_call|>`,
   async call(content) {
     try {
       const marked = await getMarked();

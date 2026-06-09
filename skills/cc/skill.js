@@ -21,9 +21,9 @@ function issuer(n) {
 
 export default {
   tag: 'cc',
-  instruction: `CREDIT CARD DECODER SKILL: To validate and identify a credit card number, emit <cc>number</cc>. Only the structure is analyzed — nothing is stored or transmitted.
+  instruction: `CREDIT CARD DECODER SKILL: To validate and identify a credit card number, call <|tool_call>call:cc{input:<|"|>number<|"|>}<tool_call|>. Only the structure is analyzed — nothing is stored or transmitted.
 
-Example: <cc>4532015112830366</cc>`,
+Example: <|tool_call>call:cc{input:<|"|>4532015112830366<|"|>}<tool_call|>`,
   call(content) {
     const n = content.trim().replace(/[\s\-]/g, '');
     if (!/^\d{13,19}$/.test(n)) return 'Enter 13–19 digits (spaces/dashes allowed).';

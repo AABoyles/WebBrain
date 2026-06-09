@@ -39,12 +39,12 @@ function render(template, ctx) {
 
 export default {
   tag: 'mustache',
-  instruction: `MUSTACHE TEMPLATE SKILL: Fill a Mustache template with JSON data. Emit <mustache>template|||jsonData</mustache> (three pipes as separator).
+  instruction: `MUSTACHE TEMPLATE SKILL: Fill a Mustache template with JSON data. call <|tool_call>call:mustache{input:<|"|>template|||jsonData<|"|>}<tool_call|> (three pipes as separator).
 Supports: {{var}}, {{{unescaped}}}, {{#section}}…{{/section}}, {{^inverted}}…{{/inverted}}, {{.}} (loop item).
 
 Examples:
-- "Fill template" → <mustache>Hello, {{name}}!|||{"name":"World"}</mustache>
-- "List template" → <mustache>{{#items}}- {{.}}\n{{/items}}|||{"items":["a","b","c"]}</mustache>`,
+- "Fill template" → <|tool_call>call:mustache{input:<|"|>Hello, {{name}}!|||{"name":"World"}<|"|>}<tool_call|>
+- "List template" → <|tool_call>call:mustache{input:<|"|>{{#items}}- {{.}}\n{{/items}}|||{"items":["a","b","c"]}<|"|>}<tool_call|>`,
   call(content) {
     const sep = content.indexOf('|||');
     if (sep < 0) return 'Format: template|||{"key":"value"}';

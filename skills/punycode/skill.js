@@ -89,11 +89,11 @@ function decodeDomain(domain) {
 
 export default {
   tag: 'punycode',
-  instruction: `PUNYCODE SKILL: Encode or decode internationalized domain names (IDN). Emit <punycode>domain</punycode> — auto-detects direction.
+  instruction: `PUNYCODE SKILL: Encode or decode internationalized domain names (IDN). call <|tool_call>call:punycode{input:<|"|>domain<|"|>}<tool_call|> — auto-detects direction.
 
 Examples:
-- "Punycode for münchen.de" → <punycode>münchen.de</punycode>
-- "Decode xn--mnchen-3ya.de" → <punycode>xn--mnchen-3ya.de</punycode>`,
+- "Punycode for münchen.de" → <|tool_call>call:punycode{input:<|"|>münchen.de<|"|>}<tool_call|>
+- "Decode xn--mnchen-3ya.de" → <|tool_call>call:punycode{input:<|"|>xn--mnchen-3ya.de<|"|>}<tool_call|>`,
   call(content) {
     const domain = content.trim().toLowerCase();
     if (!domain) return 'Provide a domain name.';

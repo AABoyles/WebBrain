@@ -194,11 +194,11 @@ for (const [code, info] of Object.entries(AIRPORTS)) {
 
 export default {
   tag: 'airport',
-  instruction: `AIRPORT CODE SKILL: To look up an airport by IATA code or city name, emit <airport>code or city</airport>.
+  instruction: `AIRPORT CODE SKILL: To look up an airport by IATA code or city name, call <|tool_call>call:airport{input:<|"|>code or city<|"|>}<tool_call|>.
 
 Examples:
-- "What is LAX?" → <airport>LAX</airport>
-- "Airport in Tokyo" → <airport>Tokyo</airport>`,
+- "What is LAX?" → <|tool_call>call:airport{input:<|"|>LAX<|"|>}<tool_call|>
+- "Airport in Tokyo" → <|tool_call>call:airport{input:<|"|>Tokyo<|"|>}<tool_call|>`,
   call(content) {
     const input  = content.trim().toUpperCase();
     const direct = AIRPORTS[input];

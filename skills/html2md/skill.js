@@ -69,10 +69,10 @@ function regexFallback(html) {
 
 export default {
   tag: 'html2md',
-  instruction: `HTML TO MARKDOWN SKILL: Convert HTML to Markdown. Emit <html2md>html content</html2md>.
+  instruction: `HTML TO MARKDOWN SKILL: Convert HTML to Markdown. call <|tool_call>call:html2md{input:<|"|>html content<|"|>}<tool_call|>.
 
 Examples:
-- "Convert <h1>Title</h1><p>Hello <b>world</b></p>" → <html2md><h1>Title</h1><p>Hello <b>world</b></p></html2md>`,
+- "Convert <h1>Title</h1><p>Hello <b>world</b></p>" → <|tool_call>call:html2md{input:<|"|><h1>Title</h1><p>Hello <b>world</b></p><|"|>}<tool_call|>`,
   call(content) {
     if (typeof DOMParser !== 'undefined') {
       const doc = new DOMParser().parseFromString(content, 'text/html');

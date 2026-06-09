@@ -2,11 +2,11 @@ import { getDreams, addDream, deleteDream } from '../db.js';
 
 export default {
   tag: 'dream',
-  instruction: `DREAM LOG SKILL: To record a dream, emit <dream>log:description</dream>. To recall recent dreams, emit <dream>list</dream>. To delete, emit <dream>delete:id</dream>.
+  instruction: `DREAM LOG SKILL: To record a dream, call <|tool_call>call:dream{input:<|"|>log:description<|"|>}<tool_call|>. To recall recent dreams, call <|tool_call>call:dream{input:<|"|>list<|"|>}<tool_call|>. To delete, call <|tool_call>call:dream{input:<|"|>delete:id<|"|>}<tool_call|>.
 
 Examples:
-- "Log last night's dream" → <dream>log:I was flying over a city made of glass...</dream>
-- "What dreams have I recorded?" → <dream>list</dream>`,
+- "Log last night's dream" → <|tool_call>call:dream{input:<|"|>log:I was flying over a city made of glass...<|"|>}<tool_call|>
+- "What dreams have I recorded?" → <|tool_call>call:dream{input:<|"|>list<|"|>}<tool_call|>`,
   async call(content) {
     const cmd = content.trim();
     if (cmd === 'list') {

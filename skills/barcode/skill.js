@@ -22,13 +22,13 @@ const TYPES = {
 
 export default {
   tag: 'barcode',
-  instruction: `BARCODE SKILL: Generate a barcode image displayed in the chat. Emit <barcode>type:value</barcode>.
+  instruction: `BARCODE SKILL: Generate a barcode image displayed in the chat. call <|tool_call>call:barcode{input:<|"|>type:value<|"|>}<tool_call|>.
 Types: code128, code39, qr, ean13, ean8, upca, upce, itf, datamatrix, pdf417, aztec, codabar.
 
 Examples:
-- "QR code for a URL" → <barcode>qr:https://example.com</barcode>
-- "Code128 barcode for 'HELLO'" → <barcode>code128:HELLO</barcode>
-- "EAN-13 barcode" → <barcode>ean13:5901234123457</barcode>`,
+- "QR code for a URL" → <|tool_call>call:barcode{input:<|"|>qr:https://example.com<|"|>}<tool_call|>
+- "Code128 barcode for 'HELLO'" → <|tool_call>call:barcode{input:<|"|>code128:HELLO<|"|>}<tool_call|>
+- "EAN-13 barcode" → <|tool_call>call:barcode{input:<|"|>ean13:5901234123457<|"|>}<tool_call|>`,
   call(content) {
     const colon = content.indexOf(':');
     if (colon < 0) return 'Format: type:value — e.g. qr:https://example.com';

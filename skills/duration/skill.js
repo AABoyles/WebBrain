@@ -1,10 +1,10 @@
 export default {
   tag: 'duration',
-  instruction: `ISO 8601 DURATION SKILL: To decode an ISO 8601 duration string, emit <duration>P...</duration>.
+  instruction: `ISO 8601 DURATION SKILL: To decode an ISO 8601 duration string, call <|tool_call>call:duration{input:<|"|>P...<|"|>}<tool_call|>.
 
 Examples:
-- "What is P1Y2M3DT4H5M6S?" → <duration>P1Y2M3DT4H5M6S</duration>
-- "Decode PT30M" → <duration>PT30M</duration>`,
+- "What is P1Y2M3DT4H5M6S?" → <|tool_call>call:duration{input:<|"|>P1Y2M3DT4H5M6S<|"|>}<tool_call|>
+- "Decode PT30M" → <|tool_call>call:duration{input:<|"|>PT30M<|"|>}<tool_call|>`,
   call(content) {
     const m = content.trim().toUpperCase().match(
       /^P(?:(\d+(?:\.\d+)?)Y)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)W)?(?:(\d+(?:\.\d+)?)D)?(?:T(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?)?$/

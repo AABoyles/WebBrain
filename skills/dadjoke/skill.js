@@ -1,8 +1,8 @@
 export default {
   tag: 'dadjoke',
-  instruction: `DAD JOKE SKILL: To get a random dad joke, emit <dadjoke></dadjoke> (empty tag). They're bad. That's the point.
+  instruction: `DAD JOKE SKILL: To get a random dad joke, call <|tool_call>call:dadjoke{input:<|"|><|"|>}<tool_call|> (empty tag). They're bad. That's the point.
 
-Example: "Tell me a dad joke" → <dadjoke></dadjoke>`,
+Example: "Tell me a dad joke" → <|tool_call>call:dadjoke{input:<|"|><|"|>}<tool_call|>`,
   async call() {
     try {
       const res = await fetch('https://icanhazdadjoke.com/', {

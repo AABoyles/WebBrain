@@ -32,11 +32,11 @@ const VARIANTS = {
 
 export default {
   tag: 'uuid-decode',
-  instruction: `UUID DECODER SKILL: To decode the structure and metadata of a UUID, emit <uuid-decode>uuid</uuid-decode>.
+  instruction: `UUID DECODER SKILL: To decode the structure and metadata of a UUID, call <|tool_call>call:uuid-decode{input:<|"|>uuid<|"|>}<tool_call|>.
 
 Examples:
-- "Decode this UUID" → <uuid-decode>550e8400-e29b-41d4-a716-446655440000</uuid-decode>
-- "What version is this UUID?" → <uuid-decode>6ba7b810-9dad-11d1-80b4-00c04fd430c8</uuid-decode>`,
+- "Decode this UUID" → <|tool_call>call:uuid-decode{input:<|"|>550e8400-e29b-41d4-a716-446655440000<|"|>}<tool_call|>
+- "What version is this UUID?" → <|tool_call>call:uuid-decode{input:<|"|>6ba7b810-9dad-11d1-80b4-00c04fd430c8<|"|>}<tool_call|>`,
   call(content) {
     const uuid = content.trim().toLowerCase();
     const re   = /^[0-9a-f]{8}-[0-9a-f]{4}-([1-5])[0-9a-f]{3}-([0-9a-f])[0-9a-f]{3}-[0-9a-f]{12}$/;

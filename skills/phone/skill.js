@@ -115,12 +115,12 @@ function formatNational(digits, meta) {
 
 export default {
   tag: 'phone',
-  instruction: `PHONE NUMBER SKILL: Parse and format a phone number. Emit <phone>number</phone>. Include country code with + for international numbers.
+  instruction: `PHONE NUMBER SKILL: Parse and format a phone number. call <|tool_call>call:phone{input:<|"|>number<|"|>}<tool_call|>. Include country code with + for international numbers.
 
 Examples:
-- "Format +14155552671" → <phone>+14155552671</phone>
-- "Parse US number 4155552671" → <phone>+14155552671</phone>
-- "Format UK number" → <phone>+447911123456</phone>`,
+- "Format +14155552671" → <|tool_call>call:phone{input:<|"|>+14155552671<|"|>}<tool_call|>
+- "Parse US number 4155552671" → <|tool_call>call:phone{input:<|"|>+14155552671<|"|>}<tool_call|>
+- "Format UK number" → <|tool_call>call:phone{input:<|"|>+447911123456<|"|>}<tool_call|>`,
   call(content) {
     const raw = content.trim();
     const digits = normalizeDigits(raw);
