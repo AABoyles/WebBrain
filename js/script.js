@@ -1,6 +1,6 @@
-import { $, setSend, autoResize, DEFAULT_SOUL } from './utils.js';
+import { $, esc, setSend, autoResize, DEFAULT_SOUL } from './utils.js';
 import { initTools, invalidateStaticSysPrompt } from './tools.js';
-import { initAI, backend, resetSession, setThinkingMode } from './ai.js';
+import { initAI, backend, resetSession, setThinkingMode, KNOWN_MODELS, checkModelCached } from './ai.js';
 import {
   txGet, txPut,
   addFact, clearFacts,
@@ -123,9 +123,43 @@ $('reset-soul-btn').addEventListener('click', async () => {
   resetSession();
 });
 
+async function renderModelPicker() {
+  const el       = $('model-picker');
+  const savedUrl = (await txGet('settings', 'modelUrl')) ?? KNOWN_MODELS[0].url;
+  const cached   = await Promise.all(KNOWN_MODELS.map(m => checkModelCached(m.url)));
+  const activeUrl = KNOWN_MODELS.some(m => m.url === savedUrl) ? savedUrl : KNOWN_MODELS[0].url;
+
+  el.innerHTML = '';
+  KNOWN_MODELS.forEach((model, i) => {
+    const isSelected = model.url === activeUrl;
+    const isCached   = cached[i];
+    const card = document.createElement('label');
+    card.className = 'model-card' + (isSelected ? ' selected' : '');
+    card.setAttribute('data-url', model.url);
+    card.innerHTML = `
+      <input type="radio" name="model-pick" value="${esc(model.url)}"${isSelected ? ' checked' : ''}>
+      <div class="model-card-radio"></div>
+      <div class="model-card-body">
+        <div class="model-card-header">
+          <span class="model-card-name">${esc(model.label)}</span>
+          <span class="badge-pill ${isCached ? 'badge-ok' : 'badge-off'}">
+            <span class="dot"></span>${isCached ? 'Cached' : 'Not cached'}
+          </span>
+        </div>
+        <span class="model-card-desc">${esc(model.description)} · ${esc(model.size)}</span>
+      </div>`;
+    card.addEventListener('click', () => {
+      el.querySelectorAll('.model-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      card.querySelector('input[type="radio"]').checked = true;
+    });
+    el.appendChild(card);
+  });
+}
+
 $('apply-model-btn').addEventListener('click', async () => {
-  const url = $('model-url').value.trim();
-  if (url) await txPut('settings', url, 'modelUrl');
+  const selected = $('model-picker').querySelector('input[name="model-pick"]:checked');
+  if (selected) await txPut('settings', selected.value, 'modelUrl');
   $('model-apply-msg').textContent = 'Reinitializing…';
   await initAI();
   $('model-apply-msg').textContent = `Status: ${$('status-bar').textContent}`;
@@ -144,8 +178,7 @@ $('settingsModal').addEventListener('show.bs.modal', async () => {
       <span class="dot"></span>WebGPU: ${gpuOk ? 'available' : 'not available'}
     </span>`;
 
-  const savedUrl = await txGet('settings', 'modelUrl');
-  $('model-url').value = savedUrl ?? '';
+  await renderModelPicker();
   $('thinking-mode-toggle').checked = !!(await txGet('settings', 'thinkingMode'));
 
   await renderMemory();

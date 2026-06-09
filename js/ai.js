@@ -2,7 +2,37 @@
 import { txGet } from '../tools/db.js';
 import { setStatus } from './utils.js';
 
-const DEFAULT_MODEL_URL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.task';
+export const KNOWN_MODELS = [
+  {
+    id: 'gemma-4-e2b',
+    label: 'Gemma 4 E2B',
+    description: 'Balanced — good quality, faster inference',
+    size: '~2 GB',
+    url: 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.task',
+  },
+  {
+    id: 'gemma-4-e4b',
+    label: 'Gemma 4 E4B',
+    description: 'Higher quality, slower inference',
+    size: '~4 GB',
+    url: 'https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm/resolve/main/gemma-4-E4B-it-web.task',
+  },
+];
+
+const DEFAULT_MODEL_URL = KNOWN_MODELS[0].url;
+
+export async function checkModelCached(remoteUrl) {
+  const filename = 'wb-' + remoteUrl.split('/').pop();
+  if (!navigator.storage?.getDirectory) return false;
+  try {
+    const root = await navigator.storage.getDirectory();
+    const fh   = await root.getFileHandle(filename);
+    const file = await fh.getFile();
+    return file.size > 1e6;
+  } catch {
+    return false;
+  }
+}
 
 // ── AI Backend ────────────────────────────────────────────────────────────────
 export let backend      = 'none';

@@ -122,23 +122,9 @@
           <div class="tab-pane fade show active" id="tab-model">
             <div class="f-group">
               <div id="backend-badges" style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.85rem;"></div>
-              <label class="f-label">Active Backend</label>
-              <select class="f-select" id="model-select">
-                <option value="litert">Litert-LM via WebGPU — self-hosted model</option>
-              </select>
-            </div>
-
-            <div id="litert-options">
-              <div class="f-group">
-                <label class="f-label">Model URL <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3);font-size:0.68rem;">(override optional)</span></label>
-                <input type="url" class="f-input mono" id="model-url"
-                       placeholder="Using default: gemma-4-E2B-it-web.task from HuggingFace">
-                <p class="f-hint">
-                  Defaults to <code style="background:var(--surface-3);padding:1px 4px;border-radius:3px;font-size:0.85em;">gemma-4-E2B-it-web.task</code>
-                  from <a href="https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm" target="_blank" rel="noopener">litert-community/gemma-4-E2B-it-litert-lm</a>
-                  (~2 GB, downloaded on first use). Paste a different URL to override.
-                </p>
-              </div>
+              <label class="f-label">Model</label>
+              <div id="model-picker" class="model-picker"></div>
+              <p class="f-hint">Models run locally via Litert-LM and WebGPU. Downloaded once and cached in browser storage.</p>
             </div>
 
             <div class="f-group">
